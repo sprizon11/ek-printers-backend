@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · EK Printers · Tiruppur</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412;--footer:#161412;--teal:#006B5E;--teal2:#008F7A;--light:#E8F4F1;--card:#fff;--font-body:'Manrope',sans-serif;--font-heading:'Playfair Display',serif}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;transition:background 0.25s ease,color 0.25s ease}
+    body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1;--footer:#0B0D0F;--light:#243037;--card:#1E2226}
+    h1,h2,h3{font-family:var(--font-heading);font-weight:600;letter-spacing:-0.02em;line-height:1.1}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
+    .n3-logo{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:inherit}
+    .n3-mark{width:36px;height:36px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:700;color:#fff;font-size:0.95rem;letter-spacing:-0.02em}
+    .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
+    .n3-name span{color:var(--teal);font-weight:400}
+    .n3-links{display:flex;gap:2.5rem;flex-wrap:wrap}
+    .n3-links a{color:rgba(22,20,18,0.5);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s}
+    .n3-links a:hover{color:var(--ink)}
+    .n3-links a[aria-current="page"]{color:var(--ink);font-weight:600}
+    .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s;text-decoration:none;display:inline-block}
+    .n3-btn:hover{background:var(--teal2)}
+    .theme-toggle{background:transparent;color:var(--ink);border:1px solid rgba(22,20,18,0.18);border-radius:999px;padding:0.45rem 0.8rem;font-size:0.75rem;cursor:pointer}
+    body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.25)}
+    body.dark-mode .about-stat,body.dark-mode .about-feat{background:var(--card)}
+    body.dark-mode nav{background:var(--bg)}
+    body.dark-mode .n3-name,body.dark-mode .about-title,body.dark-mode .about-feat-title,body.dark-mode .about-stat-num{color:var(--ink)}
+    body.dark-mode .about-text,body.dark-mode .about-feat-desc,body.dark-mode .about-stat-label,body.dark-mode .n3-links a{color:rgba(236,239,241,0.68)}
+    body.dark-mode .f3-links a{color:rgba(236,239,241,0.62)}
+    body.dark-mode .f3-links a:hover{color:#fff}
+
+    #about{flex:1;padding:5rem 3rem;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .about-title{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.85rem,3.5vw,2.5rem);letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem}
+    .about-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
+    .about-text{font-size:0.85rem;color:rgba(22,20,18,0.55);line-height:1.6;font-weight:400;margin-bottom:1rem}
+    .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
+    .about-stat{text-align:center;background:#fff;border-radius:14px;padding:1.2rem}
+    .about-stat-num{font-family:var(--font-heading);font-weight:700;font-size:1.6rem;letter-spacing:-0.02em;line-height:1.1;color:var(--teal)}
+    .about-stat-label{font-size:0.68rem;color:rgba(22,20,18,0.45);margin-top:0.2rem;font-weight:400;line-height:1.6}
+    .about-right{display:flex;flex-direction:column;gap:1rem}
+    .about-feat{display:flex;align-items:flex-start;gap:1rem;background:#fff;border-radius:14px;padding:1.2rem}
+    .about-feat-icon{width:42px;height:42px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .about-feat-title{font-weight:500;font-size:0.85rem;margin-bottom:0.2rem;line-height:1.6}
+    .about-feat-desc{font-size:0.73rem;color:rgba(22,20,18,0.5);line-height:1.6;font-weight:400}
+
+    .foot3{background:var(--footer);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .f3-logo{display:flex;align-items:center;gap:0.7rem}
+    .f3-mark{width:30px;height:30px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:700;color:#fff;font-size:0.8rem;letter-spacing:-0.02em}
+    .f3-n{font-family:var(--font-heading);font-weight:600;color:#fff;font-size:0.9rem;line-height:1.1;letter-spacing:-0.02em}
+    .f3-links{display:flex;gap:2rem;flex-wrap:wrap}
+    .f3-links a{color:rgba(255,255,255,0.42);font-size:0.8rem;font-weight:600;text-decoration:none;transition:color 0.2s}
+    .f3-links a:hover{color:#fff}
+    .f3-copy{font-size:0.65rem;color:rgba(255,255,255,0.2)}
+
+    @media (max-width:900px){
+      nav{padding:1rem 1.25rem}
+      #about{grid-template-columns:1fr;padding:3rem 1.25rem 4rem}
+      .n3-links{gap:1rem 1.5rem}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="n3-logo"><div class="n3-mark">EK</div><div class="n3-name">EK Printers <span>· Tiruppur</span></div></a>
+    <div class="n3-links">
+      <a href="index.html#products">Products</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="/admin/login">Admin</a>
+    </div>
+    <div style="display:flex;gap:0.6rem;align-items:center">
+      <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
+      <a class="n3-btn" href="index.html#contact">Get a Quote →</a>
+    </div>
+  </nav>
+
+  <main id="about">
+    <div>
+      <h1 class="about-title">About <em>EK Printers</em></h1>
+      <p class="about-text">Founded in Tiruppur, EK Printers has been the trusted print partner for thousands of businesses, brands, and families across India. We combine premium materials with skilled craftsmanship to deliver print products that make a lasting impression.</p>
+      <p class="about-text">From a single visiting card to thousands of wedding invitations — every order gets the same attention to detail and care.</p>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">5000+</div><div class="about-stat-label">Happy Clients</div></div>
+        <div class="about-stat"><div class="about-stat-num">10+</div><div class="about-stat-label">Years Experience</div></div>
+        <div class="about-stat"><div class="about-stat-num">48hr</div><div class="about-stat-label">Express Delivery</div></div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="about-feat"><div class="about-feat-icon">🖨️</div><div><div class="about-feat-title">State-of-the-art Equipment</div><div class="about-feat-desc">Digital and offset printing with UV, foil, and embossing capabilities for premium finishes.</div></div></div>
+      <div class="about-feat"><div class="about-feat-icon">🎨</div><div><div class="about-feat-title">In-house Design Team</div><div class="about-feat-desc">Our designers work with you to perfect your artwork before it goes to print — at no extra cost.</div></div></div>
+      <div class="about-feat"><div class="about-feat-icon">🚚</div><div><div class="about-feat-title">Pan-India Shipping</div><div class="about-feat-desc">Carefully packed and shipped across India with tracking. Express 48-hour options available.</div></div></div>
+      <div class="about-feat"><div class="about-feat-icon">✅</div><div><div class="about-feat-title">100% Satisfaction Guarantee</div><div class="about-feat-desc">Not happy with your order? We'll reprint it — no questions asked.</div></div></div>
+    </div>
+  </main>
+
+  <footer class="foot3">
+    <div class="f3-logo"><div class="f3-mark">EK</div><div class="f3-n">EK Printers</div></div>
+    <div class="f3-links"><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Email Us</a><a href="#">Call</a></div>
+    <div class="f3-copy">© 2025 EK Printers · Tiruppur</div>
+  </footer>
+<script>
+  const THEME_KEY = 'ek-theme';
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark-mode', dark);
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = dark ? '☀ Light' : '🌙 Dark';
+  }
+  const saved = localStorage.getItem(THEME_KEY) || 'light';
+  applyTheme(saved);
+  const t = document.getElementById('themeToggle');
+  if (t) {
+    t.addEventListener('click', () => {
+      const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    });
+  }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+{
+  "quotes": [
+    {
+      "id": 3,
+      "name": "Santhiya Bava",
+      "phone": "09994229860",
+      "email": "Sprizon1207@gmail.com",
+      "requirement": "Service: Digital Printing\nQuantity: 4200\nRequirement: sdA",
+      "status": "new",
+      "notes": "",
+      "created_at": "19/4/2026, 4:11:14 pm",
+      "created_date": "2026-04-19"
+    }
+  ],
+  "admin": {
+    "username": "admin",
+    "password": "92e7327cd3411b1af676d5a12f57c643303c5757252ba45afa07e8d828b8643a"
+  },
+  "nextId": 4
+}

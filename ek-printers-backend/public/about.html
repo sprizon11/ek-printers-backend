@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About · EK Printers · Tiruppur</title>
+  <link rel="prefetch" href="/admin/login">
+  <link rel="prefetch" href="/">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412;--footer:#161412;--teal:#006B5E;--teal2:#008F7A;--light:#E8F4F1;--card:#fff;--font-body:'Segoe UI',Roboto,Arial,sans-serif;--font-heading:Georgia,'Times New Roman',serif}
@@ -68,7 +70,7 @@
       <a href="index.html#portfolio">Portfolio</a>
       <a href="about.html" aria-current="page">About</a>
       <a href="index.html#contact">Contact</a>
-      <a href="/admin/login">Admin</a>
+      <a href="/admin/login" data-instant-nav>Admin</a>
     </div>
     <div style="display:flex;gap:0.6rem;align-items:center">
       <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
@@ -118,6 +120,12 @@
       applyTheme(next);
     });
   }
+  document.querySelectorAll('a[data-instant-nav]').forEach(link => {
+    link.addEventListener('pointerdown', () => {
+      const href = link.getAttribute('href');
+      if (href) fetch(href, { credentials: 'include' }).catch(() => {});
+    }, { passive: true });
+  });
 </script>
 </body>
 </html>

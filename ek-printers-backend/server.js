@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const session = require('express-session');
+const compression = require('compression');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const XLSX = require('xlsx');
@@ -29,6 +30,7 @@ function saveDB(data) {
 }
 
 // ─── MIDDLEWARE ────────────────────────────────────────────────────────────────
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -273,6 +275,13 @@ function normalizeWhatsAppNumber(phone) {
   if (!digits) return '';
   return digits.length === 10 ? `91${digits}` : digits;
 }
+function customerWhatsAppText(q) {
+  return encodeURIComponent(
+    `Hi ${q.name}, this is EK Printers about your quote #${q.id}.\n` +
+    `Requirement: ${q.requirement || '-'}\n` +
+    `Please confirm quantity and timeline.`
+  );
+}
 
 function statusBadge(status) {
   const map = {
@@ -360,7 +369,7 @@ function loginPageHTML(error = '') {
 function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, username) {
   const rows = quotes.map(q => {
     const waNumber = normalizeWhatsAppNumber(q.phone);
-    const waText = encodeURIComponent(`Hi ${q.name}, this is EK Printers regarding your quote request #${q.id}.`);
+    const waText = customerWhatsAppText(q);
     const waHref = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '#';
     const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`EK Printers quote #${q.id}`)}` : '';
     return `
@@ -397,6 +406,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin Panel · EK Printers</title>
+  <link rel="prefetch" href="/">
+  <link rel="prefetch" href="/admin">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
@@ -462,7 +473,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     <div class="topbar-right">
       <button id="themeToggle" class="theme-toggle" type="button">🌙 Dark</button>
       <span class="user-pill">👤 ${esc(username)}</span>
-      <a href="/" class="btn-sm">← Website</a>
+      <a href="/" class="btn-sm" data-instant-nav>← Website</a>
       <a href="/admin/logout" class="btn-sm">Logout</a>
     </div>
   </div>
@@ -517,6 +528,12 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
         applyTheme(next);
       });
     }
+    document.querySelectorAll('a[data-instant-nav]').forEach(link => {
+      link.addEventListener('pointerdown', () => {
+        const href = link.getAttribute('href');
+        if (href) fetch(href, { credentials: 'include' }).catch(() => {});
+      }, { passive: true });
+    });
     let activeNoteId = null;
     async function updateStatus(id, status) {
       await fetch('/admin/quote/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});

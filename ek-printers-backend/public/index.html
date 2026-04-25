@@ -217,7 +217,7 @@
 <div>
   <nav>
     <div class="n3-logo"><div class="n3-mark">EK</div><div class="n3-name">EK Printers <span>· Tiruppur</span></div></div>
-    <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login">Admin</a></div>
+    <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
     <div style="display:flex;gap:0.6rem;align-items:center">
       <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
       <button class="n3-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote →</button>
@@ -653,9 +653,17 @@ function closeProdModal() {
 
 // Wire up all product cards
 document.addEventListener('DOMContentLoaded', () => {
+  // Warm up admin page route so navigation feels faster.
+  fetch('/admin/login', { credentials: 'include' }).catch(() => {});
   document.querySelectorAll('.p3-card').forEach(card => {
     const name = card.querySelector('.p3-cname').textContent.trim();
     card.addEventListener('click', () => openProdModal(name));
+  });
+  document.querySelectorAll('a[data-instant-nav]').forEach(link => {
+    link.addEventListener('pointerdown', () => {
+      const href = link.getAttribute('href');
+      if (href) fetch(href, { credentials: 'include' }).catch(() => {});
+    }, { passive: true });
   });
 
 });

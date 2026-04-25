@@ -268,6 +268,11 @@ function withQuery(paramsObj) {
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escJs(s) { return String(s||'').replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$'); }
+function normalizeWhatsAppNumber(phone) {
+  const digits = String(phone || '').replace(/[^0-9]/g, '');
+  if (!digits) return '';
+  return digits.length === 10 ? `91${digits}` : digits;
+}
 
 function statusBadge(status) {
   const map = {
@@ -287,7 +292,6 @@ function loginPageHTML(error = '') {
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin Login · EK Printers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
@@ -354,7 +358,12 @@ function loginPageHTML(error = '') {
 }
 
 function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, username) {
-  const rows = quotes.map(q => `
+  const rows = quotes.map(q => {
+    const waNumber = normalizeWhatsAppNumber(q.phone);
+    const waText = encodeURIComponent(`Hi ${q.name}, this is EK Printers regarding your quote request #${q.id}.`);
+    const waHref = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '#';
+    const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`EK Printers quote #${q.id}`)}` : '';
+    return `
     <tr id="row-${q.id}" style="border-bottom:1px solid rgba(22,20,18,0.06)">
       <td style="padding:1rem 0.8rem;font-size:0.7rem;color:rgba(22,20,18,0.35);font-weight:600">#${q.id}</td>
       <td style="padding:1rem 0.8rem">
@@ -374,19 +383,20 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
             <option value="cancelled" ${q.status==='cancelled'?'selected':''}>Cancelled</option>
           </select>
           <button onclick="openNotes(${q.id},\`${escJs(q.notes)}\`)" style="background:#F2F0EB;border:1px solid rgba(22,20,18,0.1);border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;cursor:pointer">📝</button>
-          <a href="https://wa.me/${q.phone.replace(/[^0-9]/g,'')}" target="_blank" style="background:#E8F5E9;border:1px solid #c8e6c9;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none">💬</a>
+          <a href="${waHref}" ${waNumber ? 'target="_blank" rel="noopener noreferrer"' : ''} title="${waNumber ? 'Open WhatsApp chat' : 'Invalid phone number'}" style="background:#E8F5E9;border:1px solid #c8e6c9;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none;${waNumber ? '' : 'opacity:0.45;pointer-events:none;'}">💬</a>
+          <a href="${emailHref || '#'}" ${emailHref ? '' : 'aria-disabled="true"'} title="${emailHref ? 'Send email' : 'No email provided'}" style="background:#E8F4FF;border:1px solid #c9dfff;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none;${emailHref ? '' : 'opacity:0.45;pointer-events:none;'}">✉️</a>
           <button onclick="deleteQuote(${q.id})" style="background:#FFEBEE;border:1px solid #ffcdd2;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;cursor:pointer">🗑️</button>
         </div>
         ${q.notes ? `<div style="margin-top:0.5rem;font-size:0.68rem;color:rgba(22,20,18,0.5);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;max-width:220px;line-height:1.4">${esc(q.notes)}</div>` : ''}
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin Panel · EK Printers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
@@ -552,7 +562,11 @@ app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'abo
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  etag: true,
+  lastModified: true,
+  maxAge: '1d'
+}));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`EK Printers running at http://localhost:${PORT}`);

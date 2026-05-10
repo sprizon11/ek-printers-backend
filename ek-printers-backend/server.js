@@ -147,6 +147,27 @@ app.get('/admin/logout', (req, res) => {
   res.redirect('/admin/login');
 });
 
+app.post('/admin/change-password', requireAuth, (req, res) => {
+  const { currentPassword, newPassword } = req.body || {};
+  if (!currentPassword || !newPassword || typeof newPassword !== 'string') {
+    return res.status(400).json({ success: false, message: 'Enter your current password and a new password.' });
+  }
+  if (newPassword.length < 8) {
+    return res.status(400).json({ success: false, message: 'New password must be at least 8 characters.' });
+  }
+  if (newPassword.length > 200) {
+    return res.status(400).json({ success: false, message: 'New password is too long.' });
+  }
+  const db = loadDB();
+  const curHash = crypto.createHash('sha256').update(String(currentPassword)).digest('hex');
+  if (db.admin.password !== curHash) {
+    return res.status(401).json({ success: false, message: 'Current password is incorrect.' });
+  }
+  db.admin.password = crypto.createHash('sha256').update(newPassword).digest('hex');
+  saveDB(db);
+  res.json({ success: true, message: 'Password updated. Use it next time you sign in.' });
+});
+
 // ─── ADMIN PANEL ──────────────────────────────────────────────────────────────
 app.get('/admin', requireAuth, (req, res) => {
   const filter = req.query.status || 'all';
@@ -426,9 +447,26 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .mark{width:34px;height:34px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.8rem}
     .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:0.9rem}
     .badge{background:var(--surface);font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:100px;font-weight:600;color:rgba(22,20,18,0.5);margin-left:0.5rem}
-    .topbar-right{display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap;margin-left:auto}
+    .topbar-right{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-left:auto}
     .theme-toggle{font-size:0.72rem;padding:0.4rem 0.9rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;color:var(--ink)}
-    .user-pill{font-size:0.75rem;color:rgba(22,20,18,0.5);background:var(--surface);padding:0.35rem 0.9rem;border-radius:100px}
+    .profile-wrap{position:relative;flex-shrink:0}
+    .profile-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--teal);background:var(--surface);color:var(--teal);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .2s,border-color .2s,transform .15s}
+    .profile-btn:hover{background:rgba(0,107,94,0.08)}
+    .profile-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+    .profile-btn[aria-expanded="true"]{background:rgba(0,107,94,0.12);border-color:var(--teal2)}
+    @media (max-width:360px){
+      .stats-grid{gap:0.35rem}
+      .stat-card{padding:0.55rem 0.4rem}
+      .stat-label{font-size:0.52rem}
+      .filter-btn{font-size:0.58rem;padding:0.32rem 0.52rem}
+    }
+    .profile-menu{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:12.5rem;padding:0.35rem;border-radius:12px;background:#fff;border:1px solid rgba(22,20,18,0.1);box-shadow:0 14px 44px rgba(22,20,18,0.12);z-index:120}
+    .profile-menu.is-open{display:block}
+    .profile-item{display:flex;align-items:center;width:100%;padding:0.65rem 0.85rem;font-size:0.8rem;font-weight:500;color:var(--ink);text-decoration:none;border-radius:8px;border:none;background:transparent;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;box-sizing:border-box}
+    .profile-item:hover{background:var(--surface)}
+    .profile-item-danger{color:#c0392b}
+    .profile-item-danger:hover{background:rgba(192,57,43,0.08)}
+    .profile-hint{font-size:0.65rem;color:rgba(22,20,18,0.45);padding:0.35rem 0.85rem 0.25rem;border-top:1px solid rgba(22,20,18,0.08);margin-top:0.2rem}
     .btn-sm{font-size:0.72rem;padding:0.4rem 1rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;color:var(--ink);transition:all 0.2s}
     .btn-sm:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
     .content{padding:1.25rem 1.25rem 2rem;width:100%;max-width:100%;box-sizing:border-box}
@@ -451,8 +489,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .search-box:focus{border-color:var(--teal)}
     .export-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.2s;white-space:nowrap;flex-shrink:0}
     .export-btn:hover{background:var(--teal2)}
-    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow:auto;width:100%;min-width:0}
-    table{width:100%;border-collapse:collapse;table-layout:auto}
+    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch}
+    table{width:100%;min-width:100%;border-collapse:collapse;table-layout:auto}
     th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:600;color:rgba(22,20,18,0.4);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
     th:nth-child(3),td.req-cell{min-width:10rem;max-width:36rem}
     .note-snippet{max-width:100%}
@@ -474,7 +512,15 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
     .modal-overlay.open{display:flex}
     .modal{background:#fff;border-radius:16px;padding:1.5rem;width:400px;max-width:90vw}
+    .modal.pass-modal{width:min(100%,380px)}
     .modal h3{font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;margin-bottom:1rem}
+    .modal .field{margin-bottom:0.85rem}
+    .modal .field label{display:block;font-size:0.68rem;font-weight:600;color:rgba(22,20,18,0.5);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.04em}
+    .modal .field input{width:100%;box-sizing:border-box;background:var(--surface);border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.85rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none}
+    .modal .field input:focus{border-color:var(--teal);background:#fff}
+    .pass-msg{font-size:0.75rem;margin-bottom:0.75rem;padding:0.55rem 0.7rem;border-radius:8px;display:none}
+    .pass-msg.err{display:block;background:rgba(192,57,43,0.1);color:#a82315;border:1px solid rgba(192,57,43,0.2)}
+    .pass-msg.ok{display:block;background:rgba(0,107,94,0.1);color:var(--teal);border:1px solid rgba(0,107,94,0.2)}
     .modal textarea{width:100%;background:var(--surface);border:1.5px solid transparent;border-radius:10px;padding:0.8rem;font-size:0.8rem;font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:100px;transition:all 0.2s}
     .modal textarea:focus{border-color:var(--teal);background:#fff}
     .modal-actions{display:flex;gap:0.7rem;margin-top:1rem;justify-content:flex-end}
@@ -505,7 +551,16 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .btn-sm,body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.24);color:var(--ink)}
     body.dark-mode td,body.dark-mode th,body.dark-mode label,body.dark-mode input,body.dark-mode select,body.dark-mode textarea{color:var(--ink)}
-    body.dark-mode .stat-label,body.dark-mode .badge,body.dark-mode .user-pill,body.dark-mode .empty{color:rgba(236,239,241,0.68)}
+    body.dark-mode .stat-label,body.dark-mode .badge,body.dark-mode .empty{color:rgba(236,239,241,0.68)}
+    body.dark-mode .profile-menu{background:#1E2226;border-color:rgba(236,239,241,0.14);box-shadow:0 14px 44px rgba(0,0,0,0.45)}
+    body.dark-mode .profile-item:hover{background:rgba(236,239,241,0.06)}
+    body.dark-mode .profile-hint{color:rgba(236,239,241,0.5);border-color:rgba(236,239,241,0.1)}
+    body.dark-mode .profile-btn{background:#243038;border-color:#5ec4b0;color:#a7e8de}
+    body.dark-mode .profile-btn:hover{background:rgba(94,196,176,0.12)}
+    body.dark-mode .modal .field label{color:rgba(236,239,241,0.55)}
+    body.dark-mode .modal .field input{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
+    body.dark-mode .pass-msg.err{background:rgba(239,83,80,0.12)!important;color:#ffcdd2!important;border-color:rgba(239,83,80,0.25)!important}
+    body.dark-mode .pass-msg.ok{background:rgba(0,107,94,0.2)!important;color:#7fe8d6!important;border-color:rgba(0,107,94,0.35)!important}
     body.dark-mode [style*="rgba(22,20,18,0.35)"]{color:rgba(236,239,241,0.66)!important}
     body.dark-mode [style*="rgba(22,20,18,0.4)"]{color:rgba(236,239,241,0.66)!important}
     body.dark-mode [style*="rgba(22,20,18,0.45)"]{color:rgba(236,239,241,0.7)!important}
@@ -529,9 +584,17 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     </div>
     <div class="topbar-right">
       <button id="themeToggle" class="theme-toggle" type="button">🌙 Dark</button>
-      <span class="user-pill">👤 ${esc(username)}</span>
-      <a href="/" class="btn-sm" data-instant-nav>← Website</a>
-      <a href="/admin/logout" class="btn-sm">Logout</a>
+      <div class="profile-wrap" id="profileWrap">
+        <button type="button" class="profile-btn" id="profileBtn" aria-expanded="false" aria-haspopup="true" aria-label="Account menu, signed in as ${esc(username)}">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </button>
+        <div class="profile-menu" id="profileMenu" role="menu">
+          <a role="menuitem" class="profile-item" href="/" data-instant-nav>Open website</a>
+          <button type="button" role="menuitem" class="profile-item" id="openChangePass">Change password</button>
+          <a role="menuitem" class="profile-item profile-item-danger" href="/admin/logout">Log out</a>
+          <div class="profile-hint">Signed in as <strong>${esc(username)}</strong></div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="content">
@@ -572,6 +635,20 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       </div>
     </div>
   </div>
+  <div class="modal-overlay" id="passModal">
+    <div class="modal pass-modal">
+      <h3>Change password</h3>
+      <p style="font-size:0.78rem;color:rgba(22,20,18,0.55);margin-bottom:1rem;line-height:1.45">Enter your current password, then a new password. Minimum 8 characters.</p>
+      <div id="passMsg" class="pass-msg" role="alert"></div>
+      <div class="field"><label for="passCurrent">Current password</label><input type="password" id="passCurrent" autocomplete="current-password"></div>
+      <div class="field"><label for="passNew">New password</label><input type="password" id="passNew" autocomplete="new-password"></div>
+      <div class="field"><label for="passNew2">Confirm new password</label><input type="password" id="passNew2" autocomplete="new-password"></div>
+      <div class="modal-actions">
+        <button type="button" class="modal-cancel" id="passCancel">Cancel</button>
+        <button type="button" class="modal-save" id="passSave">Update password</button>
+      </div>
+    </div>
+  </div>
   <script>
     const THEME_KEY = 'ek-theme';
     function applyTheme(theme) {
@@ -595,6 +672,100 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
         if (href) fetch(href, { credentials: 'include' }).catch(() => {});
       }, { passive: true });
     });
+    (function profileMenu(){
+      const wrap = document.getElementById('profileWrap');
+      const btn = document.getElementById('profileBtn');
+      const menu = document.getElementById('profileMenu');
+      if (!wrap || !btn || !menu) return;
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setOpen(!menu.classList.contains('is-open'));
+      });
+      document.addEventListener('click', function() { setOpen(false); });
+      wrap.addEventListener('click', function(e) { e.stopPropagation(); });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
+    (function changePassword(){
+      const overlay = document.getElementById('passModal');
+      const msg = document.getElementById('passMsg');
+      const cur = document.getElementById('passCurrent');
+      const n1 = document.getElementById('passNew');
+      const n2 = document.getElementById('passNew2');
+      const openBtn = document.getElementById('openChangePass');
+      const cancel = document.getElementById('passCancel');
+      const save = document.getElementById('passSave');
+      if (!overlay || !openBtn) return;
+      function showMsg(text, ok) {
+        msg.textContent = text || '';
+        msg.className = 'pass-msg' + (text ? (ok ? ' ok' : ' err') : '');
+      }
+      function openPass() {
+        showMsg('', false);
+        if (cur) cur.value = '';
+        if (n1) n1.value = '';
+        if (n2) n2.value = '';
+        overlay.classList.add('open');
+        const menu = document.getElementById('profileMenu');
+        const pbtn = document.getElementById('profileBtn');
+        if (menu) menu.classList.remove('is-open');
+        if (pbtn) pbtn.setAttribute('aria-expanded', 'false');
+        setTimeout(function() { if (cur) cur.focus(); }, 50);
+      }
+      function closePass() {
+        overlay.classList.remove('open');
+        showMsg('', false);
+      }
+      openBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openPass();
+      });
+      if (cancel) cancel.addEventListener('click', closePass);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) closePass(); });
+      if (save) save.addEventListener('click', async function() {
+        showMsg('', false);
+        const currentPassword = (cur && cur.value) || '';
+        const newPassword = (n1 && n1.value) || '';
+        const c2 = (n2 && n2.value) || '';
+        if (!currentPassword || !newPassword) {
+          showMsg('Fill in all fields.', false);
+          return;
+        }
+        if (newPassword.length < 8) {
+          showMsg('New password must be at least 8 characters.', false);
+          return;
+        }
+        if (newPassword !== c2) {
+          showMsg('New password and confirmation do not match.', false);
+          return;
+        }
+        save.disabled = true;
+        try {
+          const res = await fetch('/admin/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ currentPassword, newPassword })
+          });
+          const data = await res.json().catch(function() { return {}; });
+          if (res.ok && data.success) {
+            showMsg(data.message || 'Password updated.', true);
+            setTimeout(function() { closePass(); }, 1200);
+          } else {
+            showMsg(data.message || 'Could not update password.', false);
+          }
+        } catch (err) {
+          showMsg('Network error. Try again.', false);
+        } finally {
+          save.disabled = false;
+        }
+      });
+    })();
     let activeNoteId = null;
     async function updateStatus(id, status) {
       await fetch('/admin/quote/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
@@ -639,6 +810,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       location.href = '/admin?' + params.toString();
     }
     document.getElementById('notesModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeNotes(); });
+    document.getElementById('passModal').addEventListener('click', e => { if(e.target===e.currentTarget) document.getElementById('passCancel').click(); });
   </script>
 </body>
 </html>

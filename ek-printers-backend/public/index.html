@@ -66,11 +66,9 @@
 
   /* NAV — mobile first */
   #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
-  .n3-logo{display:flex;align-items:center;gap:0.8rem;flex:1;min-width:0}
-  .n3-logo-img{height:36px;width:auto;max-width:min(100%,min(280px,78vw));display:block;object-fit:contain}
-  .n3-logo-img--dark{display:none}
-  body.dark-mode .n3-logo-img--light{display:none}
-  body.dark-mode .n3-logo-img--dark{display:block}
+  .n3-logo{display:flex;align-items:center;gap:0.8rem;flex:1;min-width:0;text-decoration:none;color:inherit}
+  .n3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.1rem,4.2vw,1.4rem);letter-spacing:0.04em;color:var(--teal);line-height:1}
+  .n3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.1rem,4.2vw,1.4rem);letter-spacing:-0.02em;color:var(--ink);line-height:1}
   .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
   .n3-name span{color:var(--teal);font-weight:400}
   .n3-desktop-row{display:none;align-items:center;gap:2rem;flex:1;justify-content:flex-end}
@@ -106,10 +104,6 @@
   body.dark-mode .n3-drawer-links a{background:var(--bg)}
   .n3-drawer-links a:active,.n3-drawer-links a:hover{color:var(--ink);background:var(--light)}
   body.dark-mode .n3-drawer-links a:hover{background:#252a30}
-    .n3-drawer-theme{width:100%;margin-top:0.85rem;padding:0.72rem 0.95rem;border-radius:12px;border:1px solid rgba(22,20,18,0.1);background:var(--surface);font-size:0.88rem;font-weight:500;font-family:var(--font-body);color:var(--ink);cursor:pointer;text-align:center;transition:background 0.2s,color 0.2s}
-    body.dark-mode .n3-drawer-theme{border-color:rgba(236,239,241,0.12);background:var(--bg);color:var(--ink)}
-    .n3-drawer-theme:hover{background:var(--light)}
-    body.dark-mode .n3-drawer-theme:hover{background:#252a30}
     .n3-drawer-quote{margin-top:1rem;width:100%;padding:0.85rem;font-size:0.82rem;font-weight:500;display:block;box-sizing:border-box;text-align:center;text-decoration:none}
 
   /* HERO — mobile first */
@@ -223,8 +217,9 @@
   /* FOOTER — mobile first */
   .foot3{background:var(--footer);padding:1.75rem 1.15rem;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;justify-content:flex-start}
   .f3-logo{display:flex;align-items:center;gap:0.7rem}
-  .f3-logo-wrap{background:#fff;border-radius:10px;padding:0.4rem 0.65rem;display:flex;align-items:center}
-  .f3-logo-img{height:26px;width:auto;display:block;object-fit:contain}
+  .f3-logo-wrap{background:#fff;border-radius:10px;padding:0.45rem 0.85rem;display:flex;align-items:center;gap:0.15rem}
+  .f3-mark{font-family:var(--font-heading);font-weight:700;font-size:0.95rem;letter-spacing:0.04em;color:var(--teal);line-height:1}
+  .f3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:0.95rem;letter-spacing:-0.02em;color:#161412;line-height:1}
   .f3-links{display:flex;flex-wrap:wrap;gap:0.75rem 1.25rem}
   .f3-links a{color:rgba(255,255,255,0.42);font-size:0.8rem;font-weight:600;text-decoration:none;transition:color 0.2s}
   .f3-links a:hover{color:#fff}
@@ -265,7 +260,7 @@
     .n3-mobile-bar{display:none!important}
     .n3-desktop-row{display:flex!important;flex:1;justify-content:space-between;align-items:center;min-width:0}
     .n3-logo{flex:0 1 auto}
-    .n3-logo-img{height:38px;max-width:none}
+    .n3-mark,.n3-mark-rest{font-size:1.45rem}
     .h3{padding:5rem 3rem 4rem;grid-template-columns:1.1fr 1fr;gap:4rem}
     .h3-sub{max-width:400px}
     .h3-actions{flex-direction:row;align-items:center;flex-wrap:wrap;width:auto}
@@ -301,10 +296,7 @@
 </style>
 <div>
   <nav id="navMain">
-    <div class="n3-logo">
-      <img class="n3-logo-img n3-logo-img--light" src="ek-logo-light.png?v=6" alt="EK Printers · Tiruppur" width="789" height="154">
-      <img class="n3-logo-img n3-logo-img--dark" src="ek-logo-dark.png?v=6" alt="EK Printers · Tiruppur" width="861" height="165">
-    </div>
+    <a href="index.html" class="n3-logo"><span class="n3-mark">EK</span><span class="n3-mark-rest">&nbsp;Printers</span></a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
@@ -313,6 +305,7 @@
       </div>
     </div>
     <div class="n3-mobile-bar">
+      <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
       <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">☰</button>
     </div>
   </nav>
@@ -331,7 +324,6 @@
         <a href="#contact">Contact</a>
         <a href="/admin/login" data-instant-nav>Admin</a>
       </div>
-      <button type="button" class="n3-drawer-theme" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
       <button type="button" class="n3-btn n3-drawer-quote" id="navDrawerQuote">Get a Quote →</button>
     </div>
   </div>
@@ -465,7 +457,7 @@
   </section>
 
   <div class="foot3">
-    <div class="f3-logo"><div class="f3-logo-wrap"><img class="f3-logo-img" src="ek-logo-light.png?v=6" alt="EK Printers" width="789" height="154"></div></div>
+    <div class="f3-logo"><div class="f3-logo-wrap"><span class="f3-mark">EK</span><span class="f3-mark-rest">&nbsp;Printers</span></div></div>
     <div class="f3-links">
       <a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>

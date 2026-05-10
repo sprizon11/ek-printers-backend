@@ -65,25 +65,45 @@
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
   /* NAV — mobile first */
-  nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:0.75rem 1rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
-  .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:auto;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
-  body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
-  .n3-nav-actions{display:none;flex-direction:column;width:100%;gap:0.5rem;padding-bottom:0.25rem}
-  .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:100%;text-align:center;justify-content:center}
+  #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
   .n3-logo{display:flex;align-items:center;gap:0.8rem;flex:1;min-width:0}
   .n3-logo-img{height:32px;width:auto;max-width:min(100%,200px);display:block;object-fit:contain}
   .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
   .n3-name span{color:var(--teal);font-weight:400}
-  .n3-links{display:none;flex-direction:column;gap:0.35rem;width:100%;padding-top:0.25rem}
-  nav.nav-is-open .n3-links{display:flex}
-  .n3-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;padding:0.65rem 0.85rem;border-radius:10px;background:var(--surface)}
-  body.dark-mode .n3-links a{background:var(--card)}
+  .n3-desktop-row{display:none;align-items:center;gap:2rem;flex:1;justify-content:flex-end}
+  .n3-links{display:flex;gap:2.5rem}
+  .n3-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s}
   .n3-links a:hover{color:var(--ink)}
-  nav.nav-is-open .n3-nav-actions{display:flex}
+  .n3-desktop-cta{display:flex;align-items:center;gap:0.55rem}
+  .n3-mobile-bar{display:flex;align-items:center;gap:0.45rem;flex-shrink:0}
+  .n3-theme-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.25rem;line-height:1;cursor:pointer;flex-shrink:0;transition:border-color 0.2s,background 0.2s}
+  body.dark-mode .n3-theme-icon{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
+  .n3-theme-icon:hover{background:var(--light)}
+  body.dark-mode .n3-theme-icon:hover{background:var(--card)}
+  .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
+  body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
   .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s}
   .n3-btn:hover{background:var(--teal2)}
-  .theme-toggle{background:transparent;color:var(--ink);border:1px solid rgba(22,20,18,0.18);border-radius:999px;padding:0.45rem 0.8rem;font-size:0.75rem;cursor:pointer}
-  body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.25)}
+  body.nav-drawer-open{overflow:hidden}
+  /* Mobile menu drawer (popup) */
+  .n3-drawer{position:fixed;inset:0;z-index:240;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.22s ease,visibility 0.22s}
+  .n3-drawer.n3-drawer-open{visibility:visible;opacity:1;pointer-events:auto}
+  .n3-drawer-backdrop{position:absolute;inset:0;background:rgba(22,20,18,0.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  body.dark-mode .n3-drawer-backdrop{background:rgba(5,7,9,0.65)}
+  .n3-drawer-panel{position:absolute;left:1rem;right:1rem;top:calc(0.85rem + 44px + 1.7rem);max-height:min(72vh,520px);overflow-y:auto;background:var(--card);border-radius:18px;padding:1.1rem;border:1px solid rgba(22,20,18,0.1);box-shadow:0 28px 64px rgba(0,0,0,0.22);animation:n3DrawerIn 0.28s ease}
+  @keyframes n3DrawerIn{from{opacity:0;transform:translateY(-8px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  body.dark-mode .n3-drawer-panel{border-color:rgba(236,239,241,0.12)}
+  .n3-drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.85rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(22,20,18,0.08)}
+  body.dark-mode .n3-drawer-top{border-color:rgba(236,239,241,0.1)}
+  .n3-drawer-title{font-family:var(--font-heading);font-weight:600;font-size:1.05rem;color:var(--ink)}
+  .n3-drawer-close{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:none;background:var(--surface);font-size:1.15rem;cursor:pointer;color:var(--ink)}
+  body.dark-mode .n3-drawer-close{background:var(--bg)}
+  .n3-drawer-links{display:flex;flex-direction:column;gap:0.35rem}
+  .n3-drawer-links a{color:var(--muted);text-decoration:none;font-size:0.92rem;font-weight:500;padding:0.72rem 0.95rem;border-radius:12px;background:var(--surface);transition:color 0.2s,background 0.2s}
+  body.dark-mode .n3-drawer-links a{background:var(--bg)}
+  .n3-drawer-links a:active,.n3-drawer-links a:hover{color:var(--ink);background:var(--light)}
+  body.dark-mode .n3-drawer-links a:hover{background:#252a30}
+  .n3-drawer-quote{margin-top:1rem;width:100%;padding:0.85rem;font-size:0.82rem;font-weight:500;display:block;box-sizing:border-box;text-align:center;text-decoration:none}
 
   /* HERO — mobile first */
   .h3{padding:2.5rem 1.15rem 2rem;display:grid;grid-template-columns:1fr;gap:2rem;align-items:center}
@@ -151,16 +171,17 @@
   .p3-title{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.85rem,4vw,2.8rem);letter-spacing:-0.02em;line-height:1.1}
   .p3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
   .p3-subtitle{font-size:0.8rem;color:rgba(22,20,18,0.45);max-width:none;text-align:left;line-height:1.6}
-  .p3-grid{display:grid;grid-template-columns:1fr;gap:1rem}
-  .p3-card{background:var(--surface);border-radius:16px;padding:1.35rem 1.25rem;transition:all 0.3s;cursor:pointer;border:1px solid transparent}
-  .p3-card:hover{background:#fff;border-color:rgba(22,20,18,0.08);transform:translateY(-4px);box-shadow:0 20px 40px rgba(22,20,18,0.06)}
-  .p3-icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem}
+  .p3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem}
+  .p3-card{background:var(--surface);border-radius:14px;padding:0.95rem 0.8rem;transition:all 0.3s;cursor:pointer;border:1px solid transparent;display:flex;flex-direction:column;min-height:0}
+  body.dark-mode .p3-card:hover{background:var(--card)}
+  .p3-card:hover{background:#fff;border-color:rgba(22,20,18,0.08);transform:translateY(-2px);box-shadow:0 12px 28px rgba(22,20,18,0.07)}
+  .p3-icon-wrap{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:0.65rem}
   .p3-icon-wrap.t{background:var(--light)}
   .p3-icon-wrap.c{background:rgba(232,93,58,0.1)}
   .p3-icon-wrap.w{background:rgba(139,115,85,0.1)}
-  .p3-cname{font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:0.5rem;letter-spacing:-0.02em;line-height:1.1}
-  .p3-cdesc{font-size:0.75rem;color:rgba(22,20,18,0.5);line-height:1.6}
-  .p3-arrow{display:inline-flex;align-items:center;gap:0.4rem;margin-top:1rem;font-size:0.7rem;font-weight:600;color:var(--teal);transition:gap 0.2s}
+  .p3-cname{font-family:var(--font-heading);font-weight:600;font-size:0.86rem;margin-bottom:0.35rem;letter-spacing:-0.02em;line-height:1.15}
+  .p3-cdesc{font-size:0.65rem;color:rgba(22,20,18,0.5);line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .p3-arrow{display:inline-flex;align-items:center;gap:0.35rem;margin-top:auto;padding-top:0.55rem;font-size:0.65rem;font-weight:600;color:var(--teal);transition:gap 0.2s}
   .p3-card:hover .p3-arrow{gap:0.7rem}
 
   /* TESTIMONIALS — mobile first */
@@ -227,19 +248,17 @@
     .loop-card,.card-face::before,.card3d-wrap::after{animation:none}
     .loop-card.card-a{transform:translate(0,0) scale(1) rotateX(10deg) rotateZ(-2deg)}
     .loop-card.card-b{transform:translate(34px,30px) scale(0.94) rotateX(7deg) rotateZ(5deg)}
+    .n3-drawer-panel{animation:none!important}
   }
 
   /* Desktop layout */
   @media (min-width:901px){
-    nav{flex-wrap:nowrap;align-items:center;padding:1.2rem 3rem;gap:1rem}
+    #navMain{padding:1.2rem 3rem;gap:1.5rem}
     .n3-burger{display:none!important}
+    .n3-mobile-bar{display:none!important}
+    .n3-desktop-row{display:flex!important;flex:1;justify-content:space-between;align-items:center;min-width:0}
     .n3-logo{flex:0 1 auto}
     .n3-logo-img{height:38px;max-width:none}
-    .n3-links{display:flex!important;flex-direction:row;flex-wrap:nowrap;width:auto;padding:0;gap:2.5rem;align-items:center}
-    .n3-links a{padding:0;background:transparent!important;border-radius:0;font-size:0.8rem}
-    body.dark-mode .n3-links a{background:transparent!important}
-    .n3-nav-actions{display:flex!important;flex-direction:row;width:auto;padding:0;gap:0.6rem;align-items:center}
-    .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:auto}
     .h3{padding:5rem 3rem 4rem;grid-template-columns:1.1fr 1fr;gap:4rem}
     .h3-sub{max-width:400px}
     .h3-actions{flex-direction:row;align-items:center;flex-wrap:wrap;width:auto}
@@ -256,7 +275,11 @@
     .p3-header{flex-direction:row;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;gap:0}
     .p3-subtitle{text-align:right;max-width:220px}
     .p3-grid{grid-template-columns:repeat(3,1fr);gap:1.5rem}
-    .p3-card{padding:2rem}
+    .p3-card{padding:2rem;border-radius:16px}
+    .p3-icon-wrap{width:52px;height:52px;border-radius:12px;font-size:1.4rem;margin-bottom:1.2rem}
+    .p3-cname{font-size:1rem;margin-bottom:0.5rem}
+    .p3-cdesc{font-size:0.75rem;line-height:1.6;-webkit-line-clamp:unset;display:block;overflow:visible}
+    .p3-arrow{font-size:0.7rem;gap:0.4rem;margin-top:1rem;padding-top:0}
     .testi3{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
     .cta3{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem}
     .cta3-form{max-width:560px;justify-self:end}
@@ -265,20 +288,43 @@
     .f3-links{flex-wrap:nowrap;gap:2rem}
   }
   @media (min-width:901px) and (max-width:1100px){
-    .n3-links{gap:1.25rem}
-    .n3-links a{font-size:0.78rem}
+    #navMain .n3-links{gap:1.25rem}
+    #navMain .n3-links a{font-size:0.78rem}
   }
 </style>
 <div>
   <nav id="navMain">
     <div class="n3-logo"><img class="n3-logo-img" src="ek-logo.png" alt="EK Printers · Tiruppur" width="180" height="38"></div>
-    <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">☰</button>
-    <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
-    <div class="n3-nav-actions">
-      <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
-      <button class="n3-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'}); closeMobileNav()">Get a Quote →</button>
+    <div class="n3-desktop-row">
+      <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
+      <div class="n3-desktop-cta">
+        <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
+        <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote →</button>
+      </div>
+    </div>
+    <div class="n3-mobile-bar">
+      <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
+      <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">☰</button>
     </div>
   </nav>
+
+  <div class="n3-drawer" id="navDrawer" aria-hidden="true">
+    <div class="n3-drawer-backdrop" id="navDrawerBackdrop"></div>
+    <div class="n3-drawer-panel" id="navDrawerPanel" role="dialog" aria-modal="true" aria-labelledby="navDrawerTitle">
+      <div class="n3-drawer-top">
+        <span class="n3-drawer-title" id="navDrawerTitle">Menu</span>
+        <button type="button" class="n3-drawer-close" id="navDrawerClose" aria-label="Close menu">✕</button>
+      </div>
+      <div class="n3-drawer-links">
+        <a href="#products">Products</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin/login" data-instant-nav>Admin</a>
+      </div>
+      <button type="button" class="n3-btn n3-drawer-quote" id="navDrawerQuote">Get a Quote →</button>
+    </div>
+  </div>
 
   <section class="h3">
     <div>
@@ -426,8 +472,10 @@ const THEME_KEY = 'ek-theme';
 function applyTheme(theme) {
   const dark = theme === 'dark';
   document.body.classList.toggle('dark-mode', dark);
-  const btn = document.getElementById('themeToggle');
-  if (btn) btn.textContent = dark ? '☀ Light' : '🌙 Dark';
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    btn.textContent = dark ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  });
 }
 
 async function submitQuote() {
@@ -482,10 +530,14 @@ function showMsg(text, bg, color) {
   msg.style.display = 'block';
 }
 
-function closeMobileNav() {
-  const nav = document.getElementById('navMain');
+function closeNavDrawer() {
+  const drawer = document.getElementById('navDrawer');
   const btn = document.getElementById('navBurger');
-  if (nav) nav.classList.remove('nav-is-open');
+  if (drawer) {
+    drawer.classList.remove('n3-drawer-open');
+    drawer.setAttribute('aria-hidden', 'true');
+  }
+  document.body.classList.remove('nav-drawer-open');
   if (btn) {
     btn.setAttribute('aria-expanded', 'false');
     btn.setAttribute('aria-label', 'Open menu');
@@ -493,29 +545,60 @@ function closeMobileNav() {
   }
 }
 
+function openNavDrawer() {
+  const drawer = document.getElementById('navDrawer');
+  const btn = document.getElementById('navBurger');
+  if (drawer) {
+    drawer.classList.add('n3-drawer-open');
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+  document.body.classList.add('nav-drawer-open');
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'true');
+    btn.setAttribute('aria-label', 'Close menu');
+    btn.textContent = '✕';
+  }
+}
+
+function toggleNavDrawer() {
+  const drawer = document.getElementById('navDrawer');
+  if (drawer && drawer.classList.contains('n3-drawer-open')) closeNavDrawer();
+  else openNavDrawer();
+}
+
+/** @deprecated use closeNavDrawer */
+function closeMobileNav() {
+  closeNavDrawer();
+}
+
 // Also allow pressing Enter in the last field
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
   applyTheme(savedTheme);
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
+  document.querySelectorAll('[data-theme-toggle]').forEach(el => {
+    el.addEventListener('click', () => {
       const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
       localStorage.setItem(THEME_KEY, next);
       applyTheme(next);
     });
-  }
-  const nav = document.getElementById('navMain');
+  });
   const burger = document.getElementById('navBurger');
-  if (nav && burger) {
-    burger.addEventListener('click', () => {
-      const open = nav.classList.toggle('nav-is-open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      burger.textContent = open ? '✕' : '☰';
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navDrawerBackdrop');
+  const closeBtn = document.getElementById('navDrawerClose');
+  const quoteBtn = document.getElementById('navDrawerQuote');
+  if (burger) burger.addEventListener('click', () => toggleNavDrawer());
+  if (backdrop) backdrop.addEventListener('click', () => closeNavDrawer());
+  if (closeBtn) closeBtn.addEventListener('click', () => closeNavDrawer());
+  if (quoteBtn) {
+    quoteBtn.addEventListener('click', () => {
+      closeNavDrawer();
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
     });
-    nav.querySelectorAll('.n3-links a').forEach(a => {
-      a.addEventListener('click', () => closeMobileNav());
+  }
+  if (drawer) {
+    drawer.querySelectorAll('.n3-drawer-links a').forEach(a => {
+      a.addEventListener('click', () => closeNavDrawer());
     });
   }
   document.getElementById('q-req').addEventListener('keydown', e => {
@@ -734,7 +817,7 @@ function openProdModal(productName) {
 
 function closeProdModal() {
   document.getElementById('prodModal').classList.remove('open');
-  document.body.style.overflow = '';
+  if (!document.body.classList.contains('nav-drawer-open')) document.body.style.overflow = '';
 }
 
 // Wire up all product cards
@@ -758,7 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeProdModal();
-    closeMobileNav();
+    closeNavDrawer();
   }
 });
 </script>

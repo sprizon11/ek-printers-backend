@@ -8,35 +8,53 @@
   <link rel="prefetch" href="/">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412;--footer:#161412;--teal:#006B5E;--teal2:#008F7A;--light:#E8F4F1;--card:#fff;--font-body:'Segoe UI',Roboto,Arial,sans-serif;--font-heading:Georgia,'Times New Roman',serif}
+    :root{--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412;--footer:#161412;--teal:#006B5E;--teal2:#008F7A;--light:#E8F4F1;--card:#fff;--muted:rgba(22,20,18,0.5);--font-body:'Segoe UI',Roboto,Arial,sans-serif;--font-heading:Georgia,'Times New Roman',serif}
     body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;transition:background 0.25s ease,color 0.25s ease}
-    body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1;--footer:#0B0D0F;--light:#243037;--card:#1E2226}
+    body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1;--footer:#0B0D0F;--light:#243037;--card:#1E2226;--muted:rgba(236,239,241,0.65)}
     h1,h2,h3{font-family:var(--font-heading);font-weight:600;letter-spacing:-0.02em;line-height:1.1}
     html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-    nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:0.75rem 1rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
-    .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:auto;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
-    body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--card);color:var(--ink)}
-    .n3-nav-actions{display:none;flex-direction:column;width:100%;gap:0.5rem;padding-bottom:0.25rem}
-    .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:100%;text-align:center;justify-content:center}
-    nav.nav-is-open .n3-nav-actions{display:flex}
+    #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
     .n3-logo{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:inherit;flex:1;min-width:0}
     .n3-logo-img{height:32px;width:auto;max-width:min(100%,200px);display:block;object-fit:contain}
     .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
     .n3-name span{color:var(--teal);font-weight:400}
-    .n3-links{display:none;flex-direction:column;gap:0.35rem;width:100%;padding-top:0.25rem}
-    nav.nav-is-open .n3-links{display:flex}
-    .n3-links a{color:rgba(22,20,18,0.5);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;padding:0.65rem 0.85rem;border-radius:10px;background:#fff}
-    body.dark-mode .n3-links a{background:var(--card)}
+    .n3-desktop-row{display:none;align-items:center;gap:2rem;flex:1;justify-content:flex-end}
+    .n3-links{display:flex;gap:2.5rem}
+    .n3-links a{color:rgba(22,20,18,0.5);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s}
     .n3-links a:hover{color:var(--ink)}
     .n3-links a[aria-current="page"]{color:var(--ink);font-weight:600}
-    .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s;text-decoration:none;display:inline-block}
+    .n3-desktop-cta{display:flex;align-items:center;gap:0.55rem}
+    .n3-mobile-bar{display:flex;align-items:center;gap:0.45rem;flex-shrink:0}
+    .n3-theme-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.25rem;line-height:1;cursor:pointer;flex-shrink:0}
+    body.dark-mode .n3-theme-icon{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
+    .n3-theme-icon:hover{background:var(--light)}
+    body.dark-mode .n3-theme-icon:hover{background:var(--card)}
+    .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
+    body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
+    .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s;text-decoration:none;display:inline-block;text-align:center}
     .n3-btn:hover{background:var(--teal2)}
-    .theme-toggle{background:transparent;color:var(--ink);border:1px solid rgba(22,20,18,0.18);border-radius:999px;padding:0.45rem 0.8rem;font-size:0.75rem;cursor:pointer}
-    body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.25)}
+    body.nav-drawer-open{overflow:hidden}
+    .n3-drawer{position:fixed;inset:0;z-index:240;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.22s ease,visibility 0.22s}
+    .n3-drawer.n3-drawer-open{visibility:visible;opacity:1;pointer-events:auto}
+    .n3-drawer-backdrop{position:absolute;inset:0;background:rgba(22,20,18,0.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+    body.dark-mode .n3-drawer-backdrop{background:rgba(5,7,9,0.65)}
+    .n3-drawer-panel{position:absolute;left:1rem;right:1rem;top:calc(0.85rem + 44px + 1.7rem);max-height:min(72vh,520px);overflow-y:auto;background:var(--card);border-radius:18px;padding:1.1rem;border:1px solid rgba(22,20,18,0.1);box-shadow:0 28px 64px rgba(0,0,0,0.22)}
+    body.dark-mode .n3-drawer-panel{border-color:rgba(236,239,241,0.12)}
+    .n3-drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.85rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(22,20,18,0.08)}
+    body.dark-mode .n3-drawer-top{border-color:rgba(236,239,241,0.1)}
+    .n3-drawer-title{font-family:var(--font-heading);font-weight:600;font-size:1.05rem;color:var(--ink)}
+    .n3-drawer-close{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:none;background:var(--surface);font-size:1.15rem;cursor:pointer;color:var(--ink)}
+    body.dark-mode .n3-drawer-close{background:var(--bg)}
+    .n3-drawer-links{display:flex;flex-direction:column;gap:0.35rem}
+    .n3-drawer-links a{color:var(--muted);text-decoration:none;font-size:0.92rem;font-weight:500;padding:0.72rem 0.95rem;border-radius:12px;background:var(--surface);transition:color 0.2s,background 0.2s}
+    body.dark-mode .n3-drawer-links a{background:var(--bg);color:rgba(236,239,241,0.75)}
+    .n3-drawer-links a:active,.n3-drawer-links a:hover{color:var(--ink);background:var(--light)}
+    body.dark-mode .n3-drawer-links a:hover{background:#252a30;color:var(--ink)}
+    .n3-drawer-quote{margin-top:1rem;width:100%;padding:0.85rem;font-size:0.82rem;font-weight:500;display:block;box-sizing:border-box;text-align:center;text-decoration:none}
     body.dark-mode .about-stat,body.dark-mode .about-feat{background:var(--card)}
     body.dark-mode nav{background:var(--bg)}
     body.dark-mode .n3-name,body.dark-mode .about-title,body.dark-mode .about-feat-title,body.dark-mode .about-stat-num{color:var(--ink)}
-    body.dark-mode .about-text,body.dark-mode .about-feat-desc,body.dark-mode .about-stat-label,body.dark-mode .n3-links a{color:rgba(236,239,241,0.68)}
+    body.dark-mode .about-text,body.dark-mode .about-feat-desc,body.dark-mode .about-stat-label,#navMain .n3-links a{color:rgba(236,239,241,0.68)}
     body.dark-mode .f3-links a{color:rgba(236,239,241,0.62)}
     body.dark-mode .f3-links a:hover{color:#fff}
 
@@ -64,15 +82,12 @@
     .f3-copy{font-size:0.65rem;color:rgba(255,255,255,0.2)}
 
     @media (min-width:901px){
-      nav{flex-wrap:nowrap;align-items:center;padding:1.2rem 3rem;gap:1rem}
+      #navMain{padding:1.2rem 3rem;gap:1.5rem}
       .n3-burger{display:none!important}
+      .n3-mobile-bar{display:none!important}
+      .n3-desktop-row{display:flex!important;flex:1;justify-content:space-between;align-items:center;min-width:0}
       .n3-logo{flex:0 1 auto}
       .n3-logo-img{height:38px;max-width:none}
-      .n3-links{display:flex!important;flex-direction:row;flex-wrap:wrap;width:auto;padding:0;gap:2.5rem}
-      .n3-links a{padding:0;background:transparent!important;font-size:0.8rem}
-      body.dark-mode .n3-links a{background:transparent!important}
-      .n3-nav-actions{display:flex!important;flex-direction:row;width:auto;padding:0;gap:0.6rem;align-items:center}
-      .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:auto}
       #about{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
       .about-stats{grid-template-columns:repeat(3,1fr)}
       .foot3{flex-direction:row;justify-content:space-between;align-items:center;padding:2.5rem 3rem;flex-wrap:wrap;gap:1rem}
@@ -83,19 +98,42 @@
 <body>
   <nav id="navMain">
     <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-logo.png" alt="EK Printers · Tiruppur" width="180" height="38"></a>
-    <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">☰</button>
-    <div class="n3-links">
-      <a href="index.html#products">Products</a>
-      <a href="index.html#portfolio">Portfolio</a>
-      <a href="about.html" aria-current="page">About</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="/admin/login" data-instant-nav>Admin</a>
+    <div class="n3-desktop-row">
+      <div class="n3-links">
+        <a href="index.html#products">Products</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="/admin/login" data-instant-nav>Admin</a>
+      </div>
+      <div class="n3-desktop-cta">
+        <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
+        <a class="n3-btn" href="index.html#contact">Get a Quote →</a>
+      </div>
     </div>
-    <div class="n3-nav-actions">
-      <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
-      <a class="n3-btn" href="index.html#contact" onclick="closeMobileNav()">Get a Quote →</a>
+    <div class="n3-mobile-bar">
+      <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
+      <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="aboutNavDrawerPanel">☰</button>
     </div>
   </nav>
+
+  <div class="n3-drawer" id="navDrawer" aria-hidden="true">
+    <div class="n3-drawer-backdrop" id="navDrawerBackdrop"></div>
+    <div class="n3-drawer-panel" id="aboutNavDrawerPanel" role="dialog" aria-modal="true" aria-labelledby="aboutNavDrawerTitle">
+      <div class="n3-drawer-top">
+        <span class="n3-drawer-title" id="aboutNavDrawerTitle">Menu</span>
+        <button type="button" class="n3-drawer-close" id="navDrawerClose" aria-label="Close menu">✕</button>
+      </div>
+      <div class="n3-drawer-links">
+        <a href="index.html#products">Products</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="/admin/login" data-instant-nav>Admin</a>
+      </div>
+      <a class="n3-btn n3-drawer-quote" id="navDrawerQuote" href="index.html#contact">Get a Quote →</a>
+    </div>
+  </div>
 
   <main id="about">
     <div>
@@ -123,51 +161,78 @@
   </footer>
 <script>
   const THEME_KEY = 'ek-theme';
-  function closeMobileNav() {
-    const nav = document.getElementById('navMain');
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark-mode', dark);
+    document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+      btn.textContent = dark ? '☀️' : '🌙';
+      btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    });
+  }
+  function closeNavDrawer() {
+    const drawer = document.getElementById('navDrawer');
     const btn = document.getElementById('navBurger');
-    if (nav) nav.classList.remove('nav-is-open');
+    if (drawer) {
+      drawer.classList.remove('n3-drawer-open');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+    document.body.classList.remove('nav-drawer-open');
     if (btn) {
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-label', 'Open menu');
       btn.textContent = '☰';
     }
   }
-  function applyTheme(theme) {
-    const dark = theme === 'dark';
-    document.body.classList.toggle('dark-mode', dark);
-    const btn = document.getElementById('themeToggle');
-    if (btn) btn.textContent = dark ? '☀ Light' : '🌙 Dark';
+  function openNavDrawer() {
+    const drawer = document.getElementById('navDrawer');
+    const btn = document.getElementById('navBurger');
+    if (drawer) {
+      drawer.classList.add('n3-drawer-open');
+      drawer.setAttribute('aria-hidden', 'false');
+    }
+    document.body.classList.add('nav-drawer-open');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Close menu');
+      btn.textContent = '✕';
+    }
+  }
+  function toggleNavDrawer() {
+    const drawer = document.getElementById('navDrawer');
+    if (drawer && drawer.classList.contains('n3-drawer-open')) closeNavDrawer();
+    else openNavDrawer();
   }
   const saved = localStorage.getItem(THEME_KEY) || 'light';
   applyTheme(saved);
-  const t = document.getElementById('themeToggle');
-  if (t) {
-    t.addEventListener('click', () => {
+  document.querySelectorAll('[data-theme-toggle]').forEach(el => {
+    el.addEventListener('click', () => {
       const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
       localStorage.setItem(THEME_KEY, next);
       applyTheme(next);
     });
-  }
+  });
   document.querySelectorAll('a[data-instant-nav]').forEach(link => {
     link.addEventListener('pointerdown', () => {
       const href = link.getAttribute('href');
       if (href) fetch(href, { credentials: 'include' }).catch(() => {});
     }, { passive: true });
   });
-  const nav = document.getElementById('navMain');
   const burger = document.getElementById('navBurger');
-  if (nav && burger) {
-    burger.addEventListener('click', () => {
-      const open = nav.classList.toggle('nav-is-open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      burger.textContent = open ? '✕' : '☰';
+  const backdrop = document.getElementById('navDrawerBackdrop');
+  const closeBtn = document.getElementById('navDrawerClose');
+  const drawerQuote = document.getElementById('navDrawerQuote');
+  if (burger) burger.addEventListener('click', () => toggleNavDrawer());
+  if (backdrop) backdrop.addEventListener('click', () => closeNavDrawer());
+  if (closeBtn) closeBtn.addEventListener('click', () => closeNavDrawer());
+  if (drawerQuote) drawerQuote.addEventListener('click', () => closeNavDrawer());
+  const drawer = document.getElementById('navDrawer');
+  if (drawer) {
+    drawer.querySelectorAll('.n3-drawer-links a').forEach(a => {
+      a.addEventListener('click', () => closeNavDrawer());
     });
-    nav.querySelectorAll('.n3-links a').forEach(a => a.addEventListener('click', () => closeMobileNav()));
   }
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeMobileNav();
+    if (e.key === 'Escape') closeNavDrawer();
   });
 </script>
 </body>

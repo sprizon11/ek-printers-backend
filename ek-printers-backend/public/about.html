@@ -16,6 +16,9 @@
     #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
     .n3-logo{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:inherit;flex:1;min-width:0}
     .n3-logo-img{height:32px;width:auto;max-width:min(100%,200px);display:block;object-fit:contain}
+    .n3-logo-img--dark{display:none}
+    body.dark-mode .n3-logo-img--light{display:none}
+    body.dark-mode .n3-logo-img--dark{display:block}
     .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
     .n3-name span{color:var(--teal);font-weight:400}
     .n3-desktop-row{display:none;align-items:center;gap:2rem;flex:1;justify-content:flex-end}
@@ -97,7 +100,10 @@
 </head>
 <body>
   <nav id="navMain">
-    <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-logo.png" alt="EK Printers · Tiruppur" width="180" height="38"></a>
+    <a href="index.html" class="n3-logo">
+      <img class="n3-logo-img n3-logo-img--light" src="ek-logo-light.png?v=2" alt="EK Printers · Tiruppur" width="180" height="38">
+      <img class="n3-logo-img n3-logo-img--dark" src="ek-logo-dark.png?v=2" alt="EK Printers · Tiruppur" width="180" height="38">
+    </a>
     <div class="n3-desktop-row">
       <div class="n3-links">
         <a href="index.html#products">Products</a>
@@ -155,7 +161,7 @@
   </main>
 
   <footer class="foot3">
-    <div class="f3-logo"><div class="f3-logo-wrap"><img class="f3-logo-img" src="ek-logo.png" alt="EK Printers" width="140" height="26"></div></div>
+    <div class="f3-logo"><div class="f3-logo-wrap"><img class="f3-logo-img" src="ek-logo-light.png?v=2" alt="EK Printers" width="140" height="26"></div></div>
     <div class="f3-links"><a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:ekprinterss@gmail.com">Email Us</a><a href="tel:+916374343375">Call</a></div>
     <div class="f3-copy">© 2025 EK Printers · Tiruppur</div>
   </footer>

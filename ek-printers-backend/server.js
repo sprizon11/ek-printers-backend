@@ -380,7 +380,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
         <div style="font-size:0.7rem;color:rgba(22,20,18,0.45);margin-top:0.2rem">${esc(q.phone)}</div>
         ${q.email ? `<div style="font-size:0.68rem;color:rgba(22,20,18,0.35)">${esc(q.email)}</div>` : ''}
       </td>
-      <td style="padding:1rem 0.8rem;font-size:0.78rem;color:rgba(22,20,18,0.65);max-width:260px;line-height:1.5">${esc(q.requirement)}</td>
+      <td class="req-cell" style="padding:1rem 0.8rem;font-size:0.78rem;color:rgba(22,20,18,0.65);line-height:1.5">${esc(q.requirement)}</td>
       <td style="padding:1rem 0.8rem">${statusBadge(q.status)}</td>
       <td style="padding:1rem 0.8rem;font-size:0.68rem;color:rgba(22,20,18,0.4)">${q.created_at}</td>
       <td style="padding:1rem 0.8rem">
@@ -396,7 +396,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
           <a href="${emailHref || '#'}" ${emailHref ? '' : 'aria-disabled="true"'} title="${emailHref ? 'Send email' : 'No email provided'}" style="background:#E8F4FF;border:1px solid #c9dfff;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none;${emailHref ? '' : 'opacity:0.45;pointer-events:none;'}">✉️</a>
           <button onclick="deleteQuote(${q.id})" style="background:#FFEBEE;border:1px solid #ffcdd2;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;cursor:pointer">🗑️</button>
         </div>
-        ${q.notes ? `<div style="margin-top:0.5rem;font-size:0.68rem;color:rgba(22,20,18,0.5);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;max-width:220px;line-height:1.4">${esc(q.notes)}</div>` : ''}
+        ${q.notes ? `<div class="note-snippet" style="margin-top:0.5rem;font-size:0.68rem;color:rgba(22,20,18,0.5);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;line-height:1.4">${esc(q.notes)}</div>` : ''}
       </td>
     </tr>`;
   }).join('');
@@ -411,33 +411,41 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
+    html,body{min-height:100%;width:100%;overflow-x:auto}
     body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);transition:background 0.25s ease,color 0.25s ease}
     body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1}
-    .topbar{background:#fff;border-bottom:1px solid rgba(22,20,18,0.08);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-    .logo{display:flex;align-items:center;gap:0.7rem}
+    .topbar{background:#fff;border-bottom:1px solid rgba(22,20,18,0.08);padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+    .logo{display:flex;align-items:center;gap:0.7rem;flex:0 1 auto;min-width:0}
     .mark{width:34px;height:34px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.8rem}
     .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:0.9rem}
     .badge{background:var(--surface);font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:100px;font-weight:600;color:rgba(22,20,18,0.5);margin-left:0.5rem}
-    .topbar-right{display:flex;gap:0.8rem;align-items:center}
+    .topbar-right{display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap;margin-left:auto}
     .theme-toggle{font-size:0.72rem;padding:0.4rem 0.9rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;color:var(--ink)}
     .user-pill{font-size:0.75rem;color:rgba(22,20,18,0.5);background:var(--surface);padding:0.35rem 0.9rem;border-radius:100px}
     .btn-sm{font-size:0.72rem;padding:0.4rem 1rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;color:var(--ink);transition:all 0.2s}
     .btn-sm:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-    .content{padding:2rem}
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:14px;padding:1.2rem 1.5rem}
+    .content{padding:1.25rem 1.25rem 2rem;width:100%;max-width:100%;box-sizing:border-box}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.75rem;margin-bottom:1.5rem;width:100%}
+    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:14px;padding:1rem 1.1rem;min-width:0}
     .stat-label{font-size:0.68rem;color:rgba(22,20,18,0.4);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:0.4rem}
     .stat-val{font-family:'Inter',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-0.02em}
-    .controls{display:flex;gap:0.8rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap}
+    .controls{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.5rem;width:100%}
+    .controls-filters{display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center}
+    .controls-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem;align-items:center;width:100%}
+    .date-field{width:100%;max-width:none}
+    .search-main{grid-column:1/-1;width:100%;min-width:0;max-width:none}
+    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:start}
     .filter-btn{font-size:0.72rem;padding:0.45rem 1.1rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;text-decoration:none;color:var(--ink);transition:all 0.2s}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
-    .search-box{flex:1;max-width:280px;background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 1rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s}
+    .search-box{background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box}
     .search-box:focus{border-color:var(--teal)}
-    .export-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.2s}
+    .export-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.2s;white-space:nowrap;flex-shrink:0}
     .export-btn:hover{background:var(--teal2)}
-    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow:auto}
-    table{width:100%;border-collapse:collapse}
+    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow:auto;width:100%;min-width:0}
+    table{width:100%;border-collapse:collapse;table-layout:auto}
     th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:600;color:rgba(22,20,18,0.4);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
+    th:nth-child(3),td.req-cell{min-width:10rem;max-width:36rem}
+    .note-snippet{max-width:100%}
     .empty{text-align:center;padding:4rem;color:rgba(22,20,18,0.3);font-size:0.85rem}
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
     .modal-overlay.open{display:flex}
@@ -448,6 +456,23 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .modal-actions{display:flex;gap:0.7rem;margin-top:1rem;justify-content:flex-end}
     .modal-save{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
     .modal-cancel{background:transparent;color:rgba(22,20,18,0.5);border:1.5px solid rgba(22,20,18,0.1);border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-family:'Inter',sans-serif;cursor:pointer}
+    @media (min-width:640px){
+      .stats-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-bottom:2rem}
+      .stat-card{padding:1.2rem 1.5rem}
+    }
+    @media (min-width:720px){
+      .content{padding:1.5rem 2rem 2rem}
+    }
+    @media (min-width:900px){
+      .topbar{padding:1rem 2rem}
+      .content{padding:2rem}
+      .controls{flex-direction:row;align-items:center;gap:1rem 1.25rem}
+      .controls-filters{flex-shrink:0}
+      .controls-toolbar{display:flex;flex-wrap:wrap;flex:1;min-width:0;justify-content:flex-end;gap:0.65rem}
+      .controls-toolbar .search-main{grid-column:auto;flex:1 1 14rem;width:auto;max-width:24rem}
+      .controls-toolbar .export-btn{grid-column:auto;justify-self:auto}
+      .date-field{width:auto;min-width:10.5rem}
+    }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
     body.dark-mode th{background:var(--surface)}
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
@@ -485,14 +510,18 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-val" style="color:#2E7D32">${stats.completed}</div></div>
     </div>
     <div class="controls">
-      <a href="${'/admin?' + withQuery({ status: 'all', search, fromDate, toDate })}" class="filter-btn ${filter === 'all' ? 'active' : ''}">All</a>
-      <a href="${'/admin?' + withQuery({ status: 'new', search, fromDate, toDate })}" class="filter-btn ${filter === 'new' ? 'active' : ''}">🔵 New</a>
-      <a href="${'/admin?' + withQuery({ status: 'in_progress', search, fromDate, toDate })}" class="filter-btn ${filter === 'in_progress' ? 'active' : ''}">🟡 In Progress</a>
-      <a href="${'/admin?' + withQuery({ status: 'completed', search, fromDate, toDate })}" class="filter-btn ${filter === 'completed' ? 'active' : ''}">🟢 Completed</a>
-      <input id="fromDate" class="search-box" style="max-width:170px" type="date" value="${esc(fromDate)}" onchange="applyFilters()">
-      <input id="toDate" class="search-box" style="max-width:170px" type="date" value="${esc(toDate)}" onchange="applyFilters()">
-      <input id="searchInput" class="search-box" type="text" placeholder="Search name, phone..." value="${esc(search)}" oninput="debounceSearch(this)">
-      <a id="exportBtn" href="${'/admin/export?' + withQuery({ status: filter, search, fromDate, toDate })}" class="export-btn">⬇ Export Excel</a>
+      <div class="controls-filters">
+        <a href="${'/admin?' + withQuery({ status: 'all', search, fromDate, toDate })}" class="filter-btn ${filter === 'all' ? 'active' : ''}">All</a>
+        <a href="${'/admin?' + withQuery({ status: 'new', search, fromDate, toDate })}" class="filter-btn ${filter === 'new' ? 'active' : ''}">🔵 New</a>
+        <a href="${'/admin?' + withQuery({ status: 'in_progress', search, fromDate, toDate })}" class="filter-btn ${filter === 'in_progress' ? 'active' : ''}">🟡 In Progress</a>
+        <a href="${'/admin?' + withQuery({ status: 'completed', search, fromDate, toDate })}" class="filter-btn ${filter === 'completed' ? 'active' : ''}">🟢 Completed</a>
+      </div>
+      <div class="controls-toolbar">
+        <input id="fromDate" class="search-box date-field" type="date" value="${esc(fromDate)}" onchange="applyFilters()">
+        <input id="toDate" class="search-box date-field" type="date" value="${esc(toDate)}" onchange="applyFilters()">
+        <input id="searchInput" class="search-box search-main" type="text" placeholder="Search name, phone..." value="${esc(search)}" oninput="debounceSearch(this)">
+        <a id="exportBtn" href="${'/admin/export?' + withQuery({ status: filter, search, fromDate, toDate })}" class="export-btn">⬇ Export Excel</a>
+      </div>
     </div>
     <div class="table-wrap">
       <table>

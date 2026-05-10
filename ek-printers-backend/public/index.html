@@ -652,7 +652,8 @@ document.addEventListener('DOMContentLoaded', () => {
   html{scroll-behavior:smooth}
   @media (max-width:900px){
     .prod-modal-header,.prod-modal-body,.prod-modal-footer{padding-left:1.15rem;padding-right:1.15rem}
-    .prod-pricing{grid-template-columns:1fr}
+    .prod-pricing{grid-template-columns:repeat(2,1fr)}
+    .prod-price-card:last-child:nth-child(odd){grid-column:1 / -1}
     .prod-modal-actions{flex-direction:column}
     .prod-wa-btn{text-align:center}
   }

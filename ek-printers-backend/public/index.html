@@ -620,8 +620,9 @@ document.addEventListener('DOMContentLoaded', () => {
   .prod-modal-body{padding:0 2rem 2rem}
   .prod-modal-name{font-family:var(--font-heading);font-weight:600;font-size:1.7rem;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.4rem}
   .prod-modal-desc{font-size:0.85rem;color:rgba(22,20,18,0.55);line-height:1.7;margin-bottom:1.5rem}
-  .prod-preview-wrap{display:none;margin:0 0 1.25rem;padding:1rem;text-align:center;background:linear-gradient(145deg,#f4f2ee 0%,#ebe8e1 100%);border-radius:16px;border:1px solid rgba(22,20,18,0.06)}
-  body.dark-mode .prod-preview-wrap{background:rgba(255,255,255,0.05);border-color:rgba(236,239,241,0.12)}
+  .prod-preview-wrap{display:none;margin:0 0 1.1rem;padding:0.65rem 0;text-align:center;background:transparent;border:none}
+  body:not(.dark-mode) .prod-preview-wrap{padding:1rem;background:linear-gradient(145deg,#f4f2ee 0%,#ebe8e1 100%);border-radius:16px;border:1px solid rgba(22,20,18,0.06)}
+  body.dark-mode .prod-preview-wrap{background:transparent;border:none}
   .prod-preview-img{max-width:100%;height:auto;max-height:min(52vh,240px);width:auto;object-fit:contain;vertical-align:middle}
   .prod-section-title{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(22,20,18,0.35);margin-bottom:0.8rem;margin-top:1.5rem}
   .prod-materials{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem}
@@ -687,6 +688,12 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <script>
+const PREVIEW_ASSET_VER = '5';
+
+function previewAssetUrl(filename) {
+  return filename + '?v=' + PREVIEW_ASSET_VER;
+}
+
 const PRODUCTS = {
   'Business Cards': {
     icon:'💳', color:'var(--light)',
@@ -774,9 +781,9 @@ const PRODUCTS = {
   }
 };
 
-function getSelectedBcFinish() {
+function getSelectedMaterialPick() {
   const btn = document.querySelector('#pm-materials button.prod-tag.highlight');
-  return btn ? btn.textContent.trim() : 'Normal';
+  return btn ? btn.textContent.trim() : '';
 }
 
 function openProdModal(productName) {
@@ -795,8 +802,8 @@ function openProdModal(productName) {
   if (hasPreview) {
     previewWrap.style.display = 'block';
     const first = p.materials[0];
-    previewImg.src = previewMap[first];
-    previewImg.alt = first + ' — business card preview';
+    previewImg.src = previewAssetUrl(previewMap[first]);
+    previewImg.alt = first + ' — preview';
     document.getElementById('pm-materials').innerHTML = p.materials.map(m => {
       const on = m === first ? ' highlight' : '';
       return `<button type="button" class="prod-tag prod-tag--interactive${on}" data-bc-finish="${m}">${m}</button>`;
@@ -808,8 +815,8 @@ function openProdModal(productName) {
         const key = btn.getAttribute('data-bc-finish');
         const file = previewMap[key];
         if (file) {
-          previewImg.src = file;
-          previewImg.alt = key + ' — business card preview';
+          previewImg.src = previewAssetUrl(file);
+          previewImg.alt = key + ' — preview';
         }
       });
     });
@@ -836,11 +843,11 @@ function openProdModal(productName) {
 
   // Quote button
   document.getElementById('pm-quote-btn').onclick = () => {
-    const bcFinish = productName === 'Business Cards' ? getSelectedBcFinish() : '';
+    const materialPick = hasPreview ? getSelectedMaterialPick() : '';
     closeProdModal();
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
     setTimeout(() => {
-      const finish = bcFinish ? ` (${bcFinish})` : '';
+      const finish = materialPick ? ` (${materialPick})` : '';
       document.getElementById('q-req').value = productName + finish + ' — ';
       const modalQty = document.getElementById('pm-qty').value.trim();
       if (modalQty) document.getElementById('q-qty').value = modalQty;
@@ -859,8 +866,8 @@ function openProdModal(productName) {
       document.getElementById('pm-qty').focus();
       return;
     }
-    const bcSel = productName === 'Business Cards' ? getSelectedBcFinish() : '';
-    const finishLine = bcSel ? `Finish: ${bcSel}\n` : '';
+    const materialPick = hasPreview ? getSelectedMaterialPick() : '';
+    const finishLine = materialPick ? `Finish: ${materialPick}\n` : '';
     const waMsg = encodeURIComponent(
       `Hi EK Printers!\n` +
       `I am interested in ${productName}.\n` +

@@ -74,10 +74,9 @@
     .about-feat-desc{font-size:0.73rem;color:rgba(22,20,18,0.5);line-height:1.6;font-weight:400}
 
     .foot3{background:var(--footer);padding:1.75rem 1.15rem;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;justify-content:flex-start}
-    .f3-logo{display:flex;align-items:center;gap:0.7rem}
-    .f3-logo-wrap{background:#fff;border-radius:10px;padding:0.5rem 0.95rem;display:flex;align-items:center;gap:0.12rem}
-    .f3-mark{font-family:var(--font-heading);font-weight:700;font-size:1.1rem;letter-spacing:0.02em;color:var(--teal);line-height:1}
-    .f3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:1.1rem;letter-spacing:-0.03em;color:#161412;line-height:1;margin-left:-0.02em}
+    .f3-logo{display:flex;align-items:center;gap:0.18rem;text-decoration:none}
+    .f3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
+    .f3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:-0.03em;color:rgba(255,255,255,0.92);line-height:1;margin-left:-0.02em}
     .f3-links{display:flex;gap:0.75rem 1.25rem;flex-wrap:wrap}
     .f3-links a{color:rgba(255,255,255,0.42);font-size:0.8rem;font-weight:600;text-decoration:none;transition:color 0.2s}
     .f3-links a:hover{color:#fff}
@@ -93,6 +92,7 @@
       #about{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
       .about-stats{grid-template-columns:repeat(3,1fr)}
       .foot3{flex-direction:row;justify-content:space-between;align-items:center;padding:2.5rem 3rem;flex-wrap:wrap;gap:1rem}
+      .f3-mark,.f3-mark-rest{font-size:1.85rem}
       .f3-links{gap:2rem}
     }
   </style>
@@ -157,7 +157,7 @@
   </main>
 
   <footer class="foot3">
-    <div class="f3-logo"><div class="f3-logo-wrap"><span class="f3-mark">EK</span><span class="f3-mark-rest">Printers</span></div></div>
+    <div class="f3-logo"><span class="f3-mark">EK</span><span class="f3-mark-rest">Printers</span></div>
     <div class="f3-links"><a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:ekprinterss@gmail.com">Email Us</a><a href="tel:+916374343375">Call</a></div>
     <div class="f3-copy">© 2025 EK Printers · Tiruppur</div>
   </footer>

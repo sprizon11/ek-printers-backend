@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>About · EK Printers · Tiruppur</title>
   <link rel="prefetch" href="/admin/login">
   <link rel="prefetch" href="/">
@@ -12,13 +12,21 @@
     body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;transition:background 0.25s ease,color 0.25s ease}
     body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1;--footer:#0B0D0F;--light:#243037;--card:#1E2226}
     h1,h2,h3{font-family:var(--font-heading);font-weight:600;letter-spacing:-0.02em;line-height:1.1}
-    nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
-    .n3-logo{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:inherit}
-    .n3-logo-img{height:38px;width:auto;display:block;object-fit:contain}
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:0.75rem 1rem;padding:0.85rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
+    .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:auto;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
+    body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--card);color:var(--ink)}
+    .n3-nav-actions{display:none;flex-direction:column;width:100%;gap:0.5rem;padding-bottom:0.25rem}
+    .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:100%;text-align:center;justify-content:center}
+    nav.nav-is-open .n3-nav-actions{display:flex}
+    .n3-logo{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:inherit;flex:1;min-width:0}
+    .n3-logo-img{height:32px;width:auto;max-width:min(100%,200px);display:block;object-fit:contain}
     .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
     .n3-name span{color:var(--teal);font-weight:400}
-    .n3-links{display:flex;gap:2.5rem;flex-wrap:wrap}
-    .n3-links a{color:rgba(22,20,18,0.5);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s}
+    .n3-links{display:none;flex-direction:column;gap:0.35rem;width:100%;padding-top:0.25rem}
+    nav.nav-is-open .n3-links{display:flex}
+    .n3-links a{color:rgba(22,20,18,0.5);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;padding:0.65rem 0.85rem;border-radius:10px;background:#fff}
+    body.dark-mode .n3-links a{background:var(--card)}
     .n3-links a:hover{color:var(--ink)}
     .n3-links a[aria-current="page"]{color:var(--ink);font-weight:600}
     .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s;text-decoration:none;display:inline-block}
@@ -32,11 +40,11 @@
     body.dark-mode .f3-links a{color:rgba(236,239,241,0.62)}
     body.dark-mode .f3-links a:hover{color:#fff}
 
-    #about{flex:1;padding:5rem 3rem;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    #about{flex:1;padding:3rem 1.15rem 4rem;background:var(--surface);display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
     .about-title{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.85rem,3.5vw,2.5rem);letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem}
     .about-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
     .about-text{font-size:0.85rem;color:rgba(22,20,18,0.55);line-height:1.6;font-weight:400;margin-bottom:1rem}
-    .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
+    .about-stats{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.5rem}
     .about-stat{text-align:center;background:#fff;border-radius:14px;padding:1.2rem}
     .about-stat-num{font-family:var(--font-heading);font-weight:700;font-size:1.6rem;letter-spacing:-0.02em;line-height:1.1;color:var(--teal)}
     .about-stat-label{font-size:0.68rem;color:rgba(22,20,18,0.45);margin-top:0.2rem;font-weight:400;line-height:1.6}
@@ -46,25 +54,36 @@
     .about-feat-title{font-weight:500;font-size:0.85rem;margin-bottom:0.2rem;line-height:1.6}
     .about-feat-desc{font-size:0.73rem;color:rgba(22,20,18,0.5);line-height:1.6;font-weight:400}
 
-    .foot3{background:var(--footer);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .foot3{background:var(--footer);padding:1.75rem 1.15rem;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;justify-content:flex-start}
     .f3-logo{display:flex;align-items:center;gap:0.7rem}
     .f3-logo-wrap{background:#fff;border-radius:10px;padding:0.4rem 0.65rem;display:flex;align-items:center}
     .f3-logo-img{height:26px;width:auto;display:block;object-fit:contain}
-    .f3-links{display:flex;gap:2rem;flex-wrap:wrap}
+    .f3-links{display:flex;gap:0.75rem 1.25rem;flex-wrap:wrap}
     .f3-links a{color:rgba(255,255,255,0.42);font-size:0.8rem;font-weight:600;text-decoration:none;transition:color 0.2s}
     .f3-links a:hover{color:#fff}
     .f3-copy{font-size:0.65rem;color:rgba(255,255,255,0.2)}
 
-    @media (max-width:900px){
-      nav{padding:1rem 1.25rem}
-      #about{grid-template-columns:1fr;padding:3rem 1.25rem 4rem}
-      .n3-links{gap:1rem 1.5rem}
+    @media (min-width:901px){
+      nav{flex-wrap:nowrap;align-items:center;padding:1.2rem 3rem;gap:1rem}
+      .n3-burger{display:none!important}
+      .n3-logo{flex:0 1 auto}
+      .n3-logo-img{height:38px;max-width:none}
+      .n3-links{display:flex!important;flex-direction:row;flex-wrap:wrap;width:auto;padding:0;gap:2.5rem}
+      .n3-links a{padding:0;background:transparent!important;font-size:0.8rem}
+      body.dark-mode .n3-links a{background:transparent!important}
+      .n3-nav-actions{display:flex!important;flex-direction:row;width:auto;padding:0;gap:0.6rem;align-items:center}
+      .n3-nav-actions .theme-toggle,.n3-nav-actions .n3-btn{width:auto}
+      #about{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+      .about-stats{grid-template-columns:repeat(3,1fr)}
+      .foot3{flex-direction:row;justify-content:space-between;align-items:center;padding:2.5rem 3rem;flex-wrap:wrap;gap:1rem}
+      .f3-links{gap:2rem}
     }
   </style>
 </head>
 <body>
-  <nav>
+  <nav id="navMain">
     <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-logo.png" alt="EK Printers · Tiruppur" width="180" height="38"></a>
+    <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">☰</button>
     <div class="n3-links">
       <a href="index.html#products">Products</a>
       <a href="index.html#portfolio">Portfolio</a>
@@ -72,9 +91,9 @@
       <a href="index.html#contact">Contact</a>
       <a href="/admin/login" data-instant-nav>Admin</a>
     </div>
-    <div style="display:flex;gap:0.6rem;align-items:center">
+    <div class="n3-nav-actions">
       <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
-      <a class="n3-btn" href="index.html#contact">Get a Quote →</a>
+      <a class="n3-btn" href="index.html#contact" onclick="closeMobileNav()">Get a Quote →</a>
     </div>
   </nav>
 
@@ -104,6 +123,16 @@
   </footer>
 <script>
   const THEME_KEY = 'ek-theme';
+  function closeMobileNav() {
+    const nav = document.getElementById('navMain');
+    const btn = document.getElementById('navBurger');
+    if (nav) nav.classList.remove('nav-is-open');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+      btn.textContent = '☰';
+    }
+  }
   function applyTheme(theme) {
     const dark = theme === 'dark';
     document.body.classList.toggle('dark-mode', dark);
@@ -125,6 +154,20 @@
       const href = link.getAttribute('href');
       if (href) fetch(href, { credentials: 'include' }).catch(() => {});
     }, { passive: true });
+  });
+  const nav = document.getElementById('navMain');
+  const burger = document.getElementById('navBurger');
+  if (nav && burger) {
+    burger.addEventListener('click', () => {
+      const open = nav.classList.toggle('nav-is-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      burger.textContent = open ? '✕' : '☰';
+    });
+    nav.querySelectorAll('.n3-links a').forEach(a => a.addEventListener('click', () => closeMobileNav()));
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMobileNav();
   });
 </script>
 </body>

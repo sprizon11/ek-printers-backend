@@ -442,15 +442,15 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     html,body{min-height:100%;width:100%;overflow-x:auto}
     body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);transition:background 0.25s ease,color 0.25s ease}
     body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1}
-    .topbar{background:#fff;border-bottom:1px solid rgba(22,20,18,0.08);padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:50}
-    .logo{display:flex;align-items:center;gap:0.7rem;flex:0 1 auto;min-width:0}
-    .mark{width:34px;height:34px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.8rem}
-    .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:0.9rem}
-    .badge{background:var(--surface);font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:100px;font-weight:600;color:rgba(22,20,18,0.5);margin-left:0.5rem}
-    .topbar-right{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-left:auto}
-    .theme-toggle{font-size:0.72rem;padding:0.4rem 0.9rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;color:var(--ink)}
+    .topbar{background:#fff;border-bottom:1px solid rgba(22,20,18,0.08);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:nowrap;position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box}
+    .logo{display:flex;align-items:center;gap:0.45rem;flex:1 1 auto;min-width:0;max-width:calc(100% - 7.5rem)}
+    .mark{width:32px;height:32px;flex-shrink:0;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.78rem}
+    .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.78rem,3.2vw,0.95rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .badge{background:var(--surface);font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:100px;font-weight:600;color:rgba(22,20,18,0.5);margin-left:0.25rem;flex-shrink:0;white-space:nowrap}
+    .topbar-right{display:flex;gap:0.45rem;align-items:center;flex-wrap:nowrap;flex-shrink:0;margin-left:0}
+    .theme-toggle{font-size:0.65rem;padding:0.32rem 0.55rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;color:var(--ink);white-space:nowrap;flex-shrink:0}
     .profile-wrap{position:relative;flex-shrink:0}
-    .profile-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--teal);background:var(--surface);color:var(--teal);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .2s,border-color .2s,transform .15s}
+    .profile-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--teal);background:var(--surface);color:var(--teal);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:background .2s,border-color .2s,transform .15s}
     .profile-btn:hover{background:rgba(0,107,94,0.08)}
     .profile-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
     .profile-btn[aria-expanded="true"]{background:rgba(0,107,94,0.12);border-color:var(--teal2)}
@@ -526,6 +526,18 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .modal-actions{display:flex;gap:0.7rem;margin-top:1rem;justify-content:flex-end}
     .modal-save{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
     .modal-cancel{background:transparent;color:rgba(22,20,18,0.5);border:1.5px solid rgba(22,20,18,0.1);border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-family:'Inter',sans-serif;cursor:pointer}
+    @media (min-width:480px){
+      .topbar{padding:0.85rem 1.15rem;gap:0.65rem}
+      .logo{gap:0.65rem;max-width:calc(100% - 8.5rem)}
+      .mark{width:34px;height:34px;font-size:0.8rem}
+      .theme-toggle{font-size:0.72rem;padding:0.4rem 0.85rem}
+      .profile-btn{width:40px;height:40px}
+      .badge{font-size:0.65rem;padding:0.2rem 0.55rem}
+    }
+    @media (max-width:380px){
+      .topbar .badge{display:none}
+      .logo{max-width:calc(100% - 6.5rem)}
+    }
     @media (min-width:640px){
       .stats-grid{gap:1rem;margin-bottom:2rem}
       .stat-card{padding:1.2rem 1.5rem;border-radius:14px}
@@ -537,7 +549,9 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       .content{padding:1.5rem 2rem 2rem}
     }
     @media (min-width:900px){
-      .topbar{padding:1rem 2rem}
+      .topbar{padding:1rem 2rem;gap:1rem}
+      .logo{max-width:none}
+      .logo-text{font-size:0.95rem}
       .content{padding:2rem}
       .controls{flex-direction:row;align-items:center;gap:1rem 1.25rem}
       .controls-filters{flex-shrink:0}

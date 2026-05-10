@@ -389,7 +389,7 @@
     <div class="p3-grid">
       <div class="p3-card"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
       <div class="p3-card"><div class="p3-icon-wrap c">💌</div><div class="p3-cname">Wedding Invitations</div><div class="p3-cdesc">Luxurious invitation suites with foil stamping, laser cutting, and velvet lamination finishes.</div><div class="p3-arrow">Explore ›</div></div>
-      <div class="p3-card"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags & Labels</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+      <div class="p3-card"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
       <div class="p3-card"><div class="p3-icon-wrap t">🎁</div><div class="p3-cname">Gift Vouchers</div><div class="p3-cdesc">Secure printed vouchers with serial numbering, scratch panels, and holographic security.</div><div class="p3-arrow">Explore ›</div></div>
       <div class="p3-card"><div class="p3-icon-wrap c">🌟</div><div class="p3-cname">Loyalty Cards</div><div class="p3-cdesc">PVC and paper loyalty cards for retail with custom slot punching and perforation.</div><div class="p3-arrow">Explore ›</div></div>
       <div class="p3-card"><div class="p3-icon-wrap w">📄</div><div class="p3-cname">Stationery Suites</div><div class="p3-cdesc">Cohesive brand stationery — letterheads, envelopes, notepads on fine cartridge stocks.</div><div class="p3-arrow">Explore ›</div></div>
@@ -620,10 +620,17 @@ document.addEventListener('DOMContentLoaded', () => {
   .prod-modal-body{padding:0 2rem 2rem}
   .prod-modal-name{font-family:var(--font-heading);font-weight:600;font-size:1.7rem;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.4rem}
   .prod-modal-desc{font-size:0.85rem;color:rgba(22,20,18,0.55);line-height:1.7;margin-bottom:1.5rem}
+  .prod-preview-wrap{display:none;margin:0 0 1.25rem;padding:1rem;text-align:center;background:linear-gradient(145deg,#f4f2ee 0%,#ebe8e1 100%);border-radius:16px;border:1px solid rgba(22,20,18,0.06)}
+  body.dark-mode .prod-preview-wrap{background:rgba(255,255,255,0.05);border-color:rgba(236,239,241,0.12)}
+  .prod-preview-img{max-width:100%;height:auto;max-height:min(52vh,240px);width:auto;object-fit:contain;vertical-align:middle}
   .prod-section-title{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(22,20,18,0.35);margin-bottom:0.8rem;margin-top:1.5rem}
   .prod-materials{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem}
   .prod-tag{background:var(--surface);border-radius:100px;padding:0.35rem 0.9rem;font-size:0.72rem;font-weight:500;color:var(--ink)}
   .prod-tag.highlight{background:var(--light);color:var(--teal)}
+  button.prod-tag{border:none;cursor:pointer;font-family:inherit;line-height:1.25}
+  button.prod-tag--interactive{transition:transform 0.15s,border-color 0.15s,box-shadow 0.15s;border:1.5px solid transparent}
+  button.prod-tag--interactive:hover{transform:translateY(-1px);border-color:rgba(0,107,94,0.25)}
+  body.dark-mode button.prod-tag--interactive{background:var(--surface)}
   .prod-pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:0.8rem}
   .prod-price-card{background:var(--surface);border-radius:14px;padding:1rem;text-align:center;border:1.5px solid transparent;transition:all 0.2s}
   .prod-price-card:hover{border-color:var(--teal);background:var(--light)}
@@ -660,6 +667,9 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="prod-modal-body">
       <div class="prod-modal-name" id="pm-name"></div>
       <div class="prod-modal-desc" id="pm-desc"></div>
+      <div class="prod-preview-wrap" id="pm-preview-wrap">
+        <img class="prod-preview-img" id="pm-preview-img" src="" alt="" width="400" height="220" loading="lazy" decoding="async">
+      </div>
       <div class="prod-section-title">Available Materials & Finishes</div>
       <div class="prod-materials" id="pm-materials"></div>
       <div class="prod-section-title">Pricing</div>
@@ -683,6 +693,12 @@ const PRODUCTS = {
     desc:'Make a powerful first impression with our premium business cards. Choose the finish that fits your brand — classic normal stock, matt lamination, gloss lamination, or standout foil cards. Printed on thick 400 gsm stock.',
     materials:['Normal','Matt Lamination','Gloss Lamination','Foil Cards'],
     highlights:['Normal','Matt Lamination','Gloss Lamination','Foil Cards'],
+    previewByMaterial:{
+      'Normal':'bc-normal.png',
+      'Matt Lamination':'bc-matt.png',
+      'Gloss Lamination':'bc-gloss.png',
+      'Foil Cards':'bc-foil.png'
+    },
     pricing:[
       {qty:'100 Cards', price:'₹350', note:'~₹3.5 per card'},
       {qty:'250 Cards', price:'₹650', note:'~₹2.6 per card'},
@@ -702,11 +718,17 @@ const PRODUCTS = {
     ],
     turnaround:'📅 Standard: 7–10 working days · Rush orders available on request'
   },
-  'Hang Tags & Labels': {
+  'Hang Tags': {
     icon:'🏷️', color:'rgba(139,115,85,0.1)',
     desc:'Custom hang tags elevate your product packaging and brand perception. Die-cut to any shape, finished with metallic foil or embossing — perfect for garment brands, retail packaging, and premium product labelling.',
-    materials:['300 gsm Art Paper','Kraft Paper','Metallic Foil','Embossing','Die-Cut Shapes','String / Ribbon Attached','Barcode Printing','QR Code Printing'],
-    highlights:['Metallic Foil','Die-Cut Shapes','Kraft Paper'],
+    materials:['350 GSM Normal Tags','600 GSM Tags','Premium Tags','Foil Tags'],
+    highlights:['350 GSM Normal Tags','600 GSM Tags','Premium Tags','Foil Tags'],
+    previewByMaterial:{
+      '350 GSM Normal Tags':'ht-350gsm.png',
+      '600 GSM Tags':'ht-600gsm.png',
+      'Premium Tags':'ht-premium.png',
+      'Foil Tags':'ht-foil.png'
+    },
     pricing:[
       {qty:'500 Tags', price:'₹1,200', note:'~₹2.4 per tag'},
       {qty:'1000 Tags', price:'₹1,999', note:'~₹2.0 per tag'},
@@ -752,6 +774,11 @@ const PRODUCTS = {
   }
 };
 
+function getSelectedBcFinish() {
+  const btn = document.querySelector('#pm-materials button.prod-tag.highlight');
+  return btn ? btn.textContent.trim() : 'Normal';
+}
+
 function openProdModal(productName) {
   const p = PRODUCTS[productName];
   if (!p) return;
@@ -760,10 +787,39 @@ function openProdModal(productName) {
   document.getElementById('pm-name').textContent = productName;
   document.getElementById('pm-desc').textContent = p.desc;
 
-  // Materials
-  document.getElementById('pm-materials').innerHTML = p.materials.map(m =>
-    `<span class="prod-tag${p.highlights.includes(m)?' highlight':''}">${m}</span>`
-  ).join('');
+  const previewWrap = document.getElementById('pm-preview-wrap');
+  const previewImg = document.getElementById('pm-preview-img');
+  const previewMap = p.previewByMaterial;
+  const hasPreview = previewMap && Object.keys(previewMap).length;
+
+  if (hasPreview) {
+    previewWrap.style.display = 'block';
+    const first = p.materials[0];
+    previewImg.src = previewMap[first];
+    previewImg.alt = first + ' — business card preview';
+    document.getElementById('pm-materials').innerHTML = p.materials.map(m => {
+      const on = m === first ? ' highlight' : '';
+      return `<button type="button" class="prod-tag prod-tag--interactive${on}" data-bc-finish="${m}">${m}</button>`;
+    }).join('');
+    document.querySelectorAll('#pm-materials button.prod-tag--interactive').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#pm-materials button.prod-tag--interactive').forEach(b => b.classList.remove('highlight'));
+        btn.classList.add('highlight');
+        const key = btn.getAttribute('data-bc-finish');
+        const file = previewMap[key];
+        if (file) {
+          previewImg.src = file;
+          previewImg.alt = key + ' — business card preview';
+        }
+      });
+    });
+  } else {
+    previewWrap.style.display = 'none';
+    previewImg.removeAttribute('src');
+    document.getElementById('pm-materials').innerHTML = p.materials.map(m =>
+      `<span class="prod-tag${p.highlights.includes(m)?' highlight':''}">${m}</span>`
+    ).join('');
+  }
 
   // Pricing
   document.getElementById('pm-pricing').innerHTML = p.pricing.map(pr =>
@@ -780,10 +836,12 @@ function openProdModal(productName) {
 
   // Quote button
   document.getElementById('pm-quote-btn').onclick = () => {
+    const bcFinish = productName === 'Business Cards' ? getSelectedBcFinish() : '';
     closeProdModal();
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
     setTimeout(() => {
-      document.getElementById('q-req').value = productName + ' — ';
+      const finish = bcFinish ? ` (${bcFinish})` : '';
+      document.getElementById('q-req').value = productName + finish + ' — ';
       const modalQty = document.getElementById('pm-qty').value.trim();
       if (modalQty) document.getElementById('q-qty').value = modalQty;
       document.getElementById('q-req').focus();
@@ -801,9 +859,12 @@ function openProdModal(productName) {
       document.getElementById('pm-qty').focus();
       return;
     }
+    const bcSel = productName === 'Business Cards' ? getSelectedBcFinish() : '';
+    const finishLine = bcSel ? `Finish: ${bcSel}\n` : '';
     const waMsg = encodeURIComponent(
       `Hi EK Printers!\n` +
       `I am interested in ${productName}.\n` +
+      finishLine +
       `Quantity: ${quantity}\n` +
       `Requirement: \n` +
       `Please share price and details.`

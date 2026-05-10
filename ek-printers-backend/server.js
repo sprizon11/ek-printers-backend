@@ -366,12 +366,17 @@ function loginPageHTML(error = '') {
 `;
 }
 
+const SVG_WA = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+const SVG_MAIL = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>';
+const SVG_TRASH = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+
 function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, username) {
   const rows = quotes.map(q => {
     const waNumber = normalizeWhatsAppNumber(q.phone);
     const waText = customerWhatsAppText(q);
     const waHref = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '#';
     const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`EK Printers quote #${q.id}`)}` : '';
+    const notesEnc = encodeURIComponent(q.notes || '');
     return `
     <tr id="row-${q.id}" style="border-bottom:1px solid rgba(22,20,18,0.06)">
       <td style="padding:1rem 0.8rem;font-size:0.7rem;color:rgba(22,20,18,0.35);font-weight:600">#${q.id}</td>
@@ -384,17 +389,19 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       <td style="padding:1rem 0.8rem">${statusBadge(q.status)}</td>
       <td style="padding:1rem 0.8rem;font-size:0.68rem;color:rgba(22,20,18,0.4)">${q.created_at}</td>
       <td style="padding:1rem 0.8rem">
-        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
-          <select onchange="updateStatus(${q.id},this.value)" style="font-size:0.7rem;padding:0.3rem 0.5rem;border:1px solid rgba(22,20,18,0.12);border-radius:6px;background:#fff;cursor:pointer;outline:none;font-family:'Inter',sans-serif">
+        <div class="action-row">
+          <select class="action-status" onchange="updateStatus(${q.id},this.value)">
             <option value="new" ${q.status==='new'?'selected':''}>New</option>
             <option value="in_progress" ${q.status==='in_progress'?'selected':''}>In Progress</option>
             <option value="completed" ${q.status==='completed'?'selected':''}>Completed</option>
             <option value="cancelled" ${q.status==='cancelled'?'selected':''}>Cancelled</option>
           </select>
-          <button onclick="openNotes(${q.id},\`${escJs(q.notes)}\`)" style="background:#F2F0EB;border:1px solid rgba(22,20,18,0.1);border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;cursor:pointer">📝</button>
-          <a href="${waHref}" ${waNumber ? 'target="_blank" rel="noopener noreferrer"' : ''} title="${waNumber ? 'Open WhatsApp chat' : 'Invalid phone number'}" style="background:#E8F5E9;border:1px solid #c8e6c9;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none;${waNumber ? '' : 'opacity:0.45;pointer-events:none;'}">💬</a>
-          <a href="${emailHref || '#'}" ${emailHref ? '' : 'aria-disabled="true"'} title="${emailHref ? 'Send email' : 'No email provided'}" style="background:#E8F4FF;border:1px solid #c9dfff;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;text-decoration:none;${emailHref ? '' : 'opacity:0.45;pointer-events:none;'}">✉️</a>
-          <button onclick="deleteQuote(${q.id})" style="background:#FFEBEE;border:1px solid #ffcdd2;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;cursor:pointer">🗑️</button>
+          <div class="action-icons">
+            <a class="icon-action icon-wa${waNumber ? '' : ' is-disabled'}" href="${waHref}" ${waNumber ? 'target="_blank" rel="noopener noreferrer"' : ''} title="${waNumber ? 'WhatsApp' : 'Invalid phone'}" aria-label="WhatsApp">${SVG_WA}</a>
+            <a class="icon-action icon-mail${emailHref ? '' : ' is-disabled'}" href="${emailHref || '#'}" title="${emailHref ? 'Email' : 'No email'}" aria-label="Email"${emailHref ? '' : ' aria-disabled="true"'}>${SVG_MAIL}</a>
+            <button type="button" class="icon-action icon-del" onclick="deleteQuote(${q.id})" title="Delete" aria-label="Delete">${SVG_TRASH}</button>
+          </div>
+          <button type="button" class="notes-link" data-nid="${q.id}" data-notes="${notesEnc}">Notes</button>
         </div>
         ${q.notes ? `<div class="note-snippet" style="margin-top:0.5rem;font-size:0.68rem;color:rgba(22,20,18,0.5);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;line-height:1.4">${esc(q.notes)}</div>` : ''}
       </td>
@@ -425,17 +432,20 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .btn-sm{font-size:0.72rem;padding:0.4rem 1rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;color:var(--ink);transition:all 0.2s}
     .btn-sm:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
     .content{padding:1.25rem 1.25rem 2rem;width:100%;max-width:100%;box-sizing:border-box}
-    .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.75rem;margin-bottom:1.5rem;width:100%}
-    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:14px;padding:1rem 1.1rem;min-width:0}
-    .stat-label{font-size:0.68rem;color:rgba(22,20,18,0.4);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:0.4rem}
-    .stat-val{font-family:'Inter',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-0.02em}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.45rem;margin-bottom:1.5rem;width:100%}
+    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:12px;padding:0.65rem 0.5rem;min-width:0}
+    .stat-label{font-size:0.58rem;color:rgba(22,20,18,0.4);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.25rem;line-height:1.2}
+    .stat-val{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.15rem,4.2vw,2rem);letter-spacing:-0.02em;line-height:1}
     .controls{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.5rem;width:100%}
-    .controls-filters{display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center}
+    .controls-filters{display:flex;flex-wrap:nowrap;gap:0.35rem;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:thin;width:100%}
+    .controls-filters::-webkit-scrollbar{height:4px}
+    .controls-filters::-webkit-scrollbar-thumb{background:rgba(22,20,18,0.15);border-radius:4px}
     .controls-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem;align-items:center;width:100%}
-    .date-field{width:100%;max-width:none}
-    .search-main{grid-column:1/-1;width:100%;min-width:0;max-width:none}
-    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:start}
-    .filter-btn{font-size:0.72rem;padding:0.45rem 1.1rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;text-decoration:none;color:var(--ink);transition:all 0.2s}
+    .controls-toolbar .date-field:nth-of-type(1){grid-column:1}
+    .controls-toolbar .date-field:nth-of-type(2){grid-column:2}
+    .controls-toolbar .search-main{grid-column:1/-1;width:100%;min-width:0;max-width:none}
+    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:end}
+    .filter-btn{flex:0 0 auto;font-size:0.64rem;padding:0.38rem 0.65rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
     .search-box{background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box}
     .search-box:focus{border-color:var(--teal)}
@@ -446,6 +456,20 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:600;color:rgba(22,20,18,0.4);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
     th:nth-child(3),td.req-cell{min-width:10rem;max-width:36rem}
     .note-snippet{max-width:100%}
+    .action-row{display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem 0.6rem}
+    .action-status{font-size:0.7rem;padding:0.3rem 0.45rem;border:1px solid rgba(22,20,18,0.12);border-radius:6px;background:#fff;cursor:pointer;outline:none;font-family:'Inter',sans-serif;flex-shrink:0}
+    .action-icons{display:inline-flex;align-items:center;gap:0.35rem;flex-shrink:0}
+    .icon-action{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:8px;text-decoration:none;border:1px solid transparent;cursor:pointer;padding:0;font-family:'Inter',sans-serif;box-sizing:border-box;vertical-align:middle}
+    .icon-action .icon-svg{display:block;flex-shrink:0}
+    .icon-wa{background:#e8f8ec;border-color:rgba(37,211,102,0.35);color:#128c4e}
+    .icon-wa:hover{background:#d4f0dc;color:#075e54}
+    .icon-mail{background:#e8f2fc;border-color:rgba(21,101,192,0.25);color:#1565c0}
+    .icon-mail:hover{background:#d7e8f8;color:#0d47a1}
+    .icon-del{background:#ffebee;border-color:rgba(198,40,40,0.25);color:#c62828}
+    .icon-del:hover{background:#ffcdd2}
+    .icon-action.is-disabled{opacity:0.42;pointer-events:none}
+    .notes-link{background:none;border:none;padding:0;font-size:0.68rem;font-weight:600;color:var(--teal);cursor:pointer;text-decoration:underline;font-family:'Inter',sans-serif;margin-left:0.15rem}
+    .notes-link:hover{color:var(--teal2)}
     .empty{text-align:center;padding:4rem;color:rgba(22,20,18,0.3);font-size:0.85rem}
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
     .modal-overlay.open{display:flex}
@@ -457,8 +481,11 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .modal-save{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
     .modal-cancel{background:transparent;color:rgba(22,20,18,0.5);border:1.5px solid rgba(22,20,18,0.1);border-radius:8px;padding:0.6rem 1.3rem;font-size:0.78rem;font-family:'Inter',sans-serif;cursor:pointer}
     @media (min-width:640px){
-      .stats-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-bottom:2rem}
-      .stat-card{padding:1.2rem 1.5rem}
+      .stats-grid{gap:1rem;margin-bottom:2rem}
+      .stat-card{padding:1.2rem 1.5rem;border-radius:14px}
+      .stat-label{font-size:0.68rem;margin-bottom:0.4rem;letter-spacing:0.07em}
+      .stat-val{font-size:2rem}
+      .filter-btn{font-size:0.72rem;padding:0.45rem 1rem}
     }
     @media (min-width:720px){
       .content{padding:1.5rem 2rem 2rem}
@@ -468,10 +495,10 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       .content{padding:2rem}
       .controls{flex-direction:row;align-items:center;gap:1rem 1.25rem}
       .controls-filters{flex-shrink:0}
-      .controls-toolbar{display:flex;flex-wrap:wrap;flex:1;min-width:0;justify-content:flex-end;gap:0.65rem}
-      .controls-toolbar .search-main{grid-column:auto;flex:1 1 14rem;width:auto;max-width:24rem}
-      .controls-toolbar .export-btn{grid-column:auto;justify-self:auto}
-      .date-field{width:auto;min-width:10.5rem}
+      .controls-toolbar{display:flex;flex-direction:row;flex-wrap:nowrap;flex:1;min-width:0;justify-content:flex-end;align-items:center;gap:0.65rem}
+      .controls-toolbar .date-field:nth-of-type(1),.controls-toolbar .date-field:nth-of-type(2){grid-column:auto;width:auto;min-width:10.5rem}
+      .controls-toolbar .search-main{grid-column:auto;flex:1 1 14rem;width:auto;min-width:8rem;max-width:24rem}
+      .controls-toolbar .export-btn{grid-column:auto;justify-self:auto;margin-left:0}
     }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
     body.dark-mode th{background:var(--surface)}
@@ -486,6 +513,11 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode [style*="rgba(22,20,18,0.65)"]{color:rgba(236,239,241,0.84)!important}
     body.dark-mode [style*="background:#F2F0EB"]{background:#243037!important}
     body.dark-mode [style*="background:#fff"]{background:#1E2226!important}
+    body.dark-mode .action-status{background:var(--surface)!important;border-color:rgba(236,239,241,0.22)!important;color:var(--ink)!important}
+    body.dark-mode .icon-wa{background:#143d28!important;border-color:rgba(37,211,102,0.35)!important;color:#7fe8a8!important}
+    body.dark-mode .icon-mail{background:#1a2f4a!important;border-color:rgba(100,181,246,0.35)!important;color:#90caf9!important}
+    body.dark-mode .icon-del{background:#3d2426!important;border-color:rgba(239,83,80,0.35)!important;color:#ef9a9a!important}
+    body.dark-mode .notes-link{color:#6ee7d6}
   </style>
 </head>
 <body>
@@ -572,6 +604,15 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       document.getElementById('notesText').value = notes || '';
       document.getElementById('notesModal').classList.add('open');
     }
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('.notes-link');
+      if (!link) return;
+      e.preventDefault();
+      const id = parseInt(link.getAttribute('data-nid'), 10);
+      let notes = '';
+      try { notes = decodeURIComponent(link.getAttribute('data-notes') || ''); } catch (err) { notes = ''; }
+      openNotes(id, notes);
+    });
     function closeNotes() { activeNoteId = null; document.getElementById('notesModal').classList.remove('open'); }
     async function saveNotes() {
       const notes = document.getElementById('notesText').value;

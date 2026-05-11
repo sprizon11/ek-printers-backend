@@ -58,7 +58,7 @@ async function sendQuoteEmail({ id, createdAt, name, phone, email, requirement }
 
   const from = process.env.SMTP_FROM || process.env.SMTP_USER;
   const to = process.env.NOTIFY_TO;
-  const subject = `New Quote Request #${id} · EK Printers`;
+  const subject = `New Quote Request #${id} · Tiruppur Offset Printing`;
   const text =
 `New quote request received
 
@@ -101,7 +101,7 @@ app.post('/api/quote', (req, res) => {
 
   const waNumber = String(process.env.WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
   const waText = encodeURIComponent(
-    `Hi EK Printers! New quote request (#${id}).\n` +
+    `Hi Tiruppur Offset Printing! New quote request (#${id}).\n` +
     `Name: ${quote.name}\nPhone: ${quote.phone}\nEmail: ${quote.email || '-'}\n` +
     `Requirement: ${quote.requirement}`
   );
@@ -298,7 +298,7 @@ function normalizeWhatsAppNumber(phone) {
 }
 function customerWhatsAppText(q) {
   return encodeURIComponent(
-    `Hi ${q.name}, this is EK Printers about your quote #${q.id}.\n` +
+    `Hi ${q.name}, this is Tiruppur Offset Printing about your quote #${q.id}.\n` +
     `Requirement: ${q.requirement || '-'}\n` +
     `Please confirm quantity and timeline.`
   );
@@ -321,7 +321,7 @@ function loginPageHTML(error = '') {
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin Login · EK Printers</title>
+  <title>Admin Login · Tiruppur Offset Printing</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
@@ -354,7 +354,7 @@ function loginPageHTML(error = '') {
 <body>
   <div class="card">
     <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
-    <div class="logo"><div class="mark">EK</div><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.95rem">EK Printers Admin</span></div>
+    <div class="logo"><div class="mark">T</div><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.95rem">Tiruppur Offset Printing Admin</span></div>
     <h1>Welcome back</h1>
     <p class="sub">Sign in to manage quote requests</p>
     ` + err + `
@@ -396,7 +396,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     const waNumber = normalizeWhatsAppNumber(q.phone);
     const waText = customerWhatsAppText(q);
     const waHref = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '#';
-    const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`EK Printers quote #${q.id}`)}` : '';
+    const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`Tiruppur Offset Printing quote #${q.id}`)}` : '';
     const notesEnc = encodeURIComponent(q.notes || '');
     return `
     <tr id="row-${q.id}" style="border-bottom:1px solid rgba(22,20,18,0.06)">
@@ -433,7 +433,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin Panel · EK Printers</title>
+  <title>Admin Panel · Tiruppur Offset Printing</title>
   <link rel="prefetch" href="/">
   <link rel="prefetch" href="/admin">
   <style>
@@ -592,8 +592,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 <body>
   <div class="topbar">
     <div class="logo">
-      <div class="mark">EK</div>
-      <span class="logo-text">EK Printers</span>
+      <div class="mark">T</div>
+      <span class="logo-text">Tiruppur Offset Printing</span>
       <span class="badge">Admin Panel</span>
     </div>
     <div class="topbar-right">
@@ -842,5 +842,5 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`EK Printers running at http://localhost:${PORT}`);
+  console.log(`Tiruppur Offset Printing running at http://localhost:${PORT}`);
 });

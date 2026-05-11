@@ -166,6 +166,8 @@
 
   /* PRODUCTS — mobile first */
   .prods3{padding:3rem 1.15rem;background:var(--bg)}
+  /* When products are placed inside the hero */
+  .h3 .prods3{padding:0;margin-top:1.25rem;background:transparent}
   .p3-header{display:flex;flex-direction:column;align-items:flex-start;gap:0.75rem;margin-bottom:2rem}
   .p3-title{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.85rem,4vw,2.8rem);letter-spacing:-0.02em;line-height:1.1}
   .p3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
@@ -354,45 +356,22 @@
       <div class="h3-badge">Tiruppur Offset Printing</div>
       <h1 class="h3-title">Premium Cards<br>for <em>Every</em><br>Occasion</h1>
       <p class="h3-sub">Visiting cards, printed & woven labels, hang tags & stationery — crafted with precision and care for brands, businesses, and celebrations across India.</p>
-      <div class="h3-actions">
-        <button class="btn3-p" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Browse Products</button>
-        <button class="btn3-o" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View Portfolio</button>
-      </div>
+
+      <section class="prods3" id="products">
+        <div class="p3-header">
+          <div class="p3-title">What We<br><em>Create</em></div>
+          <div class="p3-subtitle">Premium print products for every business and occasion</div>
+        </div>
+        <div class="p3-grid">
+          <div class="p3-card"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card p3-card-wide-row"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+        </div>
+      </section>
+
       <div class="h3-trust">
         <div class="h3-avatars"><div class="h3-av">RK</div><div class="h3-av">SM</div><div class="h3-av">AJ</div></div>
         <div class="h3-trust-text"><strong>5,000+ clients</strong> trust EK printers</div>
-      </div>
-    </div>
-    <div class="h3-visual">
-      <div class="card3d-wrap" aria-hidden="true">
-        <div class="loop-card card-a">
-          <div class="card-face card-front">
-            <div class="c3-dot"></div>
-            <div class="c3-logo">EK <span>printers</span></div>
-            <div><div class="c3-name">Premium Print Card</div><div class="c3-role">Front Side</div><div class="c3-contact" style="margin-top:0.5rem">+91 63743 43375 · ekprinterss@gmail.com</div></div>
-          </div>
-          <div class="card-face card-back">
-            <div>
-              <div class="card-back-stripe"></div>
-              <div class="c3-logo">EK <span>printers</span></div>
-            </div>
-            <div><div class="c3-name">Scan & Connect</div><div class="card-back-meta">Back Side · Business Identity</div></div>
-          </div>
-        </div>
-        <div class="loop-card card-b">
-          <div class="card-face card-front">
-            <div class="c3-dot"></div>
-            <div class="c3-logo">Black <span>Edition</span></div>
-            <div><div class="c3-name">Signature Matte Card</div><div class="c3-role">Front Side</div><div class="c3-contact" style="margin-top:0.5rem">Foil • UV • Velvet Lamination</div></div>
-          </div>
-          <div class="card-face card-back">
-            <div>
-              <div class="card-back-stripe"></div>
-              <div class="c3-logo">EK <span>printers</span></div>
-            </div>
-            <div><div class="c3-name">Crafted in Tiruppur</div><div class="card-back-meta">Back Side · Black Theme</div></div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -403,18 +382,6 @@
     <div class="feat-item"><div class="feat-icon">✅</div><div class="feat-text"><strong>Quality Assured</strong><span>100% satisfaction guarantee</span></div></div>
     <div class="feat-item"><div class="feat-icon">🚚</div><div class="feat-text"><strong>Pan-India Shipping</strong><span>Fast & safe packaging</span></div></div>
   </div>
-
-  <section class="prods3" id="products">
-    <div class="p3-header">
-      <div class="p3-title">What We<br><em>Create</em></div>
-      <div class="p3-subtitle">Premium print products for every business and occasion</div>
-    </div>
-    <div class="p3-grid">
-      <div class="p3-card"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
-      <div class="p3-card"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
-      <div class="p3-card p3-card-wide-row"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
-    </div>
-  </section>
 
   <section class="testi3" id="portfolio">
     <div class="testi3-left">

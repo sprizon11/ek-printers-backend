@@ -1,7 +1,7 @@
 {
   "name": "ek-printers-backend",
   "version": "1.0.0",
-  "description": "Backend for EK Printers - Tiruppur",
+  "description": "Backend for EK printers - Tiruppur",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

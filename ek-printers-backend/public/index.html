@@ -64,20 +64,8 @@
 
   /* NAV — mobile first */
   #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.55rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
-  .n3-logo{display:flex;flex-direction:column;align-items:flex-start;gap:0.15rem;flex:1;min-width:0;text-decoration:none;color:inherit}
+  .n3-logo{display:flex;align-items:center;flex:1;min-width:0;text-decoration:none;color:inherit}
   .n3-logo-row{display:flex;align-items:baseline;gap:0.18rem;min-width:0}
-  .n3-tagline{
-    width:100%;
-    font-size:0.78rem;
-    font-weight:700;
-    color:rgba(22,20,18,0.78);
-    line-height:1.25;
-    margin-top:0.05rem;
-    max-width:100%;
-    white-space:normal;
-    overflow-wrap:anywhere;
-  }
-  body.dark-mode .n3-tagline{color:rgba(236,239,241,0.78)}
   .n3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
   .n3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:-0.03em;color:var(--ink);line-height:1;margin-left:-0.02em}
   .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
@@ -97,6 +85,12 @@
   .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s}
   .n3-btn:hover{background:var(--teal2)}
   body.nav-drawer-open{overflow:hidden}
+
+  /* Categories strip under nav */
+  .n3-cats{background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
+  .n3-cats-text{font-size:0.78rem;font-weight:700;color:rgba(22,20,18,0.78);line-height:1.25;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+  body.dark-mode .n3-cats{border-bottom-color:rgba(236,239,241,0.1)}
+  body.dark-mode .n3-cats-text{color:rgba(236,239,241,0.78)}
   /* Mobile menu drawer (popup) */
   .n3-drawer{position:fixed;inset:0;z-index:240;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.22s ease,visibility 0.22s}
   .n3-drawer.n3-drawer-open{visibility:visible;opacity:1;pointer-events:auto}
@@ -327,6 +321,7 @@
     .f3-mark,.f3-mark-rest{font-size:1.85rem}
     .f3-links{flex-wrap:nowrap;gap:2rem}
     .h3-trust--bottom{padding-left:3rem;padding-right:3rem}
+    .n3-cats{padding-left:3rem;padding-right:3rem}
   }
   @media (min-width:901px) and (max-width:1100px){
     #navMain .n3-links{gap:1.25rem}
@@ -337,7 +332,6 @@
   <nav id="navMain">
     <a href="index.html" class="n3-logo">
       <span class="n3-logo-row"><span class="n3-mark">EK</span><span class="n3-mark-rest">printers</span></span>
-      <span class="n3-tagline">Hang Tag, Photo Cards, Inlay Cards, Stickers, Labels, Inner Boards, Tissuepaper, Polypacks</span>
     </a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
@@ -351,6 +345,10 @@
       <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">☰</button>
     </div>
   </nav>
+
+  <div class="n3-cats">
+    <div class="n3-cats-text">Hang Tag, Photo Cards, Inlay Cards, Stickers, Labels, Inner Boards, Tissuepaper, Polypacks</div>
+  </div>
 
   <div class="n3-drawer" id="navDrawer" aria-hidden="true">
     <div class="n3-drawer-backdrop" id="navDrawerBackdrop"></div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Tiruppur Offset Printing</title>
+  <title>EK Printers · Tiruppur</title>
 </head>
 <body>
 <style>
@@ -209,7 +209,27 @@
   .cta3-input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(0,107,94,0.08)}
   .cta3-input::placeholder{color:rgba(22,20,18,0.35)}
   select.cta3-input{cursor:pointer;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:linear-gradient(45deg, transparent 50%, rgba(22,20,18,0.55) 50%),linear-gradient(135deg, rgba(22,20,18,0.55) 50%, transparent 50%);background-position:calc(100% - 22px) calc(1.05rem + 2px),calc(100% - 16px) calc(1.05rem + 2px);background-size:6px 6px,6px 6px;background-repeat:no-repeat}
-  .cta3-row{display:grid;grid-template-columns:1fr;gap:1rem}
+  .cta3-row{display:grid;grid-template-columns:1fr;gap:1rem;min-width:0}
+  .cta3-row > *{min-width:0}
+  .cta3-select-wrap{position:relative;width:100%;max-width:100%}
+  .cta3-select-wrap.is-open{z-index:25}
+  .cta3-select-btn{display:flex;align-items:center;width:100%;max-width:100%;box-sizing:border-box;text-align:left;cursor:pointer}
+  .cta3-select-btn-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cta3-select-placeholder{color:rgba(22,20,18,0.35)}
+  body.dark-mode .cta3-select-placeholder{color:rgba(236,239,241,0.45)}
+  .cta3-select-btn::after{content:'';display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid rgba(22,20,18,0.45);margin-left:0.5rem;flex-shrink:0;transition:transform 0.2s ease;vertical-align:middle}
+  body.dark-mode .cta3-select-btn::after{border-top-color:rgba(236,239,241,0.55)}
+  .cta3-select-wrap.is-open .cta3-select-btn::after{transform:rotate(180deg)}
+  .cta3-select-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);margin:0;padding:0.35rem 0;list-style:none;background:#fff;border:1px solid rgba(22,20,18,0.1);border-radius:12px;box-shadow:0 12px 32px rgba(22,20,18,0.12);max-height:min(45vh,260px);overflow-y:auto;display:none;z-index:30}
+  .cta3-select-wrap.is-open .cta3-select-menu{display:block}
+  body.dark-mode .cta3-select-menu{background:var(--card);border-color:rgba(236,239,241,0.12);box-shadow:0 12px 32px rgba(0,0,0,0.35)}
+  .cta3-select-menu li{margin:0;padding:0}
+  .cta3-select-option{display:block;width:100%;padding:0.75rem 1.1rem;font-size:0.88rem;font-family:var(--font-body);text-align:left;border:none;background:transparent;color:var(--ink);cursor:pointer;transition:background 0.15s}
+  .cta3-select-option:hover,.cta3-select-option:focus{background:var(--light);outline:none}
+  body.dark-mode .cta3-select-option:hover,body.dark-mode .cta3-select-option:focus{background:var(--surface)}
+  .cta3-subfield-wrap{margin-top:-0.25rem}
+  .cta3-subfield-label{display:block;font-size:0.68rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(22,20,18,0.4);margin-bottom:0.45rem;padding-left:0.15rem}
+  body.dark-mode .cta3-subfield-label{color:rgba(236,239,241,0.45)}
   .btn3-submit{background:var(--teal);color:#fff;padding:1.05rem;border-radius:12px;font-size:0.92rem;font-weight:500;border:none;cursor:pointer;transition:all 0.2s;font-family:var(--font-body)}
   .btn3-submit:hover{background:var(--teal2);transform:translateY(-1px)}
 
@@ -296,7 +316,7 @@
 </style>
 <div>
   <nav id="navMain">
-    <a href="index.html" class="n3-logo"><span class="n3-mark">Tiruppur</span><span class="n3-mark-rest"> Offset Printing</span></a>
+    <a href="index.html" class="n3-logo"><span class="n3-mark">EK</span><span class="n3-mark-rest">Printers</span></a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
@@ -339,7 +359,7 @@
       </div>
       <div class="h3-trust">
         <div class="h3-avatars"><div class="h3-av">RK</div><div class="h3-av">SM</div><div class="h3-av">AJ</div></div>
-        <div class="h3-trust-text"><strong>5,000+ clients</strong> trust Tiruppur Offset Printing</div>
+        <div class="h3-trust-text"><strong>5,000+ clients</strong> trust EK Printers</div>
       </div>
     </div>
     <div class="h3-visual">
@@ -347,13 +367,13 @@
         <div class="loop-card card-a">
           <div class="card-face card-front">
             <div class="c3-dot"></div>
-            <div class="c3-logo">Tiruppur <span>Offset Printing</span></div>
+            <div class="c3-logo">EK <span>Printers</span></div>
             <div><div class="c3-name">Premium Print Card</div><div class="c3-role">Front Side</div><div class="c3-contact" style="margin-top:0.5rem">+91 63743 43375 · ekprinterss@gmail.com</div></div>
           </div>
           <div class="card-face card-back">
             <div>
               <div class="card-back-stripe"></div>
-              <div class="c3-logo">Tiruppur <span>Offset Printing</span></div>
+              <div class="c3-logo">EK <span>Printers</span></div>
             </div>
             <div><div class="c3-name">Scan & Connect</div><div class="card-back-meta">Back Side · Business Identity</div></div>
           </div>
@@ -367,7 +387,7 @@
           <div class="card-face card-back">
             <div>
               <div class="card-back-stripe"></div>
-              <div class="c3-logo">Tiruppur <span>Offset Printing</span></div>
+              <div class="c3-logo">EK <span>Printers</span></div>
             </div>
             <div><div class="c3-name">Crafted in Tiruppur</div><div class="card-back-meta">Back Side · Black Theme</div></div>
           </div>
@@ -436,13 +456,24 @@
       </div>
       <input class="cta3-input" id="q-email" type="email" placeholder="Email Address">
       <div class="cta3-row">
-        <select class="cta3-input" id="q-service" required>
-          <option value="">Choose Service</option>
-          <option>Business cards</option>
-          <option>Labels</option>
-          <option>Hang tag</option>
-        </select>
+        <div class="cta3-select-wrap" id="q-service-wrap">
+          <button type="button" class="cta3-input cta3-select-btn" id="q-service-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span class="cta3-select-btn-text cta3-select-placeholder" id="q-service-label">Choose Service</span>
+          </button>
+          <input type="hidden" id="q-service" value="">
+          <ul class="cta3-select-menu" id="q-service-menu" role="listbox" aria-label="Services"></ul>
+        </div>
         <input class="cta3-input" id="q-qty" type="number" min="1" step="1" placeholder="Quantity" required>
+      </div>
+      <div class="cta3-subfield-wrap" id="q-biz-type-wrap" hidden>
+        <span class="cta3-subfield-label" id="q-biz-type-heading">Type</span>
+        <div class="cta3-select-wrap" id="q-biz-wrap">
+          <button type="button" class="cta3-input cta3-select-btn" id="q-biz-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span class="cta3-select-btn-text cta3-select-placeholder" id="q-biz-label">Choose type</span>
+          </button>
+          <input type="hidden" id="q-biz-type" value="">
+          <ul class="cta3-select-menu" id="q-biz-menu" role="listbox" aria-label="Options"></ul>
+        </div>
       </div>
       <input class="cta3-input" id="q-req" type="text" placeholder="What do you need? (e.g. 500 business cards)" required>
       <div id="q-msg" style="display:none;padding:0.8rem 1rem;border-radius:10px;font-size:0.78rem;font-weight:500"></div>
@@ -451,7 +482,7 @@
   </section>
 
   <div class="foot3">
-    <div class="f3-logo"><span class="f3-mark">Tiruppur</span><span class="f3-mark-rest"> Offset Printing</span></div>
+    <div class="f3-logo"><span class="f3-mark">EK</span><span class="f3-mark-rest">Printers</span></div>
     <div class="f3-links">
       <a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -459,7 +490,7 @@
       <a href="tel:+916374343375">Call</a>
       <a href="https://maps.app.goo.gl/NdDfy96p3yGfrcUC8" target="_blank" rel="noopener noreferrer">Office Location</a>
     </div>
-    <div class="f3-copy">© 2025 Tiruppur Offset Printing</div>
+    <div class="f3-copy">© 2025 EK Printers · Tiruppur</div>
   </div>
 </div>
 
@@ -474,11 +505,152 @@ function applyTheme(theme) {
   });
 }
 
+function closeAllQuoteSelects() {
+  document.querySelectorAll('.cta3-select-wrap.is-open').forEach(w => {
+    w.classList.remove('is-open');
+    const b = w.querySelector('.cta3-select-btn');
+    if (b) b.setAttribute('aria-expanded', 'false');
+  });
+}
+
+const QUOTE_SERVICES = ['Business cards', 'Labels', 'Hang tag'];
+/** Matches product modal finishes; keys must match QUOTE_SERVICES values. */
+const QUOTE_SUBTYPES_BY_SERVICE = {
+  'Business cards': ['Normal', 'Matt Lamination', 'Gloss Lamination', 'Foil Cards'],
+  'Labels': ['Printed Labels', 'Cotton Labels', 'Woven Labels', 'Screen Printing Labels'],
+  'Hang tag': ['350 GSM Normal Tags', '600 GSM Tags', 'Premium Tags', 'Foil Tags'],
+};
+
+function initQuoteFormSelects() {
+  const svcMenu = document.getElementById('q-service-menu');
+  const bizMenu = document.getElementById('q-biz-menu');
+  const svcWrap = document.getElementById('q-service-wrap');
+  const bizWrapEl = document.getElementById('q-biz-wrap');
+  const svcBtn = document.getElementById('q-service-btn');
+  const bizBtn = document.getElementById('q-biz-btn');
+  const svcHidden = document.getElementById('q-service');
+  const bizHidden = document.getElementById('q-biz-type');
+  const svcLabel = document.getElementById('q-service-label');
+  const bizLabel = document.getElementById('q-biz-label');
+  const bizTypeRow = document.getElementById('q-biz-type-wrap');
+  const bizHeading = document.getElementById('q-biz-type-heading');
+
+  function fillMenu(menu, options) {
+    menu.innerHTML = '';
+    options.forEach(text => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'cta3-select-option';
+      b.textContent = text;
+      li.appendChild(b);
+      menu.appendChild(li);
+    });
+  }
+
+  function subtypeHeading(service) {
+    if (service === 'Business cards') return 'Business card type';
+    if (service === 'Labels') return 'Label type';
+    if (service === 'Hang tag') return 'Hang tag type';
+    return 'Type';
+  }
+
+  function applySubtypeForService(service) {
+    const opts = QUOTE_SUBTYPES_BY_SERVICE[service];
+    if (!opts || !opts.length) {
+      bizTypeRow.hidden = true;
+      bizHidden.value = '';
+      bizLabel.textContent = 'Choose type';
+      bizLabel.classList.add('cta3-select-placeholder');
+      return;
+    }
+    bizTypeRow.hidden = false;
+    bizHeading.textContent = subtypeHeading(service);
+    bizMenu.setAttribute('aria-label', subtypeHeading(service));
+    fillMenu(bizMenu, opts);
+    bizHidden.value = '';
+    bizLabel.textContent = 'Choose type';
+    bizLabel.classList.add('cta3-select-placeholder');
+  }
+
+  fillMenu(svcMenu, QUOTE_SERVICES);
+
+  svcBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasOpen = svcWrap.classList.contains('is-open');
+    closeAllQuoteSelects();
+    if (!wasOpen) {
+      svcWrap.classList.add('is-open');
+      svcBtn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  bizBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasOpen = bizWrapEl.classList.contains('is-open');
+    closeAllQuoteSelects();
+    if (!wasOpen) {
+      bizWrapEl.classList.add('is-open');
+      bizBtn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  svcMenu.querySelectorAll('.cta3-select-option').forEach(b => {
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      const v = b.textContent;
+      svcHidden.value = v;
+      svcLabel.textContent = v;
+      svcLabel.classList.remove('cta3-select-placeholder');
+      applySubtypeForService(v);
+      closeAllQuoteSelects();
+    });
+  });
+
+  bizMenu.addEventListener('click', e => {
+    const opt = e.target.closest('.cta3-select-option');
+    if (!opt || !bizMenu.contains(opt)) return;
+    e.stopPropagation();
+    const v = opt.textContent;
+    bizHidden.value = v;
+    bizLabel.textContent = v;
+    bizLabel.classList.remove('cta3-select-placeholder');
+    closeAllQuoteSelects();
+  });
+
+  document.addEventListener('click', () => closeAllQuoteSelects());
+}
+
+function resetQuoteFormPickers() {
+  const svcHidden = document.getElementById('q-service');
+  const bizHidden = document.getElementById('q-biz-type');
+  const svcLabel = document.getElementById('q-service-label');
+  const bizLabel = document.getElementById('q-biz-label');
+  const bizTypeRow = document.getElementById('q-biz-type-wrap');
+  if (svcHidden) svcHidden.value = '';
+  if (bizHidden) bizHidden.value = '';
+  if (svcLabel) {
+    svcLabel.textContent = 'Choose Service';
+    svcLabel.classList.add('cta3-select-placeholder');
+  }
+  if (bizLabel) {
+    bizLabel.textContent = 'Choose type';
+    bizLabel.classList.add('cta3-select-placeholder');
+  }
+  if (bizTypeRow) bizTypeRow.hidden = true;
+  const bizHeading = document.getElementById('q-biz-type-heading');
+  const bizMenu = document.getElementById('q-biz-menu');
+  if (bizHeading) bizHeading.textContent = 'Type';
+  if (bizMenu) bizMenu.innerHTML = '';
+  closeAllQuoteSelects();
+}
+
 async function submitQuote() {
   const name = document.getElementById('q-name').value.trim();
   const phone = document.getElementById('q-phone').value.trim();
   const email = document.getElementById('q-email').value.trim();
   const service = document.getElementById('q-service').value.trim();
+  const bizType = document.getElementById('q-biz-type').value.trim();
   const quantity = document.getElementById('q-qty').value.trim();
   const requirement = document.getElementById('q-req').value.trim();
   const btn = document.getElementById('q-btn');
@@ -488,21 +660,29 @@ async function submitQuote() {
     showMsg('Please fill in name, phone, service, quantity, and requirement.', '#FFEBEE', '#C62828');
     return;
   }
+  const needsSubtype = !!(QUOTE_SUBTYPES_BY_SERVICE[service] && QUOTE_SUBTYPES_BY_SERVICE[service].length);
+  if (needsSubtype && !bizType) {
+    showMsg('Please choose the type for your selected service.', '#FFEBEE', '#C62828');
+    return;
+  }
 
   btn.textContent = 'Sending...';
   btn.disabled = true;
+
+  const serviceLine = needsSubtype && bizType ? `${service} (${bizType})` : service;
 
   try {
     const res = await fetch('/api/quote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, requirement: `Service: ${service}\nQuantity: ${quantity}\nRequirement: ${requirement}` })
+      body: JSON.stringify({ name, phone, email, requirement: `Service: ${serviceLine}\nQuantity: ${quantity}\nRequirement: ${requirement}` })
     });
     const data = await res.json();
 
     if (data.success) {
       showMsg('✅ ' + data.message, '#E8F4F1', '#006B5E');
-      ['q-name','q-phone','q-email','q-service','q-qty','q-req'].forEach(id => document.getElementById(id).value = '');
+      ['q-name','q-phone','q-email','q-qty','q-req'].forEach(id => document.getElementById(id).value = '');
+      resetQuoteFormPickers();
       btn.textContent = 'Sent! ✓';
       if (data.whatsappUrl) window.open(data.whatsappUrl, '_blank', 'noopener,noreferrer');
     } else {
@@ -600,6 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('q-req').addEventListener('keydown', e => {
     if (e.key === 'Enter') submitQuote();
   });
+  initQuoteFormSelects();
 });
 </script>
 

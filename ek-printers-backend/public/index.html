@@ -125,6 +125,8 @@
   .h3-av:nth-child(3){background:var(--warm)}
   .h3-trust-text{font-size:0.72rem;color:rgba(22,20,18,0.5);font-weight:400}
   .h3-trust-text strong{color:var(--ink);font-weight:500}
+  .h3-trust--bottom{padding:1.5rem 1.15rem 0}
+  .h3-trust--bottom .h3-trust{margin-top:0}
 
   /* CARD 3D — mobile first */
   .h3-visual{display:flex;align-items:center;justify-content:center;perspective:1200px;overflow:hidden;width:100%}
@@ -305,12 +307,13 @@
     .p3-cdesc{font-size:0.75rem;line-height:1.6;-webkit-line-clamp:unset;display:block;overflow:visible}
     .p3-arrow{font-size:0.7rem;gap:0.4rem;margin-top:1rem;padding-top:0}
     .testi3{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-    .cta3{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem}
-    .cta3-form{max-width:560px;justify-self:end}
+    .cta3{padding:5rem 3rem;grid-template-columns:1fr;gap:2.25rem}
+    .cta3-form{max-width:560px;justify-self:start}
     .cta3-row{grid-template-columns:1fr 1fr}
     .foot3{flex-direction:row;justify-content:space-between;align-items:center;padding:2.5rem 3rem;gap:0}
     .f3-mark,.f3-mark-rest{font-size:1.85rem}
     .f3-links{flex-wrap:nowrap;gap:2rem}
+    .h3-trust--bottom{padding-left:3rem;padding-right:3rem}
   }
   @media (min-width:901px) and (max-width:1100px){
     #navMain .n3-links{gap:1.25rem}
@@ -368,11 +371,6 @@
           <div class="p3-card p3-card-wide-row"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
         </div>
       </section>
-
-      <div class="h3-trust">
-        <div class="h3-avatars"><div class="h3-av">RK</div><div class="h3-av">SM</div><div class="h3-av">AJ</div></div>
-        <div class="h3-trust-text"><strong>5,000+ clients</strong> trust EK printers</div>
-      </div>
     </div>
   </section>
 
@@ -395,28 +393,6 @@
   </section>
 
   <section class="cta3" id="contact">
-    <div class="cta3-left">
-      <h2>Ready to<br><em>Print</em><br>Something?</h2>
-      <p>Share your requirements and we'll get back to you with a quote within 24 hours.</p>
-      <div class="cta3-contact">
-        <a class="cta3-contact-card" href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
-          <div class="cta3-contact-icon">📞</div>
-          <div class="cta3-contact-text">+91 63743 43375</div>
-        </a>
-        <a class="cta3-contact-card" href="mailto:ekprinterss@gmail.com" style="text-decoration:none;color:inherit">
-          <div class="cta3-contact-icon">✉️</div>
-          <div class="cta3-contact-text">ekprinterss@gmail.com</div>
-        </a>
-        <a class="cta3-contact-card" href="https://www.google.com/maps/search/?api=1&amp;query=14%2F2%2C%20Kumaranthapuram%20East%20Extn%2C%204th%20St%2C%20P.N.%20Road%2C%20Tiruppur-641%20602" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
-          <div class="cta3-contact-icon">📍</div>
-          <div class="cta3-contact-text cta3-contact-text--addr">14/2, Kumaranthapuram East Extn, 4th St, P.N. Road, Tiruppur-641 602</div>
-        </a>
-        <div class="cta3-contact-card">
-          <div class="cta3-contact-icon">🕘</div>
-          <div class="cta3-contact-text">Mon-Sat: 9AM - 7PM</div>
-        </div>
-      </div>
-    </div>
     <div class="cta3-form" id="quoteForm">
       <input class="cta3-input" id="q-company" type="text" placeholder="Company Name" autocomplete="organization">
       <div class="cta3-row">
@@ -449,7 +425,37 @@
       <div id="q-msg" style="display:none;padding:0.8rem 1rem;border-radius:10px;font-size:0.78rem;font-weight:500"></div>
       <button class="btn3-submit" id="q-btn" onclick="submitQuote()">Send My Requirements →</button>
     </div>
+
+    <div class="cta3-left">
+      <h2>Ready to<br><em>Print</em><br>Something?</h2>
+      <p>Share your requirements and we'll get back to you with a quote within 24 hours.</p>
+      <div class="cta3-contact">
+        <a class="cta3-contact-card" href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
+          <div class="cta3-contact-icon">📞</div>
+          <div class="cta3-contact-text">+91 63743 43375</div>
+        </a>
+        <a class="cta3-contact-card" href="mailto:ekprinterss@gmail.com" style="text-decoration:none;color:inherit">
+          <div class="cta3-contact-icon">✉️</div>
+          <div class="cta3-contact-text">ekprinterss@gmail.com</div>
+        </a>
+        <a class="cta3-contact-card" href="https://www.google.com/maps/search/?api=1&amp;query=14%2F2%2C%20Kumaranthapuram%20East%20Extn%2C%204th%20St%2C%20P.N.%20Road%2C%20Tiruppur-641%20602" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
+          <div class="cta3-contact-icon">📍</div>
+          <div class="cta3-contact-text cta3-contact-text--addr">14/2, Kumaranthapuram East Extn, 4th St, P.N. Road, Tiruppur-641 602</div>
+        </a>
+        <div class="cta3-contact-card">
+          <div class="cta3-contact-icon">🕘</div>
+          <div class="cta3-contact-text">Mon-Sat: 9AM - 7PM</div>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <div class="h3-trust--bottom">
+    <div class="h3-trust">
+      <div class="h3-avatars"><div class="h3-av">RK</div><div class="h3-av">SM</div><div class="h3-av">AJ</div></div>
+      <div class="h3-trust-text"><strong>5,000+ clients</strong> trust EK printers</div>
+    </div>
+  </div>
 
   <div class="foot3">
     <div class="f3-logo"><span class="f3-mark">EK</span><span class="f3-mark-rest">printers</span></div>

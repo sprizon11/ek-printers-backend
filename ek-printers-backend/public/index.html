@@ -88,10 +88,16 @@
 
   /* Categories strip under nav */
   .n3-cats{background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
+  .n3-cats-kicker{font-size:0.62rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(22,20,18,0.55);line-height:1.1;margin-bottom:0.25rem}
+  .n3-cats-title{font-family:var(--font-heading);font-weight:700;font-size:0.95rem;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);margin-bottom:0.25rem}
+  .n3-cats-sub{font-size:0.72rem;color:rgba(22,20,18,0.52);line-height:1.35;margin-bottom:0.5rem}
   .n3-cats-text{font-size:0.78rem;font-weight:500;color:rgba(22,20,18,0.72);line-height:1.25;max-width:100%}
   .n3-cats-line{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   body.dark-mode .n3-cats{border-bottom-color:rgba(236,239,241,0.1)}
   body.dark-mode .n3-cats-text{color:rgba(236,239,241,0.72)}
+  body.dark-mode .n3-cats-kicker{color:rgba(236,239,241,0.6)}
+  body.dark-mode .n3-cats-title{color:var(--ink)}
+  body.dark-mode .n3-cats-sub{color:rgba(236,239,241,0.68)}
 
   /* Subtle entrance animations */
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -360,6 +366,9 @@
   </nav>
 
   <div class="n3-cats">
+    <div class="n3-cats-kicker">Manufacturing</div>
+    <div class="n3-cats-title">We manufacture premium print products</div>
+    <div class="n3-cats-sub">Direct production • Consistent quality • Fast turnaround</div>
     <div class="n3-cats-text">
       <span class="n3-cats-line">Hang Tag, Photo Cards, Inlay Cards, Stickers</span>
       <span class="n3-cats-line">Labels, Inner Boards, Tissuepaper, Polypacks</span>

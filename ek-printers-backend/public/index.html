@@ -204,6 +204,7 @@
   .cta3-contact-card{display:flex;align-items:center;gap:0.9rem;background:#fff;border:1px solid rgba(22,20,18,0.08);border-radius:14px;padding:0.95rem 1rem}
   .cta3-contact-icon{width:34px;height:34px;border-radius:9px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0}
   .cta3-contact-text{font-size:0.82rem;font-weight:500;color:rgba(22,20,18,0.75);line-height:1.4}
+  .cta3-contact-text--addr{font-size:0.76rem;line-height:1.45}
   .cta3-form{display:flex;flex-direction:column;gap:1rem;width:100%;max-width:none;justify-self:stretch}
   .cta3-input{background:var(--surface);border:1px solid transparent;border-radius:12px;padding:1.05rem 1.2rem;font-size:0.9rem;font-family:var(--font-body);color:var(--ink);outline:none;transition:all 0.2s}
   .cta3-input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(0,107,94,0.08)}
@@ -439,9 +440,9 @@
           <div class="cta3-contact-icon">✉️</div>
           <div class="cta3-contact-text">ekprinterss@gmail.com</div>
         </a>
-        <a class="cta3-contact-card" href="https://maps.app.goo.gl/NdDfy96p3yGfrcUC8" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
+        <a class="cta3-contact-card" href="https://www.google.com/maps/search/?api=1&amp;query=14%2F2%2C%20Kumaranthapuram%20East%20Extn%2C%204th%20St%2C%20P.N.%20Road%2C%20Tiruppur-641%20602" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
           <div class="cta3-contact-icon">📍</div>
-          <div class="cta3-contact-text">Tiruppur, Tamil Nadu - 641604</div>
+          <div class="cta3-contact-text cta3-contact-text--addr">14/2, Kumaranthapuram East Extn, 4th St, P.N. Road, Tiruppur-641 602</div>
         </a>
         <div class="cta3-contact-card">
           <div class="cta3-contact-icon">🕘</div>
@@ -450,11 +451,13 @@
       </div>
     </div>
     <div class="cta3-form" id="quoteForm">
+      <input class="cta3-input" id="q-company" type="text" placeholder="Company Name" autocomplete="organization">
       <div class="cta3-row">
         <input class="cta3-input" id="q-name" type="text" placeholder="Your Name" required>
         <input class="cta3-input" id="q-phone" type="text" placeholder="Phone / WhatsApp" required>
       </div>
       <input class="cta3-input" id="q-email" type="email" placeholder="Email Address">
+      <input class="cta3-input" id="q-location" type="text" placeholder="Location (city / area)" autocomplete="address-level2">
       <div class="cta3-row">
         <div class="cta3-select-wrap" id="q-service-wrap">
           <button type="button" class="cta3-input cta3-select-btn" id="q-service-btn" aria-haspopup="listbox" aria-expanded="false">
@@ -488,7 +491,7 @@
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       <a href="mailto:ekprinterss@gmail.com">Email Us</a>
       <a href="tel:+916374343375">Call</a>
-      <a href="https://maps.app.goo.gl/NdDfy96p3yGfrcUC8" target="_blank" rel="noopener noreferrer">Office Location</a>
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=14%2F2%2C%20Kumaranthapuram%20East%20Extn%2C%204th%20St%2C%20P.N.%20Road%2C%20Tiruppur-641%20602" target="_blank" rel="noopener noreferrer">Office Location</a>
     </div>
     <div class="f3-copy">© 2025 EK Printers · Tiruppur</div>
   </div>
@@ -646,9 +649,11 @@ function resetQuoteFormPickers() {
 }
 
 async function submitQuote() {
+  const company = document.getElementById('q-company').value.trim();
   const name = document.getElementById('q-name').value.trim();
   const phone = document.getElementById('q-phone').value.trim();
   const email = document.getElementById('q-email').value.trim();
+  const location = document.getElementById('q-location').value.trim();
   const service = document.getElementById('q-service').value.trim();
   const bizType = document.getElementById('q-biz-type').value.trim();
   const quantity = document.getElementById('q-qty').value.trim();
@@ -656,13 +661,37 @@ async function submitQuote() {
   const btn = document.getElementById('q-btn');
   const msg = document.getElementById('q-msg');
 
-  if (!name || !phone || !service || !quantity || !requirement) {
-    showMsg('Please fill in name, phone, service, quantity, and requirement.', '#FFEBEE', '#C62828');
+  if (!company) {
+    showMsg('Please fill in the company name field.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!name) {
+    showMsg('Please fill in your name.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!phone) {
+    showMsg('Please fill in the phone / WhatsApp field.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!location) {
+    showMsg('Please fill in the location field.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!service) {
+    showMsg('Please choose a service.', '#FFEBEE', '#C62828');
     return;
   }
   const needsSubtype = !!(QUOTE_SUBTYPES_BY_SERVICE[service] && QUOTE_SUBTYPES_BY_SERVICE[service].length);
   if (needsSubtype && !bizType) {
-    showMsg('Please choose the type for your selected service.', '#FFEBEE', '#C62828');
+    showMsg('Please fill in the type field for your selected service.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!quantity) {
+    showMsg('Please fill in the quantity field.', '#FFEBEE', '#C62828');
+    return;
+  }
+  if (!requirement) {
+    showMsg('Please fill in what you need.', '#FFEBEE', '#C62828');
     return;
   }
 
@@ -670,18 +699,19 @@ async function submitQuote() {
   btn.disabled = true;
 
   const serviceLine = needsSubtype && bizType ? `${service} (${bizType})` : service;
+  const requirementBlock = `Company: ${company}\nCustomer location: ${location}\nService: ${serviceLine}\nQuantity: ${quantity}\nRequirement: ${requirement}`;
 
   try {
     const res = await fetch('/api/quote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, requirement: `Service: ${serviceLine}\nQuantity: ${quantity}\nRequirement: ${requirement}` })
+      body: JSON.stringify({ name, phone, email, requirement: requirementBlock })
     });
     const data = await res.json();
 
     if (data.success) {
       showMsg('✅ ' + data.message, '#E8F4F1', '#006B5E');
-      ['q-name','q-phone','q-email','q-qty','q-req'].forEach(id => document.getElementById(id).value = '');
+      ['q-company','q-name','q-phone','q-email','q-location','q-qty','q-req'].forEach(id => document.getElementById(id).value = '');
       resetQuoteFormPickers();
       btn.textContent = 'Sent! ✓';
       if (data.whatsappUrl) window.open(data.whatsappUrl, '_blank', 'noopener,noreferrer');

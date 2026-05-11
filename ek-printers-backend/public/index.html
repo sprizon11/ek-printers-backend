@@ -88,9 +88,22 @@
 
   /* Categories strip under nav */
   .n3-cats{background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
-  .n3-cats-text{font-size:0.78rem;font-weight:700;color:rgba(22,20,18,0.78);line-height:1.25;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+  .n3-cats-text{font-size:0.78rem;font-weight:500;color:rgba(22,20,18,0.72);line-height:1.25;max-width:100%}
+  .n3-cats-line{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   body.dark-mode .n3-cats{border-bottom-color:rgba(236,239,241,0.1)}
-  body.dark-mode .n3-cats-text{color:rgba(236,239,241,0.78)}
+  body.dark-mode .n3-cats-text{color:rgba(236,239,241,0.72)}
+
+  /* Subtle entrance animations */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .fx-fade-up{opacity:0;animation:fadeUp .55s ease forwards}
+  .fx-d1{animation-delay:.04s}
+  .fx-d2{animation-delay:.10s}
+  .fx-d3{animation-delay:.16s}
+  .fx-d4{animation-delay:.22s}
+  .fx-d5{animation-delay:.28s}
+  @media (prefers-reduced-motion: reduce){
+    .fx-fade-up{opacity:1!important;animation:none!important;transform:none!important}
+  }
   /* Mobile menu drawer (popup) */
   .n3-drawer{position:fixed;inset:0;z-index:240;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.22s ease,visibility 0.22s}
   .n3-drawer.n3-drawer-open{visibility:visible;opacity:1;pointer-events:auto}
@@ -347,7 +360,10 @@
   </nav>
 
   <div class="n3-cats">
-    <div class="n3-cats-text">Hang Tag, Photo Cards, Inlay Cards, Stickers, Labels, Inner Boards, Tissuepaper, Polypacks</div>
+    <div class="n3-cats-text">
+      <span class="n3-cats-line">Hang Tag, Photo Cards, Inlay Cards, Stickers</span>
+      <span class="n3-cats-line">Labels, Inner Boards, Tissuepaper, Polypacks</span>
+    </div>
   </div>
 
   <div class="n3-drawer" id="navDrawer" aria-hidden="true">
@@ -370,19 +386,19 @@
 
   <section class="h3">
     <div>
-      <div class="h3-badge">Tiruppur Offset Printing</div>
-      <h1 class="h3-title">Premium Cards<br>for <em>Every</em><br>Occasion</h1>
-      <p class="h3-sub">Visiting cards, printed & woven labels, hang tags & stationery — crafted with precision and care for brands, businesses, and celebrations across India.</p>
+      <div class="h3-badge fx-fade-up fx-d1">Tiruppur Offset Printing</div>
+      <h1 class="h3-title fx-fade-up fx-d2">Premium Cards<br>for <em>Every</em><br>Occasion</h1>
+      <p class="h3-sub fx-fade-up fx-d3">Visiting cards, printed & woven labels, hang tags & stationery — crafted with precision and care for brands, businesses, and celebrations across India.</p>
 
       <section class="prods3" id="products">
         <div class="p3-header">
-          <div class="p3-title">What We<br><em>Create</em></div>
-          <div class="p3-subtitle">Premium print products for every business and occasion</div>
+          <div class="p3-title fx-fade-up fx-d4">What We<br><em>Create</em></div>
+          <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
         </div>
         <div class="p3-grid">
-          <div class="p3-card"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card p3-card-wide-row"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d1"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d2"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card p3-card-wide-row fx-fade-up fx-d3"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
         </div>
       </section>
     </div>

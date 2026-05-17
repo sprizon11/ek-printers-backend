@@ -9,8 +9,32 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412;--footer:#161412;--teal:#006B5E;--teal2:#008F7A;--coral:#E85D3A;--warm:#8B7355;--light:#E8F4F1;--card:#FFFFFF;--muted:rgba(22,20,18,0.5);--font-body:'Segoe UI',Roboto,Arial,sans-serif;--font-heading:Georgia,'Times New Roman',serif}
-  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background 0.25s ease,color 0.25s ease}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background 0.25s ease,color 0.25s ease;position:relative}
+  body::before{
+    content:'';
+    position:fixed;
+    inset:-20% -25% auto;
+    height:62vh;
+    pointer-events:none;
+    z-index:-1;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(0,107,94,0.12), transparent 48%),
+      radial-gradient(circle at 82% 12%, rgba(0,143,122,0.08), transparent 42%),
+      radial-gradient(circle at 50% 72%, rgba(232,93,58,0.05), transparent 38%);
+    filter:blur(2px);
+    animation:bgDrift 14s ease-in-out infinite alternate;
+  }
+  @keyframes bgDrift{
+    from{transform:translate3d(-2%,0,0) scale(1)}
+    to{transform:translate3d(2.5%,1.5%,0) scale(1.03)}
+  }
   body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1;--footer:#0B0D0F;--light:#243037;--card:#1E2226;--muted:rgba(236,239,241,0.65)}
+  body.dark-mode::before{
+    background:
+      radial-gradient(circle at 20% 24%, rgba(110,231,214,0.11), transparent 46%),
+      radial-gradient(circle at 78% 18%, rgba(66,245,215,0.07), transparent 40%),
+      radial-gradient(circle at 48% 75%, rgba(63,81,181,0.11), transparent 40%);
+  }
   body.dark-mode nav,body.dark-mode .prods3,body.dark-mode .cta3{background:var(--bg)}
   body.dark-mode .feat-bar{background:var(--surface);border-color:rgba(236,239,241,0.12)}
   body.dark-mode .p3-card,body.dark-mode .cta3-contact-card,body.dark-mode .prod-modal{background:var(--card);border-color:rgba(236,239,241,0.12)}
@@ -63,7 +87,8 @@
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
   /* NAV — mobile first */
-  #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.55rem 1.15rem;background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100}
+  #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.55rem 1.15rem;background:rgba(250,250,248,0.84);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(10,18,28,0.06)}
+  body.dark-mode #navMain{background:rgba(18,20,22,0.84);box-shadow:0 10px 26px rgba(0,0,0,0.28)}
   .n3-logo{display:flex;align-items:center;flex:1;min-width:0;text-decoration:none;color:inherit}
   .n3-logo-row{display:flex;align-items:baseline;gap:0.18rem;min-width:0}
   .n3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
@@ -87,7 +112,7 @@
   body.nav-drawer-open{overflow:hidden}
 
   /* Categories strip under nav */
-  .n3-cats{background:var(--bg);border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
+  .n3-cats{background:linear-gradient(180deg,rgba(255,255,255,0.24),rgba(255,255,255,0));border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
   .n3-cats-kicker{font-size:0.62rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(22,20,18,0.55);line-height:1.1;margin-bottom:0.25rem}
   .n3-cats-title{font-family:var(--font-heading);font-weight:700;font-size:0.95rem;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);margin-bottom:0.25rem}
   .n3-cats-sub{font-size:0.72rem;color:rgba(22,20,18,0.52);line-height:1.35;margin-bottom:0.5rem}
@@ -107,8 +132,11 @@
   .fx-d3{animation-delay:.16s}
   .fx-d4{animation-delay:.22s}
   .fx-d5{animation-delay:.28s}
+  .reveal-on-scroll{opacity:0;transform:translateY(22px) scale(0.985);transition:opacity .6s ease,transform .6s ease}
+  .reveal-on-scroll.is-visible{opacity:1;transform:translateY(0) scale(1)}
   @media (prefers-reduced-motion: reduce){
-    .fx-fade-up{opacity:1!important;animation:none!important;transform:none!important}
+    .fx-fade-up,.reveal-on-scroll{opacity:1!important;animation:none!important;transform:none!important;transition:none!important}
+    body::before,.h3-badge::after{animation:none!important}
   }
   /* Mobile menu drawer (popup) */
   .n3-drawer{position:fixed;inset:0;z-index:240;visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.22s ease,visibility 0.22s}
@@ -132,8 +160,13 @@
 
   /* HERO — mobile first */
   .h3{padding:1.55rem 1.15rem 2rem;display:grid;grid-template-columns:1fr;gap:2rem;align-items:center}
-  .h3-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--light);color:var(--teal);font-size:0.7rem;font-weight:500;padding:0.4rem 1rem;border-radius:100px;margin-bottom:1.1rem;letter-spacing:0.05em}
+  .h3-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--light);color:var(--teal);font-size:0.7rem;font-weight:500;padding:0.4rem 1rem;border-radius:100px;margin-bottom:1.1rem;letter-spacing:0.05em;box-shadow:0 10px 24px rgba(0,107,94,0.12);position:relative;overflow:hidden}
   .h3-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  .h3-badge::after{content:'';position:absolute;inset:0 auto 0 -160%;width:55%;background:linear-gradient(110deg,transparent,rgba(255,255,255,0.52),transparent);transform:skewX(-20deg);animation:badgeShine 4.5s ease-in-out infinite}
+  @keyframes badgeShine{
+    0%,70%{left:-160%}
+    100%{left:165%}
+  }
   .h3-title{font-family:var(--font-heading);font-size:clamp(2.35rem,5.5vw,4.2rem);font-weight:600;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.2rem}
   .h3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
   .h3-sub{font-size:clamp(0.88rem,2.5vw,0.9rem);color:rgba(22,20,18,0.55);line-height:1.6;max-width:none;margin-bottom:2.5rem;font-weight:400}
@@ -184,7 +217,7 @@
   .c3-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);position:absolute;top:1.5rem;right:1.8rem}
 
   /* FEATURES BAR — mobile first */
-  .feat-bar{background:var(--surface);padding:1.25rem 1rem;display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid rgba(22,20,18,0.06);border-bottom:1px solid rgba(22,20,18,0.06)}
+  .feat-bar{background:linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.2));padding:1.25rem 1rem;display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid rgba(22,20,18,0.06);border-bottom:1px solid rgba(22,20,18,0.06)}
   .feat-item{display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-right:none;border-bottom:1px solid rgba(22,20,18,0.06)}
   .feat-item:last-child{border-bottom:none}
   body.dark-mode .feat-item{border-color:rgba(236,239,241,0.08)}
@@ -201,9 +234,9 @@
   .p3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
   .p3-subtitle{font-size:0.8rem;color:rgba(22,20,18,0.45);max-width:none;text-align:left;line-height:1.6}
   .p3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem}
-  .p3-card{background:var(--surface);border-radius:14px;padding:0.95rem 0.8rem;transition:all 0.3s;cursor:pointer;border:1px solid transparent;display:flex;flex-direction:column;min-height:0}
+  .p3-card{background:linear-gradient(180deg,#f5f3ee 0%,#f0eee8 100%);border-radius:14px;padding:0.95rem 0.8rem;transition:all 0.3s;cursor:pointer;border:1px solid rgba(22,20,18,0.06);display:flex;flex-direction:column;min-height:0;box-shadow:0 6px 22px rgba(22,20,18,0.05)}
   body.dark-mode .p3-card:hover{background:var(--card)}
-  .p3-card:hover{background:#fff;border-color:rgba(22,20,18,0.08);transform:translateY(-2px);box-shadow:0 12px 28px rgba(22,20,18,0.07)}
+  .p3-card:hover{background:#fff;border-color:rgba(22,20,18,0.12);transform:translateY(-3px);box-shadow:0 16px 34px rgba(22,20,18,0.1)}
   .p3-icon-wrap{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:0.65rem}
   .p3-icon-wrap.t{background:var(--light)}
   .p3-icon-wrap.c{background:rgba(232,93,58,0.1)}
@@ -215,7 +248,7 @@
   .p3-card.p3-card-wide-row{grid-column:span 2}
 
   /* TESTIMONIALS — mobile first */
-  .testi3{background:var(--teal);padding:3rem 1.15rem;display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
+  .testi3{background:linear-gradient(135deg,#006b5e 0%,#0b8c7b 100%);padding:3rem 1.15rem;display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
   .testi3-left .t3-badge{display:inline-flex;background:rgba(255,255,255,0.15);color:#fff;font-size:0.65rem;font-weight:600;padding:0.4rem 1rem;border-radius:100px;margin-bottom:1.5rem;letter-spacing:0.1em}
   .testi3-left h2{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.85rem,4vw,2.8rem);color:#fff;letter-spacing:-0.02em;line-height:1.1}
   .testi3-left h2 em{font-family:var(--font-heading);font-style:italic;font-weight:600;opacity:0.85}
@@ -365,7 +398,7 @@
     </div>
   </nav>
 
-  <div class="n3-cats">
+  <div class="n3-cats reveal-on-scroll">
     <div class="n3-cats-kicker">Manufacturing</div>
     <div class="n3-cats-title">We manufacture print products</div>
     <div class="n3-cats-sub">Direct production • Consistent quality • Fast turnaround</div>
@@ -413,14 +446,14 @@
     </div>
   </section>
 
-  <div class="feat-bar">
+  <div class="feat-bar reveal-on-scroll">
     <div class="feat-item"><div class="feat-icon">⚡</div><div class="feat-text"><strong>48-hr Turnaround</strong><span>Express delivery available</span></div></div>
     <div class="feat-item"><div class="feat-icon">🎨</div><div class="feat-text"><strong>Free Design Help</strong><span>Our team assists you</span></div></div>
     <div class="feat-item"><div class="feat-icon">✅</div><div class="feat-text"><strong>Quality Assured</strong><span>100% satisfaction guarantee</span></div></div>
     <div class="feat-item"><div class="feat-icon">🚚</div><div class="feat-text"><strong>Pan-India Shipping</strong><span>Fast & safe packaging</span></div></div>
   </div>
 
-  <section class="testi3" id="portfolio">
+  <section class="testi3 reveal-on-scroll" id="portfolio">
     <div class="testi3-left">
       <div class="t3-badge">CLIENT LOVE</div>
       <h2>What Our<br>Clients <em>Say</em></h2>
@@ -431,7 +464,7 @@
     </div>
   </section>
 
-  <section class="cta3" id="contact">
+  <section class="cta3 reveal-on-scroll" id="contact">
     <div class="cta3-form" id="quoteForm">
       <input class="cta3-input" id="q-company" type="text" placeholder="Company Name" autocomplete="organization">
       <div class="cta3-row">
@@ -489,7 +522,7 @@
     </div>
   </section>
 
-  <div class="h3-trust--bottom">
+  <div class="h3-trust--bottom reveal-on-scroll">
     <div class="h3-trust">
       <div class="h3-avatars"><div class="h3-av">RK</div><div class="h3-av">SM</div><div class="h3-av">AJ</div></div>
       <div class="h3-trust-text"><strong>5,000+ clients</strong> trust EK PRINTERS</div>
@@ -789,6 +822,23 @@ function closeMobileNav() {
   closeNavDrawer();
 }
 
+function initRevealAnimations() {
+  const nodes = document.querySelectorAll('.reveal-on-scroll');
+  if (!nodes.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    nodes.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+  nodes.forEach(el => io.observe(el));
+}
+
 // Also allow pressing Enter in the last field
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
@@ -823,6 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') submitQuote();
   });
   initQuoteFormSelects();
+  initRevealAnimations();
 });
 </script>
 

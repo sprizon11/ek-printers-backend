@@ -45,8 +45,8 @@
       margin-bottom:1rem;padding:0.7rem 0.1rem;
       background:rgba(242,246,242,0.86);backdrop-filter:blur(10px);
     }
-    .brand{font-weight:900;font-size:1.26rem;letter-spacing:-0.02em}
-    .brand span{color:var(--teal)}
+    .brand{display:inline-flex;align-items:center}
+    .brand img{display:block;height:44px;width:auto;max-width:min(78vw,420px);object-fit:contain}
     .back{
       display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;
       border:1px solid var(--border);background:#fff;color:var(--ink);
@@ -141,7 +141,7 @@
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="brand"><span>EK</span> PRINTERS</div>
+      <div class="brand"><img src="ek-printers-logo.png" alt="EK PRINTERS"></div>
       <a class="back" href="index.html#products">← Back to Products</a>
     </div>
 

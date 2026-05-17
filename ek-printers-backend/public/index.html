@@ -102,6 +102,7 @@
   #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.65rem;padding:0.55rem 1rem;background:rgba(245,249,244,0.9);border-bottom:1px solid rgba(17,24,39,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 22px rgba(17,24,39,0.08)}
   body.dark-mode #navMain{background:rgba(18,20,22,0.84);box-shadow:0 10px 26px rgba(0,0,0,0.28)}
   .n3-logo{display:flex;align-items:center;flex:1;min-width:0;text-decoration:none;color:inherit}
+  .n3-logo-img{display:block;height:44px;width:auto;max-width:min(78vw,420px);object-fit:contain}
   .n3-logo-row{display:flex;align-items:baseline;gap:0.18rem;min-width:0}
   .n3-mark{font-family:var(--font-heading);font-weight:900;font-size:clamp(1.18rem,4.8vw,1.72rem);letter-spacing:0.01em;color:var(--teal);line-height:1}
   .n3-mark-rest{font-family:var(--font-heading);font-weight:900;font-size:clamp(1.18rem,4.8vw,1.72rem);letter-spacing:-0.02em;color:var(--ink);line-height:1;margin-left:0.02em}
@@ -335,6 +336,7 @@
   /* FOOTER — mobile first */
   .foot3{background:var(--footer);padding:1.75rem 1.15rem;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;justify-content:flex-start}
   .f3-logo{display:flex;align-items:center;gap:0.18rem;text-decoration:none}
+  .f3-logo-img{display:block;height:44px;width:auto;max-width:min(78vw,420px);object-fit:contain}
   .f3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
   .f3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:-0.03em;color:rgba(255,255,255,0.92);line-height:1;margin-left:0.14em}
   .f3-links{display:flex;flex-wrap:wrap;gap:0.75rem 1.25rem}
@@ -436,17 +438,15 @@
   </div>
   <nav id="navMain">
     <a href="index.html" class="n3-logo">
-      <span class="n3-logo-row"><span class="n3-mark">EK</span><span class="n3-mark-rest">PRINTERS</span></span>
+      <img class="n3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS">
     </a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
-        <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
         <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote →</button>
       </div>
     </div>
     <div class="n3-mobile-bar">
-      <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
       <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">☰</button>
     </div>
   </nav>
@@ -594,7 +594,7 @@
   </div>
 
   <div class="foot3">
-    <div class="f3-logo"><span class="f3-mark">EK</span><span class="f3-mark-rest">PRINTERS</span></div>
+    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS"></div>
     <div class="f3-links">
       <a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -607,16 +607,7 @@
 </div>
 
 <script>
-const THEME_KEY = 'ek-theme';
 const QUOTE_PREFILL_KEY = 'ekQuotePrefill';
-function applyTheme(theme) {
-  const dark = theme === 'dark';
-  document.body.classList.toggle('dark-mode', dark);
-  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
-    btn.textContent = dark ? '☀️' : '🌙';
-    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  });
-}
 
 function closeAllQuoteSelects() {
   document.querySelectorAll('.cta3-select-wrap.is-open').forEach(w => {
@@ -969,15 +960,6 @@ function initRevealAnimations() {
 
 // Also allow pressing Enter in the last field
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
-  applyTheme(savedTheme);
-  document.querySelectorAll('[data-theme-toggle]').forEach(el => {
-    el.addEventListener('click', () => {
-      const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-      localStorage.setItem(THEME_KEY, next);
-      applyTheme(next);
-    });
-  });
   const burger = document.getElementById('navBurger');
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navDrawerBackdrop');

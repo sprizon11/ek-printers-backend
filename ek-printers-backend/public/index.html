@@ -87,12 +87,12 @@
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
   /* NAV — mobile first */
-  #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.55rem 1.15rem;background:rgba(250,250,248,0.84);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(10,18,28,0.06)}
+  #navMain{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:0.65rem;padding:0.4rem 1rem;background:rgba(250,250,248,0.84);border-bottom:1px solid rgba(22,20,18,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(10,18,28,0.06)}
   body.dark-mode #navMain{background:rgba(18,20,22,0.84);box-shadow:0 10px 26px rgba(0,0,0,0.28)}
   .n3-logo{display:flex;align-items:center;flex:1;min-width:0;text-decoration:none;color:inherit}
   .n3-logo-row{display:flex;align-items:baseline;gap:0.18rem;min-width:0}
-  .n3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
-  .n3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.35rem,5.2vw,1.85rem);letter-spacing:-0.03em;color:var(--ink);line-height:1;margin-left:-0.02em}
+  .n3-mark{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.2rem,4.8vw,1.75rem);letter-spacing:0.02em;color:var(--teal);line-height:1}
+  .n3-mark-rest{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.2rem,4.8vw,1.75rem);letter-spacing:-0.03em;color:var(--ink);line-height:1;margin-left:-0.02em}
   .n3-name{font-family:var(--font-heading);font-weight:600;font-size:1rem;letter-spacing:-0.02em;line-height:1.1}
   .n3-name span{color:var(--teal);font-weight:400}
   .n3-desktop-row{display:none;align-items:center;gap:2rem;flex:1;justify-content:flex-end}
@@ -100,12 +100,12 @@
   .n3-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:500;transition:color 0.2s}
   .n3-links a:hover{color:var(--ink)}
   .n3-desktop-cta{display:flex;align-items:center;gap:0.55rem}
-  .n3-mobile-bar{display:flex;align-items:center;gap:0.45rem;flex-shrink:0}
-  .n3-theme-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.25rem;line-height:1;cursor:pointer;flex-shrink:0;transition:border-color 0.2s,background 0.2s}
+  .n3-mobile-bar{display:flex;align-items:center;gap:0.4rem;flex-shrink:0}
+  .n3-theme-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.15rem;line-height:1;cursor:pointer;flex-shrink:0;transition:border-color 0.2s,background 0.2s}
   body.dark-mode .n3-theme-icon{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
   .n3-theme-icon:hover{background:var(--light)}
   body.dark-mode .n3-theme-icon:hover{background:var(--card)}
-  .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.2rem;line-height:1;cursor:pointer;flex-shrink:0}
+  .n3-burger{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(22,20,18,0.14);background:var(--surface);font-size:1.08rem;line-height:1;cursor:pointer;flex-shrink:0}
   body.dark-mode .n3-burger{border-color:rgba(236,239,241,0.2);background:var(--surface);color:var(--ink)}
   .n3-btn{background:var(--teal);color:#fff;padding:0.6rem 1.4rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.2s}
   .n3-btn:hover{background:var(--teal2)}
@@ -248,6 +248,19 @@
   .p3-card:hover .p3-arrow{gap:0.7rem}
   .p3-card.p3-card-wide-row{grid-column:span 2}
 
+  /* GALLERY — mobile first */
+  .gallery3{padding:2.2rem 1.15rem 1.2rem;background:var(--bg)}
+  .g3-header{display:flex;flex-direction:column;align-items:flex-start;gap:0.7rem;margin-bottom:1.35rem}
+  .g3-title{font-family:var(--font-heading);font-weight:600;font-size:clamp(1.75rem,4vw,2.4rem);letter-spacing:-0.02em;line-height:1.05}
+  .g3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
+  .g3-sub{font-size:0.78rem;color:rgba(22,20,18,0.5);line-height:1.55}
+  .g3-grid{display:grid;grid-template-columns:1fr;gap:0.8rem}
+  .g3-card{position:relative;background:var(--surface);border-radius:16px;padding:0.35rem;border:1px solid rgba(22,20,18,0.07);overflow:hidden;box-shadow:0 10px 26px rgba(22,20,18,0.08)}
+  .g3-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(10,16,22,0.35) 100%);pointer-events:none}
+  .g3-img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;transform:scale(1.001);transition:transform .35s ease}
+  .g3-card:hover .g3-img{transform:scale(1.04)}
+  body.dark-mode .g3-card{border-color:rgba(236,239,241,0.12)}
+
   /* TESTIMONIALS — mobile first */
   .testi3{background:linear-gradient(135deg,#006b5e 0%,#0b8c7b 100%);padding:3rem 1.15rem;display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
   .testi3-left .t3-badge{display:inline-flex;background:rgba(255,255,255,0.15);color:#fff;font-size:0.65rem;font-weight:600;padding:0.4rem 1rem;border-radius:100px;margin-bottom:1.5rem;letter-spacing:0.1em}
@@ -366,6 +379,8 @@
     .p3-cname{font-size:1rem;margin-bottom:0.5rem}
     .p3-cdesc{font-size:0.75rem;line-height:1.6;-webkit-line-clamp:unset;display:block;overflow:visible}
     .p3-arrow{font-size:0.7rem;gap:0.4rem;margin-top:1rem;padding-top:0}
+    .gallery3{padding:4rem 3rem 2.2rem}
+    .g3-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.15rem}
     .testi3{padding:5rem 3rem;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
     .cta3{padding:5rem 3rem;grid-template-columns:1fr;gap:2.25rem}
     .cta3-form{max-width:560px;justify-self:start}
@@ -386,7 +401,7 @@
       <span class="n3-logo-row"><span class="n3-mark">EK</span><span class="n3-mark-rest">PRINTERS</span></span>
     </a>
     <div class="n3-desktop-row">
-      <div class="n3-links"><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
+      <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
         <button type="button" class="n3-theme-icon" data-theme-toggle aria-label="Switch to dark mode">🌙</button>
         <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote →</button>
@@ -409,6 +424,7 @@
       </div>
       <div class="n3-drawer-links">
         <a href="#products">Products</a>
+        <a href="#gallery">Gallery</a>
         <a href="#portfolio">Portfolio</a>
         <a href="about.html">About</a>
         <a href="#contact">Contact</a>
@@ -444,6 +460,19 @@
     <div class="feat-item"><div class="feat-icon">✅</div><div class="feat-text"><strong>Quality Assured</strong><span>100% satisfaction guarantee</span></div></div>
     <div class="feat-item"><div class="feat-icon">🚚</div><div class="feat-text"><strong>Pan-India Shipping</strong><span>Fast & safe packaging</span></div></div>
   </div>
+
+  <section class="gallery3 reveal-on-scroll" id="gallery">
+    <div class="g3-header">
+      <div class="g3-title">Our <em>Gallery</em></div>
+      <div class="g3-sub">Inside our print floor and finishing process.</div>
+    </div>
+    <div class="g3-grid">
+      <div class="g3-card"><img class="g3-img" src="bc-normal.png" alt="Precision cutting and finishing work" loading="lazy" decoding="async"></div>
+      <div class="g3-card"><img class="g3-img" src="lb-woven.png" alt="Offset press operation and print setup" loading="lazy" decoding="async"></div>
+      <div class="g3-card"><img class="g3-img" src="ht-premium.png" alt="Quality check and packaging table" loading="lazy" decoding="async"></div>
+      <div class="g3-card"><img class="g3-img" src="bc-foil.png" alt="Production equipment close-up" loading="lazy" decoding="async"></div>
+    </div>
+  </section>
 
   <section class="testi3 reveal-on-scroll" id="portfolio">
     <div class="testi3-left">

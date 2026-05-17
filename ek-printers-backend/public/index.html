@@ -477,14 +477,22 @@
 
   <section class="h3">
     <div>
-      <div class="h3-badge fx-fade-up fx-d1">Tiruppur Offset Printing</div>
-      <h1 class="h3-title fx-fade-up fx-d2">Premium Cards<br>for <em>Every</em><br>Occasion</h1>
-      <p class="h3-sub fx-fade-up fx-d3">Visiting cards, printed & woven labels, hang tags & stationery — crafted with precision and care for brands, businesses, and celebrations across India.</p>
+      <div class="h3-badge fx-fade-up fx-d1">AUTUMN / WINTER 2026</div>
+      <h1 class="h3-title fx-fade-up fx-d2">THE NEW<br><em>PRINT</em><br>SILHOUETTE</h1>
+      <p class="h3-sub fx-fade-up fx-d3">Architecture precision meets fluid movement - premium cards, labels and hang tags crafted for modern brands.</p>
+      <div class="af-actions fx-fade-up fx-d4">
+        <a class="af-btn" href="#contact">Explore Collection →</a>
+        <div class="af-dots" aria-hidden="true">
+          <span class="af-dot active"></span>
+          <span class="af-dot"></span>
+          <span class="af-dot"></span>
+        </div>
+      </div>
 
       <section class="prods3" id="products">
         <div class="p3-header">
           <div class="p3-title fx-fade-up fx-d4">What We<br><em>Create</em></div>
-          <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
+          <div class="p3-subtitle fx-fade-up fx-d5">Four premium product categories. Tap to open full collection.</div>
         </div>
         <div class="p3-grid">
           <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">></div></div></div>
@@ -1046,6 +1054,169 @@ document.addEventListener('DOMContentLoaded', () => {
     .prod-modal-header,.prod-modal-body,.prod-modal-footer{padding-left:1.15rem;padding-right:1.15rem}
     .prod-modal-actions{flex-direction:column}
     .prod-wa-btn{text-align:center}
+  }
+
+  /* === AETHER-STYLE PREMIUM OVERRIDES === */
+  :root{
+    --bg:#060709;
+    --surface:#0f1217;
+    --ink:#f5f7fb;
+    --muted:rgba(233,239,255,0.68);
+    --card:#11151b;
+    --teal:#c7ff00;
+    --teal2:#9fd800;
+    --light:#151b23;
+  }
+  body{background:radial-gradient(circle at 16% -8%, #1a2232 0%, #060709 48%, #050608 100%);color:var(--ink)}
+  body::before{display:none}
+  .n3-utility{display:none}
+  #navMain{
+    position:fixed;
+    top:0.8rem;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(94%,980px);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(8,10,13,0.72);
+    backdrop-filter:blur(10px);
+    box-shadow:0 18px 40px rgba(0,0,0,0.45);
+  }
+  .n3-logo-img{height:36px}
+  .n3-links a{color:rgba(236,240,250,0.72)}
+  .n3-links a:hover{color:#fff}
+  .n3-burger{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:#f5f7fb}
+  .n3-premium-line{display:none}
+  .h3{
+    padding:5.5rem 0.95rem 1.8rem;
+    min-height:100svh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+  }
+  .h3 > div{
+    width:min(100%,430px);
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.11);
+    box-shadow:0 26px 56px rgba(0,0,0,0.55);
+    padding:1.15rem;
+    background:
+      linear-gradient(180deg,rgba(5,7,10,0.12) 0%,rgba(5,7,10,0.84) 56%,rgba(5,7,10,0.95) 100%),
+      url('gallery-1.png') center/cover no-repeat;
+  }
+  .h3-badge{
+    background:transparent;
+    box-shadow:none;
+    color:rgba(240,244,255,0.78);
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    padding:0;
+    font-size:0.58rem;
+    margin-bottom:0.55rem;
+  }
+  .h3-badge::before,.h3-badge::after{display:none}
+  .h3-title{
+    font-size:clamp(2.15rem,10vw,3.2rem);
+    line-height:0.94;
+    font-weight:700;
+    max-width:10ch;
+    margin-bottom:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:-0.02em;
+  }
+  .h3-title em{font-style:normal;color:#fff}
+  .h3-sub{
+    color:rgba(228,233,247,0.86);
+    font-size:0.77rem;
+    max-width:30ch;
+    margin-bottom:0.95rem;
+    line-height:1.55;
+  }
+  .af-actions{display:flex;align-items:center;gap:0.65rem}
+  .af-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.55rem;
+    border:none;
+    border-radius:999px;
+    padding:0.78rem 1.15rem;
+    background:linear-gradient(135deg,var(--teal),var(--teal2));
+    color:#0a1201;
+    font-size:0.66rem;
+    font-weight:800;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    text-decoration:none;
+    box-shadow:0 12px 28px rgba(159,216,0,0.35);
+  }
+  .af-dots{display:flex;gap:0.36rem}
+  .af-dot{width:20px;height:3px;border-radius:999px;background:rgba(255,255,255,0.28)}
+  .af-dot.active{background:#fff}
+  .h3 .prods3{margin-top:6.6rem;padding:0}
+  .p3-title{font-size:1.46rem}
+  .p3-subtitle{font-size:0.74rem;color:rgba(236,240,250,0.64)}
+  .p3-grid{gap:0.62rem}
+  .p3-card{
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:16px;
+    background:#0b0f14;
+    box-shadow:0 16px 30px rgba(0,0,0,0.38);
+  }
+  .p3-card:hover{transform:translateY(-4px);box-shadow:0 22px 38px rgba(0,0,0,0.42)}
+  .p3-card-body{
+    background:linear-gradient(180deg,rgba(6,8,11,0) 0%,rgba(6,8,11,0.86) 100%);
+    padding:0.65rem 0.62rem;
+  }
+  .p3-cname{color:#f7f9ff;font-size:0.75rem;letter-spacing:0.02em}
+  .p3-arrow{
+    color:#d4ff45;
+    border:1px solid rgba(212,255,69,0.45);
+    width:22px;height:22px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:0.66rem;font-weight:700;
+  }
+  .feat-bar,.gallery3,.testi3,.cta3,.h3-trust--bottom,.foot3{
+    background:transparent;
+    width:min(94%,980px);
+    margin-inline:auto;
+  }
+  .feat-bar{margin-top:0.7rem;padding:0;gap:0.5rem}
+  .feat-item{
+    background:rgba(12,16,22,0.88);
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .feat-text strong{color:#f4f7ff}
+  .feat-text span{color:rgba(228,233,247,0.62)}
+  .g3-card,.t3-review,.cta3-form,.cta3-left,.cta3-contact-card{
+    background:rgba(12,16,22,0.86)!important;
+    border:1px solid rgba(255,255,255,0.08)!important;
+  }
+  .g3-title,.testi3-left h2,.cta3-form-title,.cta3-left h2{color:#f6f8ff}
+  .g3-sub,.t3-text,.cta3-form-sub,.cta3-left p,.t3-source{color:rgba(228,233,247,0.68)}
+  .cta3-input,.prod-qty{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    color:#f6f8ff;
+  }
+  .cta3-input::placeholder,.prod-qty::placeholder{color:rgba(228,233,247,0.46)}
+  .prod-modal{background:#0d1118;border:1px solid rgba(255,255,255,0.12)}
+  .prod-modal-name,.prod-section-title{color:#f6f8ff}
+  .prod-modal-desc,.prod-turnaround{color:rgba(228,233,247,0.68)}
+  .prod-variety-card{background:#111722;border-color:rgba(255,255,255,0.12);color:#f7f9ff}
+  .prod-variety-card.highlight{background:#1a2435;border-color:#d4ff45;box-shadow:0 0 0 2px rgba(212,255,69,0.18)}
+  .prod-turnaround{background:rgba(255,255,255,0.05)}
+  .prod-wa-btn{background:rgba(255,255,255,0.08);color:#f6f8ff}
+  .f3-copy,.f3-links a{color:rgba(228,233,247,0.62)}
+  .f3-links a:hover{color:#fff}
+  @media (min-width:900px){
+    .h3 > div{width:min(100%,980px);padding:1.8rem;min-height:76svh;background-position:center 18%}
+    .h3 .prods3{margin-top:11.2rem}
+    .h3-title{font-size:clamp(2.8rem,6vw,4.3rem)}
+    .h3-sub{font-size:0.92rem}
+    .af-btn{font-size:0.7rem}
+    .p3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   }
 </style>
 

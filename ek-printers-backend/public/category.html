@@ -136,6 +136,94 @@
       .wrap{padding:1.4rem}
       .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
     }
+
+    /* AETHER-STYLE PREMIUM OVERRIDES */
+    :root{
+      --bg:#060709;
+      --card:#11151b;
+      --ink:#f5f7fb;
+      --muted:rgba(233,239,255,0.68);
+      --teal:#c7ff00;
+      --teal2:#9fd800;
+      --border:rgba(255,255,255,0.12);
+    }
+    body{
+      background:radial-gradient(circle at 16% -8%, #1a2232 0%, #060709 48%, #050608 100%);
+      color:var(--ink);
+    }
+    body::before{display:none}
+    .wrap{width:min(94%,980px);padding:0.8rem 0.15rem 1.4rem}
+    .top{
+      position:fixed;
+      top:0.8rem;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(94%,980px);
+      margin:0;
+      padding:0.62rem 0.8rem;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:rgba(8,10,13,0.72);
+      backdrop-filter:blur(10px);
+      box-shadow:0 18px 40px rgba(0,0,0,0.45);
+    }
+    .brand img{height:36px}
+    .back{
+      background:rgba(255,255,255,0.06);
+      border-color:rgba(255,255,255,0.18);
+      color:#f6f8ff;
+    }
+    .head{margin:5.2rem 0 1rem}
+    .kicker{color:#d4ff45}
+    h1{color:#f6f8ff}
+    .sub{color:rgba(228,233,247,0.72)}
+    .item{
+      background:rgba(12,16,22,0.88);
+      border:1px solid rgba(255,255,255,0.09);
+      box-shadow:0 16px 30px rgba(0,0,0,0.36);
+    }
+    .item:hover{border-color:rgba(212,255,69,0.45)}
+    .item img{background:#0d131c}
+    .item h3{color:#f7f9ff}
+    .item p{color:rgba(228,233,247,0.62)}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--teal),var(--teal2));
+      color:#0a1201;
+    }
+    .btn-muted{
+      background:rgba(255,255,255,0.06);
+      border-color:rgba(255,255,255,0.14);
+      color:#f6f8ff;
+    }
+    .modal{
+      background:#0d1118;
+      border:1px solid rgba(255,255,255,0.12);
+    }
+    .modal-title{color:#f7f9ff}
+    .modal-image-wrap{
+      background:rgba(255,255,255,0.04);
+      border-color:rgba(255,255,255,0.1);
+    }
+    .modal-foot{border-top-color:rgba(255,255,255,0.1)}
+    .qty{
+      background:rgba(255,255,255,0.06);
+      border-color:rgba(255,255,255,0.14);
+      color:#f6f8ff;
+    }
+    .qty:focus{
+      border-color:#d4ff45;
+      box-shadow:0 0 0 4px rgba(212,255,69,0.15);
+      background:rgba(255,255,255,0.08);
+    }
+    .wa-btn{
+      background:rgba(255,255,255,0.06);
+      border-color:rgba(255,255,255,0.14);
+      color:#f6f8ff;
+    }
+    @media (min-width:860px){
+      .wrap{padding-top:1rem}
+      .head{margin-top:5.5rem}
+    }
   </style>
 </head>
 <body>

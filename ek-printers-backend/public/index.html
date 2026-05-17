@@ -249,18 +249,22 @@
   .p3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
   .p3-subtitle{font-size:0.8rem;color:var(--muted);max-width:none;text-align:left;line-height:1.6}
   .p3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem}
-  .p3-card{background:linear-gradient(180deg,#FFFFFF 0%,#F2F8F3 100%);border-radius:16px;padding:1rem 0.9rem;transition:all 0.28s;cursor:pointer;border:1px solid rgba(27,154,89,0.14);display:flex;flex-direction:column;min-height:0;box-shadow:0 10px 24px rgba(17,24,39,0.08);position:relative;overflow:hidden}
+  .p3-card{background:linear-gradient(180deg,#FFFFFF 0%,#F2F8F3 100%);border-radius:16px;padding:0.55rem;transition:all 0.28s;cursor:pointer;border:1px solid rgba(27,154,89,0.14);display:flex;flex-direction:column;min-height:0;box-shadow:0 10px 24px rgba(17,24,39,0.08);position:relative;overflow:hidden}
   .p3-card::before{content:'';position:absolute;inset:-120% -40% auto;height:200%;background:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,0.4) 48%,rgba(255,255,255,0) 64%);transform:translateX(-100%);transition:transform .55s ease;pointer-events:none}
   .p3-card:hover::before{transform:translateX(145%)}
   body.dark-mode .p3-card:hover{background:var(--card)}
   .p3-card:hover{background:#fff;border-color:rgba(27,154,89,0.35);transform:translateY(-4px);box-shadow:0 18px 36px rgba(17,24,39,0.12)}
+  .p3-card-img-wrap{border-radius:12px;overflow:hidden;background:#eef4ef}
+  .p3-card-img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .35s ease}
+  .p3-card:hover .p3-card-img{transform:scale(1.03)}
+  .p3-card-body{padding:0.7rem 0.45rem 0.35rem;display:flex;flex-direction:column;min-height:0;flex:1}
   .p3-icon-wrap{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:0.65rem}
   .p3-icon-wrap.t{background:var(--light)}
   .p3-icon-wrap.c{background:rgba(232,93,58,0.1)}
   .p3-icon-wrap.w{background:rgba(139,115,85,0.1)}
-  .p3-cname{font-family:var(--font-heading);font-weight:800;font-size:0.86rem;margin-bottom:0.35rem;letter-spacing:-0.02em;line-height:1.15}
+  .p3-cname{font-family:var(--font-heading);font-weight:800;font-size:0.9rem;margin-bottom:0.28rem;letter-spacing:-0.02em;line-height:1.15}
   .p3-cdesc{font-size:0.65rem;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-  .p3-arrow{display:inline-flex;align-items:center;gap:0.35rem;margin-top:auto;padding-top:0.55rem;font-size:0.65rem;font-weight:600;color:var(--teal);transition:gap 0.2s}
+  .p3-arrow{display:inline-flex;align-items:center;gap:0.35rem;margin-top:auto;padding-top:0.5rem;font-size:0.65rem;font-weight:700;color:var(--teal);transition:gap 0.2s}
   .p3-card:hover .p3-arrow{gap:0.7rem}
   .p3-card.p3-card-wide-row{grid-column:span 2}
 
@@ -397,7 +401,8 @@
     .p3-subtitle{text-align:right;max-width:220px}
     .p3-grid{grid-template-columns:repeat(4,1fr);gap:1.2rem}
     .p3-card.p3-card-wide-row{grid-column:auto}
-    .p3-card{padding:2rem;border-radius:16px}
+    .p3-card{padding:0.75rem;border-radius:16px}
+    .p3-card-body{padding:0.95rem 0.6rem 0.45rem}
     .p3-icon-wrap{width:52px;height:52px;border-radius:12px;font-size:1.4rem;margin-bottom:1.2rem}
     .p3-cname{font-size:1rem;margin-bottom:0.5rem}
     .p3-cdesc{font-size:0.75rem;line-height:1.6;-webkit-line-clamp:unset;display:block;overflow:visible}
@@ -484,10 +489,10 @@
           <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
         </div>
         <div class="p3-grid">
-          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-icon-wrap c">🧾</div><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-icon-wrap c">🪡</div><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div></div>
+          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png" alt="Printed labels"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">Explore ›</div></div></div>
+          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png" alt="Woven labels"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">Explore ›</div></div></div>
+          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="bc-normal.png" alt="Business cards"></div><div class="p3-card-body"><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div></div>
         </div>
       </section>
     </div>

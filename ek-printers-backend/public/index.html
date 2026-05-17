@@ -969,6 +969,26 @@ function initRevealAnimations() {
   nodes.forEach(el => io.observe(el));
 }
 
+function initHeroAutoBackground() {
+  const heroPanel = document.querySelector('.h3 > div');
+  if (!heroPanel) return;
+  const heroPhotos = ['hang-tag-card.png', 'lb-cotton.png'];
+  let current = 0;
+  heroPanel.style.setProperty('--hero-photo', `url('${heroPhotos[current]}')`);
+  heroPanel.style.setProperty('--hero-photo-next', `url('${heroPhotos[(current + 1) % heroPhotos.length]}')`);
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(() => {
+    const next = (current + 1) % heroPhotos.length;
+    heroPanel.style.setProperty('--hero-photo-next', `url('${heroPhotos[next]}')`);
+    heroPanel.classList.add('hero-fade');
+    setTimeout(() => {
+      current = next;
+      heroPanel.style.setProperty('--hero-photo', `url('${heroPhotos[current]}')`);
+      heroPanel.classList.remove('hero-fade');
+    }, 650);
+  }, 3800);
+}
+
 // Also allow pressing Enter in the last field
 document.addEventListener('DOMContentLoaded', () => {
   const burger = document.getElementById('navBurger');
@@ -996,6 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuoteFormSelects();
   applyQuotePrefill();
   initRevealAnimations();
+  initHeroAutoBackground();
 });
 </script>
 
@@ -1095,6 +1116,8 @@ document.addEventListener('DOMContentLoaded', () => {
     align-items:flex-start;
   }
   .h3 > div{
+    --hero-photo:url('hang-tag-card.png');
+    --hero-photo-next:url('lb-cotton.png');
     width:min(100%,430px);
     border-radius:24px;
     overflow:hidden;
@@ -1104,7 +1127,24 @@ document.addEventListener('DOMContentLoaded', () => {
     padding:1.15rem;
     background:
       linear-gradient(180deg,rgba(5,7,10,0.12) 0%,rgba(5,7,10,0.84) 56%,rgba(5,7,10,0.95) 100%),
-      url('gallery-1.png') center/cover no-repeat;
+      var(--hero-photo) center/cover no-repeat;
+  }
+  .h3 > div::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .65s ease;
+    background:
+      linear-gradient(180deg,rgba(5,7,10,0.12) 0%,rgba(5,7,10,0.84) 56%,rgba(5,7,10,0.95) 100%),
+      var(--hero-photo-next) center/cover no-repeat;
+  }
+  .h3 > div.hero-fade::after{opacity:1}
+  .h3 > div > *{
+    position:relative;
+    z-index:1;
   }
   .h3-badge{
     background:transparent;

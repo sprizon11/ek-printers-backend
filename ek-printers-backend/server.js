@@ -479,9 +479,10 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
         radial-gradient(circle at 48% 75%, rgba(63,81,181,0.1), transparent 40%);
     }
     .topbar{background:rgba(255,255,255,0.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(22,20,18,0.08);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:nowrap;position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box;box-shadow:0 8px 24px rgba(10,18,28,0.08)}
-    .logo{display:flex;align-items:center;gap:0.45rem;flex:1 1 auto;min-width:0;max-width:calc(100% - 7.5rem)}
-    .mark{width:32px;height:32px;flex-shrink:0;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.78rem}
-    .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.78rem,3.2vw,0.95rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .logo{display:flex;align-items:center;gap:0.55rem;flex:1 1 auto;min-width:0;max-width:calc(100% - 7.5rem)}
+    .logo-word{display:flex;align-items:baseline;gap:0.16rem;min-width:0;line-height:1}
+    .logo-mark-text{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:clamp(1.35rem,5vw,1.75rem);letter-spacing:0.02em;color:var(--teal)}
+    .logo-rest-text{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:clamp(1.35rem,5vw,1.75rem);letter-spacing:-0.03em;color:var(--ink)}
     .badge{background:var(--surface);font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:100px;font-weight:600;color:rgba(22,20,18,0.5);margin-left:0.25rem;flex-shrink:0;white-space:nowrap}
     .topbar-right{display:flex;gap:0.45rem;align-items:center;flex-wrap:nowrap;flex-shrink:0;margin-left:0}
     .theme-toggle{font-size:0.65rem;padding:0.32rem 0.55rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.12);background:transparent;cursor:pointer;color:var(--ink);white-space:nowrap;flex-shrink:0}
@@ -512,15 +513,13 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .stat-label{font-size:0.58rem;color:rgba(22,20,18,0.4);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.25rem;line-height:1.2}
     .stat-val{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.15rem,4.2vw,2rem);letter-spacing:-0.02em;line-height:1}
     .controls{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.5rem;width:100%}
-    .controls-filters{display:flex;flex-wrap:nowrap;gap:0.35rem;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:thin;width:100%}
-    .controls-filters::-webkit-scrollbar{height:4px}
-    .controls-filters::-webkit-scrollbar-thumb{background:rgba(22,20,18,0.15);border-radius:4px}
+    .controls-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.5rem;align-items:stretch;width:100%}
     .controls-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem;align-items:center;width:100%}
     .controls-toolbar .date-field:nth-of-type(1){grid-column:1}
     .controls-toolbar .date-field:nth-of-type(2){grid-column:2}
     .controls-toolbar .search-main{grid-column:1/-1;width:100%;min-width:0;max-width:none}
-    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:end}
-    .filter-btn{flex:0 0 auto;font-size:0.64rem;padding:0.38rem 0.65rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
+    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:stretch;width:100%;text-align:center}
+    .filter-btn{display:flex;justify-content:center;align-items:center;width:100%;font-size:0.68rem;padding:0.5rem 0.65rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
     .search-box{background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6)}
     .search-box:focus{border-color:var(--teal)}
@@ -566,7 +565,6 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     @media (min-width:480px){
       .topbar{padding:0.85rem 1.15rem;gap:0.65rem}
       .logo{gap:0.65rem;max-width:calc(100% - 8.5rem)}
-      .mark{width:34px;height:34px;font-size:0.8rem}
       .theme-toggle{font-size:0.72rem;padding:0.4rem 0.85rem}
       .profile-btn{width:40px;height:40px}
       .badge{font-size:0.65rem;padding:0.2rem 0.55rem}
@@ -591,11 +589,13 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       .logo-text{font-size:0.95rem}
       .content{padding:2rem}
       .controls{flex-direction:row;align-items:center;gap:1rem 1.25rem}
-      .controls-filters{flex-shrink:0}
+      .controls-filters{display:flex;flex-wrap:nowrap;gap:0.35rem;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:thin;width:auto;flex-shrink:0}
+      .controls-filters::-webkit-scrollbar{height:4px}
+      .controls-filters::-webkit-scrollbar-thumb{background:rgba(22,20,18,0.15);border-radius:4px}
       .controls-toolbar{display:flex;flex-direction:row;flex-wrap:nowrap;flex:1;min-width:0;justify-content:flex-end;align-items:center;gap:0.65rem}
       .controls-toolbar .date-field:nth-of-type(1),.controls-toolbar .date-field:nth-of-type(2){grid-column:auto;width:auto;min-width:10.5rem}
       .controls-toolbar .search-main{grid-column:auto;flex:1 1 14rem;width:auto;min-width:8rem;max-width:24rem}
-      .controls-toolbar .export-btn{grid-column:auto;justify-self:auto;margin-left:0}
+      .controls-toolbar .export-btn{grid-column:auto;justify-self:auto;margin-left:0;width:auto;text-align:left}
     }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
     body.dark-mode .topbar{background:rgba(18,20,22,0.82);box-shadow:0 10px 26px rgba(0,0,0,0.3)}
@@ -630,8 +630,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 <body>
   <div class="topbar">
     <div class="logo">
-      <div class="mark">EK</div>
-      <span class="logo-text">EK PRINTERS</span>
+      <div class="logo-word"><span class="logo-mark-text">EK</span><span class="logo-rest-text">PRINTERS</span></div>
       <span class="badge">Admin Panel</span>
     </div>
     <div class="topbar-right">

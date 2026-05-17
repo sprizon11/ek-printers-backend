@@ -23,6 +23,20 @@
         var(--bg);
       color:var(--ink);
       min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:'';
+      position:fixed;inset:-20% auto auto -20%;
+      width:65vw;height:65vw;max-width:520px;max-height:520px;pointer-events:none;z-index:-1;
+      background:radial-gradient(circle, rgba(57,184,107,0.22), rgba(57,184,107,0));
+      filter:blur(24px);
+      animation:orbFloat 12s ease-in-out infinite alternate;
+    }
+    @keyframes orbFloat{
+      from{transform:translate3d(0,0,0) scale(1)}
+      to{transform:translate3d(28px,24px,0) scale(1.08)}
     }
     .wrap{max-width:1100px;margin:0 auto;padding:1rem}
     .top{
@@ -53,6 +67,13 @@
       cursor:pointer;
       transition:transform .18s,border-color .18s,box-shadow .18s;
     }
+    .item{opacity:0;transform:translateY(10px);animation:itemIn .45s ease forwards}
+    .item:nth-child(2){animation-delay:.06s}
+    .item:nth-child(3){animation-delay:.12s}
+    .item:nth-child(4){animation-delay:.18s}
+    .item:nth-child(5){animation-delay:.24s}
+    .item:nth-child(6){animation-delay:.3s}
+    @keyframes itemIn{to{opacity:1;transform:translateY(0)}}
     .item:hover{transform:translateY(-2px);border-color:rgba(27,154,89,0.35);box-shadow:0 16px 30px rgba(15,23,42,0.12)}
     .item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#eef4ef}
     .item h3{font-size:0.9rem;line-height:1.2;letter-spacing:-0.01em}
@@ -72,6 +93,11 @@
       width:min(100%,760px);max-height:90vh;overflow:auto;
       background:#fff;border-radius:20px;border:1px solid rgba(27,154,89,0.18);
       box-shadow:0 36px 80px rgba(0,0,0,0.28);
+      animation:modalIn .28s ease;
+    }
+    @keyframes modalIn{
+      from{opacity:0;transform:translateY(12px) scale(.98)}
+      to{opacity:1;transform:translateY(0) scale(1)}
     }
     .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;padding:1rem 1rem 0.6rem}
     .modal-title{font-size:1.35rem;font-weight:900;letter-spacing:-0.02em}
@@ -120,7 +146,7 @@
     </div>
 
     <div class="head">
-      <div class="kicker">CATEGORY VARIETIES</div>
+      <div class="kicker">PREMIUM COLLECTION</div>
       <h1 id="catTitle">Hang Tags</h1>
       <div class="sub" id="catSub">Select any variety to view full-size image, enter quantity, and send directly to quote form.</div>
     </div>
@@ -137,7 +163,7 @@
     <div class="modal">
       <div class="modal-head">
         <div>
-          <div class="kicker">SELECTED VARIETY</div>
+          <div class="kicker">SELECTED ITEM</div>
           <div class="modal-title" id="mTitle">Item</div>
         </div>
         <button class="modal-close" id="mClose" type="button" aria-label="Close">✕</button>
@@ -161,7 +187,7 @@
     const CATEGORIES = {
       'hang-tags': {
         title: 'Hang Tags',
-        subtitle: 'All varieties in Hang Tags.',
+        subtitle: 'Premium hang tag collection for garment and retail packaging.',
         service: 'Hang tag',
         items: [
           { name: '350 GSM Normal Tags', img: 'ht-350gsm.png' },
@@ -172,7 +198,7 @@
       },
       'printed-labels': {
         title: 'Printed Labels',
-        subtitle: 'All varieties in Printed Labels.',
+        subtitle: 'Premium printed label collection.',
         service: 'Labels',
         items: [
           { name: 'Printed Labels', img: 'lb-printed.png' },
@@ -182,7 +208,7 @@
       },
       'woven-labels': {
         title: 'Woven Labels',
-        subtitle: 'All varieties in Woven Labels.',
+        subtitle: 'Premium woven label collection.',
         service: 'Labels',
         items: [
           { name: 'Woven Labels', img: 'lb-woven.png' },
@@ -191,7 +217,7 @@
       },
       'business-cards': {
         title: 'Business Cards',
-        subtitle: 'All varieties in Business Cards.',
+        subtitle: 'Premium business card collection.',
         service: 'Business cards',
         items: [
           { name: 'Normal', img: 'bc-normal.png' },

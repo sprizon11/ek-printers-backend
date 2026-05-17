@@ -6,28 +6,109 @@
   <title>Category · EK PRINTERS</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{--bg:#F5F9F4;--card:#FFFFFF;--ink:#111827;--muted:rgba(17,24,39,0.62);--teal:#1B9A59;--border:rgba(27,154,89,0.16)}
-    body{font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-    .wrap{max-width:980px;margin:0 auto;padding:1rem}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:0.8rem;margin-bottom:1rem}
-    .brand{font-weight:900;font-size:1.25rem;letter-spacing:-0.02em}
+    :root{
+      --bg:#f2f6f2;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:rgba(15,23,42,0.64);
+      --teal:#1B9A59;
+      --teal2:#39B86B;
+      --border:rgba(27,154,89,0.16);
+    }
+    body{
+      font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(57,184,107,0.12), transparent 34%),
+        radial-gradient(circle at 82% 16%, rgba(96,165,250,0.12), transparent 32%),
+        var(--bg);
+      color:var(--ink);
+      min-height:100vh;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:1rem}
+    .top{
+      position:sticky;top:0;z-index:10;
+      display:flex;align-items:center;justify-content:space-between;gap:0.8rem;
+      margin-bottom:1rem;padding:0.7rem 0.1rem;
+      background:rgba(242,246,242,0.86);backdrop-filter:blur(10px);
+    }
+    .brand{font-weight:900;font-size:1.26rem;letter-spacing:-0.02em}
     .brand span{color:var(--teal)}
-    .back{display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;border:1px solid var(--border);background:#fff;color:var(--ink);padding:0.55rem 0.8rem;border-radius:10px;font-size:0.78rem;font-weight:600}
+    .back{
+      display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;
+      border:1px solid var(--border);background:#fff;color:var(--ink);
+      padding:0.56rem 0.82rem;border-radius:10px;font-size:0.78rem;font-weight:700;
+    }
     .head{margin:0.5rem 0 1rem}
     .kicker{font-size:0.68rem;letter-spacing:0.16em;color:var(--teal);font-weight:800}
-    h1{font-size:clamp(1.6rem,5.5vw,2.3rem);line-height:1.05;letter-spacing:-0.03em;margin-top:0.35rem}
-    .sub{margin-top:0.45rem;font-size:0.86rem;color:var(--muted);line-height:1.55}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.75rem}
-    .item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.55rem;display:flex;flex-direction:column;gap:0.5rem}
-    .item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;background:#eef4ef}
-    .item h3{font-size:0.88rem;line-height:1.2;letter-spacing:-0.01em}
+    h1{font-size:clamp(1.65rem,5.5vw,2.5rem);line-height:1.02;letter-spacing:-0.03em;margin-top:0.35rem}
+    .sub{margin-top:0.48rem;font-size:0.88rem;color:var(--muted);line-height:1.55;max-width:560px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.82rem}
+    .item{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:0.65rem;
+      display:flex;flex-direction:column;gap:0.58rem;
+      box-shadow:0 10px 24px rgba(15,23,42,0.08);
+      cursor:pointer;
+      transition:transform .18s,border-color .18s,box-shadow .18s;
+    }
+    .item:hover{transform:translateY(-2px);border-color:rgba(27,154,89,0.35);box-shadow:0 16px 30px rgba(15,23,42,0.12)}
+    .item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#eef4ef}
+    .item h3{font-size:0.9rem;line-height:1.2;letter-spacing:-0.01em}
+    .item p{font-size:0.73rem;color:var(--muted);line-height:1.45}
     .cta{margin-top:1rem;display:flex;gap:0.65rem;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:0.7rem 1rem;font-size:0.8rem;font-weight:700}
-    .btn-primary{background:linear-gradient(135deg,var(--teal),#39B86B);color:#fff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:0.72rem 1.02rem;font-size:0.8rem;font-weight:700}
+    .btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
     .btn-muted{background:#fff;border:1px solid var(--border);color:var(--ink)}
+
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:80;background:rgba(0,0,0,0.56);
+      display:none;align-items:center;justify-content:center;padding:1rem;
+      backdrop-filter:blur(4px);
+    }
+    .modal-backdrop.open{display:flex}
+    .modal{
+      width:min(100%,760px);max-height:90vh;overflow:auto;
+      background:#fff;border-radius:20px;border:1px solid rgba(27,154,89,0.18);
+      box-shadow:0 36px 80px rgba(0,0,0,0.28);
+    }
+    .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;padding:1rem 1rem 0.6rem}
+    .modal-title{font-size:1.35rem;font-weight:900;letter-spacing:-0.02em}
+    .modal-close{
+      border:1px solid var(--border);background:#fff;color:var(--ink);
+      border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:1.1rem;
+    }
+    .modal-body{padding:0 1rem 1rem}
+    .modal-image-wrap{
+      background:linear-gradient(145deg,#f4f7f3 0%,#eaf2eb 100%);
+      border:1px solid rgba(27,154,89,0.12);
+      border-radius:14px;padding:0.6rem;text-align:center;
+    }
+    .modal-image{width:100%;max-height:min(62vh,420px);object-fit:contain;border-radius:10px}
+    .modal-foot{
+      border-top:1px solid rgba(15,23,42,0.08);
+      padding:0.9rem 1rem 1rem;display:flex;flex-direction:column;gap:0.72rem;
+    }
+    .qty{
+      width:100%;background:#f5faf6;border:1.5px solid var(--border);border-radius:11px;
+      padding:0.82rem 0.9rem;font-size:0.84rem;font-family:inherit;outline:none;color:var(--ink)
+    }
+    .qty:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(27,154,89,0.12);background:#fff}
+    .modal-actions{display:flex;gap:0.65rem;flex-wrap:wrap}
+    .send-btn{
+      flex:1;background:linear-gradient(135deg,var(--teal),var(--teal2));
+      color:#fff;border:0;border-radius:11px;padding:0.84rem 1rem;
+      font-size:0.84rem;font-weight:800;cursor:pointer
+    }
+    .wa-btn{
+      display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+      border:1px solid var(--border);border-radius:11px;padding:0.84rem 1rem;
+      background:#fff;color:var(--ink);font-size:0.84rem;font-weight:700
+    }
     @media (min-width:860px){
       .wrap{padding:1.4rem}
-      .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+      .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
     }
   </style>
 </head>
@@ -41,14 +122,38 @@
     <div class="head">
       <div class="kicker">CATEGORY VARIETIES</div>
       <h1 id="catTitle">Hang Tags</h1>
-      <div class="sub" id="catSub">Choose the type you need. No price shown here — share your requirement and we will send the best quote.</div>
+      <div class="sub" id="catSub">Select any variety to view full-size image, enter quantity, and send directly to quote form.</div>
     </div>
 
     <div class="grid" id="varietyGrid"></div>
 
     <div class="cta">
-      <a class="btn btn-primary" id="quoteBtn" href="index.html#contact">Get a Quote</a>
+      <a class="btn btn-primary" href="index.html#contact">Go to Quote Form</a>
       <a class="btn btn-muted" href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="itemModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="kicker">SELECTED VARIETY</div>
+          <div class="modal-title" id="mTitle">Item</div>
+        </div>
+        <button class="modal-close" id="mClose" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-image-wrap">
+          <img class="modal-image" id="mImg" src="" alt="">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <input class="qty" id="mQty" type="number" min="1" step="1" placeholder="Enter quantity (e.g. 500)">
+        <div class="modal-actions">
+          <button class="send-btn" id="sendQuote" type="button">Send to Quote →</button>
+          <a class="wa-btn" id="sendWa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -57,6 +162,7 @@
       'hang-tags': {
         title: 'Hang Tags',
         subtitle: 'All varieties in Hang Tags.',
+        service: 'Hang tag',
         items: [
           { name: '350 GSM Normal Tags', img: 'ht-350gsm.png' },
           { name: '600 GSM Tags', img: 'ht-600gsm.png' },
@@ -67,6 +173,7 @@
       'printed-labels': {
         title: 'Printed Labels',
         subtitle: 'All varieties in Printed Labels.',
+        service: 'Labels',
         items: [
           { name: 'Printed Labels', img: 'lb-printed.png' },
           { name: 'Screen Printing Labels', img: 'lb-screen.png' },
@@ -76,6 +183,7 @@
       'woven-labels': {
         title: 'Woven Labels',
         subtitle: 'All varieties in Woven Labels.',
+        service: 'Labels',
         items: [
           { name: 'Woven Labels', img: 'lb-woven.png' },
           { name: 'Cotton Labels', img: 'lb-cotton.png' }
@@ -84,6 +192,7 @@
       'business-cards': {
         title: 'Business Cards',
         subtitle: 'All varieties in Business Cards.',
+        service: 'Business cards',
         items: [
           { name: 'Normal', img: 'bc-normal.png' },
           { name: 'Matt Lamination', img: 'bc-matt.png' },
@@ -93,9 +202,36 @@
       }
     };
 
+    const PREFILL_KEY = 'ekQuotePrefill';
     const params = new URLSearchParams(window.location.search);
     const key = params.get('category') || 'hang-tags';
     const cat = CATEGORIES[key] || CATEGORIES['hang-tags'];
+    let selectedItem = null;
+
+    const modal = document.getElementById('itemModal');
+    const mTitle = document.getElementById('mTitle');
+    const mImg = document.getElementById('mImg');
+    const mQty = document.getElementById('mQty');
+    const sendQuoteBtn = document.getElementById('sendQuote');
+    const sendWaBtn = document.getElementById('sendWa');
+
+    function openItemModal(item) {
+      selectedItem = item;
+      mTitle.textContent = item.name;
+      mImg.src = item.img;
+      mImg.alt = item.name;
+      mQty.value = '';
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      sendWaBtn.href = `https://wa.me/916374343375?text=${encodeURIComponent(
+        `Hi EK PRINTERS!\nI am interested in ${cat.title} - ${item.name}.\nQuantity: \nPlease share a quote and details.`
+      )}`;
+    }
+
+    function closeItemModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
     document.title = cat.title + ' · EK PRINTERS';
     document.getElementById('catTitle').textContent = cat.title;
@@ -103,14 +239,41 @@
 
     const grid = document.getElementById('varietyGrid');
     grid.innerHTML = cat.items.map(item => (
-      '<article class="item">' +
-      `<img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">` +
-      `<h3>${item.name}</h3>` +
-      '</article>'
+      `<article class="item" data-name="${item.name}" data-img="${item.img}">
+        <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
+        <h3>${item.name}</h3>
+        <p>Tap to view full image and send to quote.</p>
+      </article>`
     )).join('');
 
-    const quoteBtn = document.getElementById('quoteBtn');
-    quoteBtn.href = 'index.html#contact';
+    grid.querySelectorAll('.item').forEach(card => {
+      card.addEventListener('click', () => {
+        openItemModal({
+          name: card.getAttribute('data-name') || '',
+          img: card.getAttribute('data-img') || ''
+        });
+      });
+    });
+
+    sendQuoteBtn.addEventListener('click', () => {
+      if (!selectedItem) return;
+      const qty = (mQty.value || '').trim();
+      localStorage.setItem(PREFILL_KEY, JSON.stringify({
+        service: cat.service,
+        type: selectedItem.name,
+        quantity: qty,
+        requirement: `${cat.title} (${selectedItem.name})`
+      }));
+      window.location.href = 'index.html#contact';
+    });
+
+    document.getElementById('mClose').addEventListener('click', closeItemModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeItemModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeItemModal();
+    });
   </script>
 </body>
 </html>

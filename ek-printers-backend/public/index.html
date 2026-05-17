@@ -605,6 +605,7 @@
 
 <script>
 const THEME_KEY = 'ek-theme';
+const QUOTE_PREFILL_KEY = 'ekQuotePrefill';
 function applyTheme(theme) {
   const dark = theme === 'dark';
   document.body.classList.toggle('dark-mode', dark);
@@ -752,6 +753,69 @@ function resetQuoteFormPickers() {
   if (bizHeading) bizHeading.textContent = 'Type';
   if (bizMenu) bizMenu.innerHTML = '';
   closeAllQuoteSelects();
+}
+
+function applyQuotePrefill() {
+  let raw = '';
+  try {
+    raw = localStorage.getItem(QUOTE_PREFILL_KEY) || '';
+  } catch(_) {
+    return;
+  }
+  if (!raw) return;
+
+  let data = null;
+  try {
+    data = JSON.parse(raw);
+  } catch(_) {
+    localStorage.removeItem(QUOTE_PREFILL_KEY);
+    return;
+  }
+
+  const service = (data && data.service ? String(data.service) : '').trim();
+  const type = (data && data.type ? String(data.type) : '').trim();
+  const quantity = (data && data.quantity ? String(data.quantity) : '').trim();
+  const requirement = (data && data.requirement ? String(data.requirement) : '').trim();
+
+  if (service) {
+    const svcHidden = document.getElementById('q-service');
+    const svcLabel = document.getElementById('q-service-label');
+    if (svcHidden) svcHidden.value = service;
+    if (svcLabel) {
+      svcLabel.textContent = service;
+      svcLabel.classList.remove('cta3-select-placeholder');
+    }
+  }
+
+  if (type) {
+    const typeWrap = document.getElementById('q-biz-type-wrap');
+    const typeHidden = document.getElementById('q-biz-type');
+    const typeLabel = document.getElementById('q-biz-label');
+    const typeHeading = document.getElementById('q-biz-type-heading');
+    if (typeWrap) typeWrap.hidden = false;
+    if (typeHidden) typeHidden.value = type;
+    if (typeLabel) {
+      typeLabel.textContent = type;
+      typeLabel.classList.remove('cta3-select-placeholder');
+    }
+    if (typeHeading) {
+      if (service === 'Business cards') typeHeading.textContent = 'Business card type';
+      else if (service === 'Labels') typeHeading.textContent = 'Label type';
+      else if (service === 'Hang tag') typeHeading.textContent = 'Hang tag type';
+      else typeHeading.textContent = 'Type';
+    }
+  }
+
+  if (quantity) {
+    const qtyEl = document.getElementById('q-qty');
+    if (qtyEl) qtyEl.value = quantity;
+  }
+  if (requirement) {
+    const reqEl = document.getElementById('q-req');
+    if (reqEl) reqEl.value = requirement + ' — ';
+  }
+
+  localStorage.removeItem(QUOTE_PREFILL_KEY);
 }
 
 async function submitQuote() {
@@ -934,6 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') submitQuote();
   });
   initQuoteFormSelects();
+  applyQuotePrefill();
   initRevealAnimations();
 });
 </script>

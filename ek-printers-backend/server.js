@@ -337,6 +337,15 @@ function loginPageHTML(error = '') {
     label{display:block;font-size:0.72rem;font-weight:600;color:rgba(22,20,18,0.5);margin-bottom:0.4rem;letter-spacing:0.05em;text-transform:uppercase}
     input{width:100%;background:var(--surface);border:1.5px solid transparent;border-radius:10px;padding:0.8rem 1rem;font-size:0.82rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:all 0.2s}
     input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(0,107,94,0.08)}
+    .pass-wrap{position:relative}
+    .pass-wrap input{padding-right:3rem}
+    .pass-toggle{
+      position:absolute;right:0.45rem;top:50%;transform:translateY(-50%);
+      width:2.1rem;height:2.1rem;border-radius:8px;border:1px solid rgba(22,20,18,0.1);
+      background:rgba(255,255,255,0.7);color:rgba(22,20,18,0.65);cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;font-size:1rem;line-height:1;
+    }
+    .pass-toggle:hover{background:#fff;color:var(--ink)}
     .btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:0.9rem;font-size:0.85rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:0.5rem;transition:background 0.2s}
     .btn:hover{background:var(--teal2)}
     .error{background:rgba(232,93,58,0.08);border:1px solid rgba(232,93,58,0.2);color:#c0392b;padding:0.7rem 1rem;border-radius:8px;font-size:0.75rem;margin-bottom:1rem}
@@ -349,6 +358,8 @@ function loginPageHTML(error = '') {
     body.dark-mode .sub{color:rgba(236,239,241,0.68)!important}
     body.dark-mode input{background:var(--surface);color:var(--ink);border-color:transparent}
     body.dark-mode input::placeholder{color:rgba(236,239,241,0.48)}
+    body.dark-mode .pass-toggle{background:#1f2327;border-color:rgba(236,239,241,0.16);color:rgba(236,239,241,0.75)}
+    body.dark-mode .pass-toggle:hover{background:#262b30;color:#fff}
   </style>
 </head>
 <body>
@@ -360,7 +371,7 @@ function loginPageHTML(error = '') {
     ` + err + `
     <form method="POST" action="/admin/login">
       <div class="field"><label>Username</label><input type="text" name="username" placeholder="admin" required autofocus></div>
-      <div class="field"><label>Password</label><input type="password" name="password" placeholder="••••••••" required></div>
+      <div class="field"><label>Password</label><div class="pass-wrap"><input id="adminPassword" type="password" name="password" placeholder="••••••••" required><button type="button" id="togglePassword" class="pass-toggle" aria-label="Show password" aria-pressed="false">👁</button></div></div>
       <button class="btn" type="submit">Sign In →</button>
     </form>
   </div>
@@ -379,6 +390,17 @@ function loginPageHTML(error = '') {
         const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
         localStorage.setItem(THEME_KEY, next);
         applyTheme(next);
+      });
+    }
+    const passInput = document.getElementById('adminPassword');
+    const passToggle = document.getElementById('togglePassword');
+    if (passInput && passToggle) {
+      passToggle.addEventListener('click', () => {
+        const isHidden = passInput.type === 'password';
+        passInput.type = isHidden ? 'text' : 'password';
+        passToggle.textContent = isHidden ? '🙈' : '👁';
+        passToggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        passToggle.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
       });
     }
   </script>
@@ -440,9 +462,23 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--teal:#006B5E;--teal2:#008F7A;--bg:#FAFAF8;--surface:#F2F0EB;--ink:#161412}
     html,body{min-height:100%;width:100%;overflow-x:auto}
-    body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);transition:background 0.25s ease,color 0.25s ease}
+    body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);transition:background 0.25s ease,color 0.25s ease;position:relative}
+    body::before{
+      content:'';position:fixed;inset:-18% -18% auto;height:60vh;z-index:-1;pointer-events:none;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(0,107,94,0.11), transparent 46%),
+        radial-gradient(circle at 84% 12%, rgba(0,143,122,0.07), transparent 40%),
+        radial-gradient(circle at 52% 70%, rgba(232,93,58,0.05), transparent 36%);
+      filter:blur(2px);
+    }
     body.dark-mode{--bg:#121416;--surface:#1A1D20;--ink:#ECEFF1}
-    .topbar{background:#fff;border-bottom:1px solid rgba(22,20,18,0.08);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:nowrap;position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box}
+    body.dark-mode::before{
+      background:
+        radial-gradient(circle at 20% 24%, rgba(110,231,214,0.1), transparent 46%),
+        radial-gradient(circle at 78% 18%, rgba(66,245,215,0.07), transparent 40%),
+        radial-gradient(circle at 48% 75%, rgba(63,81,181,0.1), transparent 40%);
+    }
+    .topbar{background:rgba(255,255,255,0.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(22,20,18,0.08);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:nowrap;position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box;box-shadow:0 8px 24px rgba(10,18,28,0.08)}
     .logo{display:flex;align-items:center;gap:0.45rem;flex:1 1 auto;min-width:0;max-width:calc(100% - 7.5rem)}
     .mark{width:32px;height:32px;flex-shrink:0;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;color:#fff;font-size:0.78rem}
     .logo-text{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(0.78rem,3.2vw,0.95rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -471,7 +507,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .btn-sm:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
     .content{padding:1.25rem 1.25rem 2rem;width:100%;max-width:100%;box-sizing:border-box}
     .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.45rem;margin-bottom:1.5rem;width:100%}
-    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:12px;padding:0.65rem 0.5rem;min-width:0}
+    .stat-card{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:12px;padding:0.65rem 0.5rem;min-width:0;box-shadow:0 10px 22px rgba(22,20,18,0.06);transition:transform .2s ease,box-shadow .2s ease}
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(22,20,18,0.1)}
     .stat-label{font-size:0.58rem;color:rgba(22,20,18,0.4);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.25rem;line-height:1.2}
     .stat-val{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(1.15rem,4.2vw,2rem);letter-spacing:-0.02em;line-height:1}
     .controls{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.5rem;width:100%}
@@ -485,11 +522,11 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .controls-toolbar .export-btn{grid-column:1/-1;justify-self:end}
     .filter-btn{flex:0 0 auto;font-size:0.64rem;padding:0.38rem 0.65rem;border-radius:100px;border:1.5px solid rgba(22,20,18,0.1);background:transparent;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
-    .search-box{background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box}
+    .search-box{background:#fff;border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6)}
     .search-box:focus{border-color:var(--teal)}
     .export-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.2s;white-space:nowrap;flex-shrink:0}
     .export-btn:hover{background:var(--teal2)}
-    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch}
+    .table-wrap{background:#fff;border:1px solid rgba(22,20,18,0.07);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 14px 34px rgba(22,20,18,0.08)}
     table{width:100%;min-width:100%;border-collapse:collapse;table-layout:auto}
     th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:600;color:rgba(22,20,18,0.4);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
     th:nth-child(3),td.req-cell{min-width:10rem;max-width:36rem}
@@ -561,6 +598,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       .controls-toolbar .export-btn{grid-column:auto;justify-self:auto;margin-left:0}
     }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
+    body.dark-mode .topbar{background:rgba(18,20,22,0.82);box-shadow:0 10px 26px rgba(0,0,0,0.3)}
     body.dark-mode th{background:var(--surface)}
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .btn-sm,body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.24);color:var(--ink)}

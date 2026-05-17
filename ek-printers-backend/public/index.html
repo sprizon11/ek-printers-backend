@@ -481,10 +481,10 @@
           <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
         </div>
         <div class="p3-grid">
-          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels"><div class="p3-icon-wrap c">🧾</div><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels"><div class="p3-icon-wrap c">🪡</div><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-icon-wrap c">🧾</div><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-icon-wrap c">🪡</div><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
         </div>
       </section>
     </div>
@@ -1191,6 +1191,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Warm up admin page route so navigation feels faster.
   fetch('/admin/login', { credentials: 'include' }).catch(() => {});
   document.querySelectorAll('.p3-card').forEach(card => {
+    const category = card.getAttribute('data-category');
+    if (category) {
+      card.addEventListener('click', () => {
+        window.location.href = `category.html?category=${encodeURIComponent(category)}`;
+      });
+      return;
+    }
     const name = card.getAttribute('data-product') || card.querySelector('.p3-cname').textContent.trim();
     card.addEventListener('click', () => openProdModal(name));
   });

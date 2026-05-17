@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Category · EK PRINTERS</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#F5F9F4;--card:#FFFFFF;--ink:#111827;--muted:rgba(17,24,39,0.62);--teal:#1B9A59;--border:rgba(27,154,89,0.16)}
+    body{font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .wrap{max-width:980px;margin:0 auto;padding:1rem}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:0.8rem;margin-bottom:1rem}
+    .brand{font-weight:900;font-size:1.25rem;letter-spacing:-0.02em}
+    .brand span{color:var(--teal)}
+    .back{display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;border:1px solid var(--border);background:#fff;color:var(--ink);padding:0.55rem 0.8rem;border-radius:10px;font-size:0.78rem;font-weight:600}
+    .head{margin:0.5rem 0 1rem}
+    .kicker{font-size:0.68rem;letter-spacing:0.16em;color:var(--teal);font-weight:800}
+    h1{font-size:clamp(1.6rem,5.5vw,2.3rem);line-height:1.05;letter-spacing:-0.03em;margin-top:0.35rem}
+    .sub{margin-top:0.45rem;font-size:0.86rem;color:var(--muted);line-height:1.55}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.75rem}
+    .item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.55rem;display:flex;flex-direction:column;gap:0.5rem}
+    .item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;background:#eef4ef}
+    .item h3{font-size:0.88rem;line-height:1.2;letter-spacing:-0.01em}
+    .cta{margin-top:1rem;display:flex;gap:0.65rem;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:0.7rem 1rem;font-size:0.8rem;font-weight:700}
+    .btn-primary{background:linear-gradient(135deg,var(--teal),#39B86B);color:#fff}
+    .btn-muted{background:#fff;border:1px solid var(--border);color:var(--ink)}
+    @media (min-width:860px){
+      .wrap{padding:1.4rem}
+      .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><span>EK</span> PRINTERS</div>
+      <a class="back" href="index.html#products">← Back to Products</a>
+    </div>
+
+    <div class="head">
+      <div class="kicker">CATEGORY VARIETIES</div>
+      <h1 id="catTitle">Hang Tags</h1>
+      <div class="sub" id="catSub">Choose the type you need. No price shown here — share your requirement and we will send the best quote.</div>
+    </div>
+
+    <div class="grid" id="varietyGrid"></div>
+
+    <div class="cta">
+      <a class="btn btn-primary" id="quoteBtn" href="index.html#contact">Get a Quote</a>
+      <a class="btn btn-muted" href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+    </div>
+  </div>
+
+  <script>
+    const CATEGORIES = {
+      'hang-tags': {
+        title: 'Hang Tags',
+        subtitle: 'All varieties in Hang Tags.',
+        items: [
+          { name: '350 GSM Normal Tags', img: 'ht-350gsm.png' },
+          { name: '600 GSM Tags', img: 'ht-600gsm.png' },
+          { name: 'Premium Tags', img: 'ht-premium.png' },
+          { name: 'Foil Tags', img: 'ht-foil.png' }
+        ]
+      },
+      'printed-labels': {
+        title: 'Printed Labels',
+        subtitle: 'All varieties in Printed Labels.',
+        items: [
+          { name: 'Printed Labels', img: 'lb-printed.png' },
+          { name: 'Screen Printing Labels', img: 'lb-screen.png' },
+          { name: 'Cotton Labels', img: 'lb-cotton.png' }
+        ]
+      },
+      'woven-labels': {
+        title: 'Woven Labels',
+        subtitle: 'All varieties in Woven Labels.',
+        items: [
+          { name: 'Woven Labels', img: 'lb-woven.png' },
+          { name: 'Cotton Labels', img: 'lb-cotton.png' }
+        ]
+      },
+      'business-cards': {
+        title: 'Business Cards',
+        subtitle: 'All varieties in Business Cards.',
+        items: [
+          { name: 'Normal', img: 'bc-normal.png' },
+          { name: 'Matt Lamination', img: 'bc-matt.png' },
+          { name: 'Gloss Lamination', img: 'bc-gloss.png' },
+          { name: 'Foil Cards', img: 'bc-foil.png' }
+        ]
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get('category') || 'hang-tags';
+    const cat = CATEGORIES[key] || CATEGORIES['hang-tags'];
+
+    document.title = cat.title + ' · EK PRINTERS';
+    document.getElementById('catTitle').textContent = cat.title;
+    document.getElementById('catSub').textContent = cat.subtitle;
+
+    const grid = document.getElementById('varietyGrid');
+    grid.innerHTML = cat.items.map(item => (
+      '<article class="item">' +
+      `<img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">` +
+      `<h3>${item.name}</h3>` +
+      '</article>'
+    )).join('');
+
+    const quoteBtn = document.getElementById('quoteBtn');
+    quoteBtn.href = 'index.html#contact';
+  </script>
+</body>
+</html>

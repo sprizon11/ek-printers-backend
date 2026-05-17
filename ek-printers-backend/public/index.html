@@ -418,6 +418,65 @@
     .n3-utility-left,.n3-utility-right{gap:0.5rem}
     .n3-utility a{font-size:0.68rem}
   }
+
+  /* Screenshot-style premium layout */
+  .n3-utility{display:none!important}
+  #navMain{background:#fff;padding:0.8rem 1.1rem;box-shadow:none;border-bottom:0}
+  .n3-mobile-bar .n3-theme-icon{display:none}
+  .n3-burger{background:#f7f8fb;border-color:#e9ebf1;border-radius:50%;width:42px;height:42px}
+  .n3-premium-line{display:none}
+  .h3{padding:0.25rem 1.15rem 0.95rem;grid-template-columns:1.02fr 1fr;gap:0.5rem;align-items:center}
+  .h3-badge{background:transparent;box-shadow:none;padding:0;margin-bottom:0.3rem;border-radius:0;color:#0f172a;font-size:0.65rem;letter-spacing:0.28em}
+  .h3-badge::before,.h3-badge::after{display:none}
+  .h3-title{font-size:clamp(2.2rem,8.4vw,2.8rem);line-height:1.02;margin-bottom:0.35rem}
+  .h3-title .line-plain{display:block;color:#111827}
+  .h3-title .line-pop{display:block;background:linear-gradient(90deg,#27a6df 0%,#5a78ff 52%,#b54bd9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .h3-sub{font-size:0.9rem;line-height:1.45;margin-bottom:0.75rem;max-width:330px}
+  .h3-actions{flex-direction:row;align-items:center;gap:0.55rem}
+  .h3-actions .btn3-p,.h3-actions .btn3-o{width:auto;padding:0.7rem 1rem;font-size:0.75rem}
+  .btn3-p{background:linear-gradient(135deg,#0e1c35,#0b2044);box-shadow:none}
+  .btn3-o{border:0;background:transparent;padding:0.4rem 0.2rem 0.4rem 0.6rem}
+  .h3-visual-new{position:relative;height:250px}
+  .h3-orb{position:absolute;right:-10px;top:18px;width:165px;height:165px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(110,128,255,0.18),rgba(110,128,255,0.02))}
+  .h3-plinth{position:absolute;left:12px;right:2px;bottom:8px;height:66px;border-radius:100px;background:linear-gradient(180deg,#d7f3f3,#b7e7e8)}
+  .h3-card{position:absolute;bottom:50px;object-fit:contain;filter:drop-shadow(0 15px 16px rgba(15,23,42,0.17))}
+  .h3-card-a{left:16px;width:108px;transform:rotate(-10deg)}
+  .h3-card-b{right:14px;width:112px;transform:rotate(8deg)}
+  .feat-bar{padding:0.85rem;background:#fff;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.5rem;border:0}
+  .feat-item{padding:0.6rem;background:#fff;border:1px solid #eceef5}
+  .feat-icon{width:30px;height:30px;font-size:0.86rem}
+  .feat-text strong{font-size:0.75rem}
+  .feat-text span{font-size:0.68rem}
+  .prods3{padding:1rem 1.15rem 0.2rem;background:transparent}
+  .p3-kicker{text-align:center;font-size:0.66rem;letter-spacing:0.22em;color:#7c3aed;font-weight:700;margin-bottom:0.2rem}
+  .p3-main-title{text-align:center;font-size:2rem;line-height:1.05;font-weight:900;letter-spacing:-0.03em;color:#0f172a;margin-bottom:0.85rem}
+  .p3-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem}
+  .p3-card{padding:0.65rem 0.65rem 0.75rem;border:0;box-shadow:none}
+  .p3-card.p3-pastel-a{background:#e8fbf4}
+  .p3-card.p3-pastel-b{background:#f4ebff}
+  .p3-card.p3-pastel-c{background:#fff2d7}
+  .p3-card.p3-pastel-d{background:#e7f2ff}
+  .p3-cname{font-size:1rem;line-height:1.05;margin-bottom:0.2rem}
+  .p3-cdesc{font-size:0.72rem;-webkit-line-clamp:3}
+  .p3-media{width:100%;height:124px;object-fit:cover;border-radius:12px;margin-top:0.5rem}
+  .p3-arrow{margin-top:0.45rem;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;background:#fff;color:#16a34a;padding:0;font-size:1rem}
+  .proof-strip{margin:1rem 1.15rem 0;border-radius:14px;background:#0e162b;color:#cbd5e1;padding:0.85rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem}
+  .proof-item{display:flex;align-items:center;gap:0.45rem;font-size:0.68rem}
+  .proof-item strong{display:block;color:#fff;font-size:0.9rem;line-height:1}
+  .quick-quote{margin:0.8rem 1.15rem 0.6rem;border-radius:16px;background:#e9f7f6;padding:0.95rem;display:grid;grid-template-columns:1fr auto;gap:0.8rem;align-items:center}
+  .quick-title{font-weight:900;font-size:1.6rem;line-height:1.05;color:#0f172a}
+  .quick-sub{font-size:0.74rem;color:#334155}
+  .quick-btn{background:#111f3b;color:#fff;border:0;border-radius:12px;padding:0.72rem 1rem;font-size:0.78rem;font-weight:700;cursor:pointer}
+  .quick-wa{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;color:#16a34a;font-size:1.5rem;text-decoration:none;border:2px dashed rgba(15,23,42,0.2)}
+  @media (min-width:901px){
+    .h3{grid-template-columns:1fr 1fr;padding:1rem 3rem}
+    .h3-title{font-size:clamp(2.8rem,5vw,4rem)}
+    .h3-visual-new{height:320px}
+    .h3-card-a,.h3-card-b{width:148px}
+    .feat-bar{grid-template-columns:repeat(4,1fr);padding:1.25rem 3rem}
+    .proof-strip{margin-left:3rem;margin-right:3rem;grid-template-columns:repeat(4,minmax(0,1fr))}
+    .quick-quote{margin-left:3rem;margin-right:3rem}
+  }
 </style>
 <div>
   <div class="n3-utility">
@@ -471,30 +530,57 @@
 
   <section class="h3">
     <div>
-      <div class="h3-badge fx-fade-up fx-d1">Tiruppur Offset Printing</div>
-      <h1 class="h3-title fx-fade-up fx-d2">Premium Cards<br>for <em>Every</em><br>Occasion</h1>
-      <p class="h3-sub fx-fade-up fx-d3">Visiting cards, printed & woven labels, hang tags & stationery — crafted with precision and care for brands, businesses, and celebrations across India.</p>
-
-      <section class="prods3" id="products">
-        <div class="p3-header">
-          <div class="p3-title fx-fade-up fx-d4">What We<br><em>Create</em></div>
-          <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
-        </div>
-        <div class="p3-grid">
-          <div class="p3-card fx-fade-up fx-d1"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d2"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card p3-card-wide-row fx-fade-up fx-d3"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
-        </div>
-      </section>
+      <div class="h3-badge fx-fade-up fx-d1">WE PRINT YOUR</div>
+      <h1 class="h3-title fx-fade-up fx-d2"><span class="line-plain">Ideas.</span><span class="line-pop">Perfected.</span></h1>
+      <p class="h3-sub fx-fade-up fx-d3">Premium printing solutions for your business, branding & beyond.</p>
+      <div class="h3-actions fx-fade-up fx-d4">
+        <button type="button" class="btn3-p" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Products ➜</button>
+        <button type="button" class="btn3-o">▶ Watch Video</button>
+      </div>
+    </div>
+    <div class="h3-visual-new fx-fade-up fx-d5" aria-hidden="true">
+      <div class="h3-orb"></div>
+      <div class="h3-plinth"></div>
+      <img class="h3-card h3-card-a" src="bc-foil.png" alt="">
+      <img class="h3-card h3-card-b" src="ht-350gsm.png" alt="">
     </div>
   </section>
 
   <div class="feat-bar reveal-on-scroll">
-    <div class="feat-item"><div class="feat-icon">⚡</div><div class="feat-text"><strong>48-hr Turnaround</strong><span>Express delivery available</span></div></div>
-    <div class="feat-item"><div class="feat-icon">🎨</div><div class="feat-text"><strong>Free Design Help</strong><span>Our team assists you</span></div></div>
-    <div class="feat-item"><div class="feat-icon">✅</div><div class="feat-text"><strong>Quality Assured</strong><span>100% satisfaction guarantee</span></div></div>
-    <div class="feat-item"><div class="feat-icon">🚚</div><div class="feat-text"><strong>Pan-India Shipping</strong><span>Fast & safe packaging</span></div></div>
+    <div class="feat-item"><div class="feat-icon">💎</div><div class="feat-text"><strong>Premium Quality</strong><span>Top quality materials and perfect finish.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">🧾</div><div class="feat-text"><strong>Wide Range</strong><span>Everything you need under one roof.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">🚚</div><div class="feat-text"><strong>Fast Delivery</strong><span>On-time delivery every time.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">👍</div><div class="feat-text"><strong>Customer First</strong><span>Your satisfaction is our priority.</span></div></div>
   </div>
+
+  <section class="prods3" id="products">
+    <div class="p3-kicker">WHAT WE CREATE</div>
+    <div class="p3-main-title">Our Core Products</div>
+    <div class="p3-grid">
+      <div class="p3-card p3-pastel-a fx-fade-up fx-d1" data-product="Hang Tags"><div class="p3-cname">HANG TAGS</div><div class="p3-cdesc">Custom hang tags that elevate your brand identity.</div><img class="p3-media" src="ht-foil.png" alt="Hang tags sample"><div class="p3-arrow">›</div></div>
+      <div class="p3-card p3-pastel-b fx-fade-up fx-d2" data-product="Labels"><div class="p3-cname">PRINTED LABELS</div><div class="p3-cdesc">High quality printed labels for product packaging.</div><img class="p3-media" src="lb-printed.png" alt="Printed labels sample"><div class="p3-arrow">›</div></div>
+      <div class="p3-card p3-pastel-c fx-fade-up fx-d3" data-product="Labels"><div class="p3-cname">WOVEN LABELS</div><div class="p3-cdesc">Durable woven labels for a premium look and long quality.</div><img class="p3-media" src="lb-woven.png" alt="Woven labels sample"><div class="p3-arrow">›</div></div>
+      <div class="p3-card p3-pastel-d fx-fade-up fx-d4" data-product="Business Cards"><div class="p3-cname">BUSINESS CARDS</div><div class="p3-cdesc">Professional business cards that create the right impression.</div><img class="p3-media" src="bc-normal.png" alt="Business cards sample"><div class="p3-arrow">›</div></div>
+    </div>
+  </section>
+
+  <section class="proof-strip reveal-on-scroll">
+    <div class="proof-item"><span>👥</span><div><strong>1000+</strong>Happy Customers</div></div>
+    <div class="proof-item"><span>🏅</span><div><strong>5+</strong>Years Experience</div></div>
+    <div class="proof-item"><span>🖨️</span><div><strong>High</strong>Quality Printing</div></div>
+    <div class="proof-item"><span>🎧</span><div><strong>24/7</strong>Support</div></div>
+  </section>
+
+  <section class="quick-quote reveal-on-scroll">
+    <div>
+      <div class="quick-title">Have a Custom Requirement?</div>
+      <div class="quick-sub">We are here to bring your ideas to life with the perfect print.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.55rem">
+      <button type="button" class="quick-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+      <a class="quick-wa" href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">💬</a>
+    </div>
+  </section>
 
   <section class="gallery3 reveal-on-scroll" id="gallery">
     <div class="g3-header">
@@ -1160,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Warm up admin page route so navigation feels faster.
   fetch('/admin/login', { credentials: 'include' }).catch(() => {});
   document.querySelectorAll('.p3-card').forEach(card => {
-    const name = card.querySelector('.p3-cname').textContent.trim();
+    const name = card.getAttribute('data-product') || card.querySelector('.p3-cname').textContent.trim();
     card.addEventListener('click', () => openProdModal(name));
   });
   document.querySelectorAll('a[data-instant-nav]').forEach(link => {

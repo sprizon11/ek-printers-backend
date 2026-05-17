@@ -111,18 +111,19 @@
   .n3-btn:hover{background:var(--teal2)}
   body.nav-drawer-open{overflow:hidden}
 
-  /* Categories strip under nav */
-  .n3-cats{background:linear-gradient(180deg,rgba(255,255,255,0.24),rgba(255,255,255,0));border-bottom:1px solid rgba(22,20,18,0.06);padding:0.45rem 1.15rem 0.55rem}
-  .n3-cats-kicker{font-size:0.62rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(22,20,18,0.55);line-height:1.1;margin-bottom:0.25rem}
-  .n3-cats-title{font-family:var(--font-heading);font-weight:700;font-size:0.95rem;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);margin-bottom:0.25rem}
-  .n3-cats-sub{font-size:0.72rem;color:rgba(22,20,18,0.52);line-height:1.35;margin-bottom:0.5rem}
-  .n3-cats-text{font-size:0.78rem;font-weight:500;color:rgba(22,20,18,0.72);line-height:1.25;max-width:100%}
-  .n3-cats-line{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  body.dark-mode .n3-cats{border-bottom-color:rgba(236,239,241,0.1)}
-  body.dark-mode .n3-cats-text{color:rgba(236,239,241,0.72)}
-  body.dark-mode .n3-cats-kicker{color:rgba(236,239,241,0.6)}
-  body.dark-mode .n3-cats-title{color:var(--ink)}
-  body.dark-mode .n3-cats-sub{color:rgba(236,239,241,0.68)}
+  /* Premium accent line under nav */
+  .n3-premium-line{
+    height:4px;
+    background:linear-gradient(90deg,#00796b 0%,#00a78f 35%,#79e6cf 52%,#00a78f 68%,#00796b 100%);
+    background-size:220% 100%;
+    animation:premiumLineShift 8s linear infinite;
+    box-shadow:0 1px 0 rgba(255,255,255,0.45),0 4px 14px rgba(0,107,94,0.22);
+  }
+  @keyframes premiumLineShift{from{background-position:0 0}to{background-position:220% 0}}
+  body.dark-mode .n3-premium-line{
+    background:linear-gradient(90deg,#0a7f70 0%,#13bda4 35%,#9bf5e4 52%,#13bda4 68%,#0a7f70 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,0.06),0 6px 18px rgba(19,189,164,0.25);
+  }
 
   /* Subtle entrance animations */
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -373,7 +374,6 @@
     .f3-mark,.f3-mark-rest{font-size:1.85rem}
     .f3-links{flex-wrap:nowrap;gap:2rem}
     .h3-trust--bottom{padding-left:3rem;padding-right:3rem}
-    .n3-cats{padding-left:3rem;padding-right:3rem}
   }
   @media (min-width:901px) and (max-width:1100px){
     #navMain .n3-links{gap:1.25rem}
@@ -398,15 +398,7 @@
     </div>
   </nav>
 
-  <div class="n3-cats reveal-on-scroll">
-    <div class="n3-cats-kicker">Manufacturing</div>
-    <div class="n3-cats-title">We manufacture print products</div>
-    <div class="n3-cats-sub">Direct production • Consistent quality • Fast turnaround</div>
-    <div class="n3-cats-text">
-      <span class="n3-cats-line">Hang Tag, Photo Cards, Inlay Cards, Stickers</span>
-      <span class="n3-cats-line">Labels, Inner Boards, Tissuepaper, Polypacks</span>
-    </div>
-  </div>
+  <div class="n3-premium-line" aria-hidden="true"></div>
 
   <div class="n3-drawer" id="navDrawer" aria-hidden="true">
     <div class="n3-drawer-backdrop" id="navDrawerBackdrop"></div>

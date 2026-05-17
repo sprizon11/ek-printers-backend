@@ -390,7 +390,7 @@
     .prods3{padding:5rem 3rem}
     .p3-header{flex-direction:row;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;gap:0}
     .p3-subtitle{text-align:right;max-width:220px}
-    .p3-grid{grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .p3-grid{grid-template-columns:repeat(4,1fr);gap:1.2rem}
     .p3-card.p3-card-wide-row{grid-column:auto}
     .p3-card{padding:2rem;border-radius:16px}
     .p3-icon-wrap{width:52px;height:52px;border-radius:12px;font-size:1.4rem;margin-bottom:1.2rem}
@@ -481,9 +481,10 @@
           <div class="p3-subtitle fx-fade-up fx-d5">Premium print products for every business and occasion</div>
         </div>
         <div class="p3-grid">
-          <div class="p3-card fx-fade-up fx-d1"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card fx-fade-up fx-d2"><div class="p3-icon-wrap c">📋</div><div class="p3-cname">Labels</div><div class="p3-cdesc">Printed, cotton, woven, and screen-printed labels — rolls, sheets, and garment tags for retail and apparel.</div><div class="p3-arrow">Explore ›</div></div>
-          <div class="p3-card p3-card-wide-row fx-fade-up fx-d3"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags"><div class="p3-icon-wrap w">🏷️</div><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels"><div class="p3-icon-wrap c">🧾</div><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels"><div class="p3-icon-wrap c">🪡</div><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">Explore ›</div></div>
+          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards"><div class="p3-icon-wrap t">💳</div><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">Explore ›</div></div>
         </div>
       </section>
     </div>
@@ -1029,18 +1030,28 @@ const PRODUCTS = {
     },
     turnaround:'⚡ Standard: 3–4 working days · Express 48-hr delivery available'
   },
-  'Labels': {
+  'Printed Labels': {
     icon:'📋', color:'rgba(232,93,58,0.1)',
-    desc:'From barcode rolls to woven brand labels — choose the stock and process that fits your product. Durable printing, accurate colours, and finishes suited for apparel, retail, and logistics.',
-    materials:['Printed Labels','Cotton Labels','Woven Labels','Screen Printing Labels'],
-    highlights:['Printed Labels','Cotton Labels','Woven Labels','Screen Printing Labels'],
+    desc:'Printed labels for product packaging, barcode stickers, and retail branding with clean print quality and durable adhesion.',
+    materials:['Printed Labels','Screen Printing Labels','Cotton Labels'],
+    highlights:['Printed Labels','Screen Printing Labels','Cotton Labels'],
     previewByMaterial:{
       'Printed Labels':'lb-printed.png',
-      'Cotton Labels':'lb-cotton.png',
-      'Woven Labels':'lb-woven.png',
-      'Screen Printing Labels':'lb-screen.png'
+      'Screen Printing Labels':'lb-screen.png',
+      'Cotton Labels':'lb-cotton.png'
     },
     turnaround:'📅 Standard: 5–7 working days · Roll & sheet formats available'
+  },
+  'Woven Labels': {
+    icon:'🪡', color:'rgba(139,115,85,0.12)',
+    desc:'Woven label options for apparel brands with neat edge finishing, long-lasting thread quality, and a premium garment feel.',
+    materials:['Woven Labels','Cotton Labels'],
+    highlights:['Woven Labels','Cotton Labels'],
+    previewByMaterial:{
+      'Woven Labels':'lb-woven.png',
+      'Cotton Labels':'lb-cotton.png'
+    },
+    turnaround:'📅 Standard: 5–7 working days · Ideal for garment branding'
   },
   'Hang Tags': {
     icon:'🏷️', color:'rgba(139,115,85,0.1)',
@@ -1160,7 +1171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Warm up admin page route so navigation feels faster.
   fetch('/admin/login', { credentials: 'include' }).catch(() => {});
   document.querySelectorAll('.p3-card').forEach(card => {
-    const name = card.querySelector('.p3-cname').textContent.trim();
+    const name = card.getAttribute('data-product') || card.querySelector('.p3-cname').textContent.trim();
     card.addEventListener('click', () => openProdModal(name));
   });
   document.querySelectorAll('a[data-instant-nav]').forEach(link => {

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Category · EK PRINTERS</title>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=1">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=2">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -296,10 +296,44 @@
     .btn-muted,.wa-btn{background:transparent;color:#e8eeff}
     .qty{background:rgba(255,255,255,0.06);color:#f5f7ff}
     .qty:focus{box-shadow:0 0 0 4px rgba(29,159,255,0.18)}
+
+    /* Hang tags — image + quote only */
+    .grid.hang-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .hang-card{
+      display:flex;flex-direction:column;gap:0.65rem;
+      background:transparent;border:none;box-shadow:none;padding:0;
+      cursor:default;opacity:0;animation:itemIn .45s ease forwards;
+    }
+    .hang-card:nth-child(2){animation-delay:.05s}
+    .hang-card:nth-child(3){animation-delay:.1s}
+    .hang-card:nth-child(4){animation-delay:.15s}
+    .hang-card:nth-child(5){animation-delay:.2s}
+    .hang-card:nth-child(6){animation-delay:.25s}
+    .hang-card:nth-child(7){animation-delay:.3s}
+    .hang-card:hover{transform:none;box-shadow:none}
+    .hang-card img{
+      width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+    }
+    .hang-quote-btn{
+      width:100%;border:0;border-radius:999px;padding:0.72rem 0.85rem;
+      font-size:0.72rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
+      cursor:pointer;font-family:inherit;
+      background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;
+      transition:transform .15s ease,box-shadow .15s ease;
+    }
+    .hang-quote-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(29,159,255,0.28)}
+    .hang-gallery-wrap .cta{display:none}
+    @media (min-width:640px){
+      .grid.hang-gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.1rem}
+    }
+    @media (min-width:900px){
+      .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="pageWrap">
     <div class="top">
       <div class="brand"><img src="ek-printers-logo.png?v=6" alt="EK PRINTERS"></div>
       <a class="back" href="index.html#products">← Back to Products</a>
@@ -347,13 +381,17 @@
     const CATEGORIES = {
       'hang-tags': {
         title: 'Hang Tags',
-        subtitle: 'Premium hang tag collection for garment and retail packaging.',
+        subtitle: 'Browse our hang tag samples and tap Get Quote for any style you like.',
         service: 'Hang tag',
+        layout: 'gallery',
         items: [
-          { name: '350 GSM Normal Tags', img: 'ht-350gsm.png' },
-          { name: '600 GSM Tags', img: 'ht-600gsm.png' },
-          { name: 'Premium Tags', img: 'ht-premium.png' },
-          { name: 'Foil Tags', img: 'ht-foil.png' }
+          { name: 'Premium hang tag — TG', img: 'ht-01.png' },
+          { name: 'Ribbed hang tag — ZE', img: 'ht-02.png' },
+          { name: 'Foil hang tag — Don Carlos', img: 'ht-03.png' },
+          { name: 'Kraft hang tag — Owl design', img: 'ht-04.png' },
+          { name: 'Foil hang tag — FC', img: 'ht-05.png' },
+          { name: 'Kraft hang tag — Brooklyn Boys', img: 'ht-06.png' },
+          { name: 'Hang tag sample', img: 'ht-07.png' }
         ]
       },
       'printed-labels': {
@@ -423,23 +461,58 @@
     document.getElementById('catTitle').textContent = cat.title;
     document.getElementById('catSub').textContent = cat.subtitle;
 
-    const grid = document.getElementById('varietyGrid');
-    grid.innerHTML = cat.items.map(item => (
-      `<article class="item" data-name="${item.name}" data-img="${item.img}">
-        <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
-        <h3>${item.name}</h3>
-        <p>Tap to view full image and send to quote.</p>
-      </article>`
-    )).join('');
+    function sendToQuote(item) {
+      localStorage.setItem(PREFILL_KEY, JSON.stringify({
+        service: cat.service,
+        type: item.name,
+        quantity: '',
+        requirement: `${cat.title} — ${item.name}`
+      }));
+      window.location.href = 'index.html#contact';
+    }
 
-    grid.querySelectorAll('.item').forEach(card => {
-      card.addEventListener('click', () => {
-        openItemModal({
-          name: card.getAttribute('data-name') || '',
-          img: card.getAttribute('data-img') || ''
+    const grid = document.getElementById('varietyGrid');
+    const pageWrap = document.getElementById('pageWrap');
+    const isHangGallery = cat.layout === 'gallery';
+
+    if (isHangGallery) {
+      pageWrap.classList.add('hang-gallery-wrap');
+      grid.classList.add('hang-gallery');
+      grid.innerHTML = cat.items.map(item => (
+        `<article class="hang-card" data-name="${item.name}" data-img="${item.img}">
+          <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
+          <button type="button" class="hang-quote-btn">Get Quote</button>
+        </article>`
+      )).join('');
+
+      grid.querySelectorAll('.hang-quote-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const card = btn.closest('.hang-card');
+          sendToQuote({
+            name: card.getAttribute('data-name') || 'Hang tag',
+            img: card.getAttribute('data-img') || ''
+          });
         });
       });
-    });
+    } else {
+      grid.innerHTML = cat.items.map(item => (
+        `<article class="item" data-name="${item.name}" data-img="${item.img}">
+          <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
+          <h3>${item.name}</h3>
+          <p>Tap to view full image and send to quote.</p>
+        </article>`
+      )).join('');
+
+      grid.querySelectorAll('.item').forEach(card => {
+        card.addEventListener('click', () => {
+          openItemModal({
+            name: card.getAttribute('data-name') || '',
+            img: card.getAttribute('data-img') || ''
+          });
+        });
+      });
+    }
 
     sendQuoteBtn.addEventListener('click', () => {
       if (!selectedItem) return;

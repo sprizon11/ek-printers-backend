@@ -321,7 +321,7 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=15">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=16">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
@@ -517,7 +517,7 @@
       grid.innerHTML = cat.items.map((item, i) => (
         `<article class="hang-card cat-reveal" style="--i:${i}" data-name="${item.name}" data-img="${item.img}">
           <div class="hang-card-media">
-            <img src="${item.img}?v=${cat.imgVer || 6}" alt="${item.name}" loading="lazy" decoding="async">
+            <img src="${item.img}?v=${cat.imgVer || 6}" alt="${item.name}" decoding="async">
           </div>
           <button type="button" class="hang-quote-btn"><span class="hang-quote-label">Get Quote</span><span class="hang-quote-arrow" aria-hidden="true">→</span></button>
         </article>`
@@ -598,10 +598,13 @@
         revealCategoryCards();
         return;
       }
+      const onAnimEnd = el => el.classList.add('is-visible');
       cards.forEach(el => {
-        el.addEventListener('animationend', () => el.classList.add('is-visible'), { once: true });
+        el.addEventListener('animationend', onAnimEnd, { once: true });
+        el.addEventListener('webkitAnimationEnd', onAnimEnd, { once: true });
       });
       setTimeout(revealCategoryCards, 1200);
+      window.addEventListener('pageshow', revealCategoryCards);
     }
     initCategoryPage();
   </script>

@@ -465,6 +465,11 @@
 
   <section class="h3">
     <div class="h3-banner">
+      <div class="hero-bg" aria-hidden="true">
+        <img class="hero-bg-slide is-active" src="hang-tag-card.png" alt="" width="1200" height="800" fetchpriority="high" decoding="async">
+        <img class="hero-bg-slide" src="lb-cotton.png" alt="" width="1200" height="800" decoding="async">
+        <img class="hero-bg-slide" src="hero-business-cards.png" alt="" width="1200" height="800" decoding="async">
+      </div>
       <div class="h3-badge fx-fade-up fx-d1">HANG TAG COLLECTION</div>
       <h1 class="h3-title fx-fade-up fx-d2">PREMIUM<br>HANG TAG<br>DETAILS</h1>
       <p class="h3-sub fx-fade-up fx-d3">Luxury die-cut hang tags with foil, emboss and premium finishes crafted for standout apparel branding.</p>
@@ -519,8 +524,8 @@
       </figure>
       <figure class="g3-card g3-card--rotator" data-gallery-rotator>
         <div class="g3-rotator">
-          <img class="g3-img g3-rotator-slide is-active" src="gallery-holes-folding-1.png?v=1" alt="Paper hole punching on finishing bench" loading="lazy" decoding="async">
-          <img class="g3-img g3-rotator-slide" src="gallery-holes-folding-2.png?v=1" alt="Folding machine feeding printed sheets" loading="lazy" decoding="async">
+          <img class="g3-img g3-rotator-slide is-active" src="gallery-holes-folding-1.png?v=1" alt="Paper hole punching on finishing bench" decoding="async">
+          <img class="g3-img g3-rotator-slide" src="gallery-holes-folding-2.png?v=1" alt="Folding machine feeding printed sheets" decoding="async">
         </div>
         <figcaption class="g3-caption"><span class="g3-caption-title">Holes &amp; folding Machine</span></figcaption>
       </figure>
@@ -936,16 +941,27 @@ function closeMobileNav() {
 function initGalleryRotators() {
   const cards = document.querySelectorAll('[data-gallery-rotator]');
   if (!cards.length) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   cards.forEach(card => {
     const slides = Array.from(card.querySelectorAll('.g3-rotator-slide'));
     if (slides.length < 2) return;
+    slides.forEach(img => { if (img.src) { const pre = new Image(); pre.src = img.currentSrc || img.src; } });
     let idx = 0;
-    setInterval(() => {
+    if (reduced) return;
+    const tick = () => {
       slides[idx].classList.remove('is-active');
       idx = (idx + 1) % slides.length;
       slides[idx].classList.add('is-active');
-    }, 4000);
+    };
+    let timer = setInterval(tick, 4000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearInterval(timer);
+      } else {
+        clearInterval(timer);
+        timer = setInterval(tick, 4000);
+      }
+    });
   });
 }
 
@@ -973,27 +989,26 @@ function initHeroAutoBackground() {
   const heroTitle = document.querySelector('.h3-title');
   const heroSub = document.querySelector('.h3-sub');
   const heroDots = Array.from(document.querySelectorAll('.af-dot'));
+  const bgSlides = Array.from(heroPanel.querySelectorAll('.hero-bg-slide'));
   const heroSlides = [
     {
-      image: 'hang-tag-card.png',
       badge: 'HANG TAG COLLECTION',
       title: 'PREMIUM<br>HANG TAG<br>DETAILS',
       subtitle: 'Luxury die-cut hang tags with foil, emboss and premium finishes crafted for standout apparel branding.'
     },
     {
-      image: 'lb-cotton.png',
       badge: 'LABEL COLLECTION',
       title: 'SHARP<br>LABEL<br>DETAILS',
       subtitle: 'High clarity woven and cotton labels with clean print definition, soft texture and durable quality.'
     },
     {
-      image: 'hero-business-cards.png',
       badge: 'BUSINESS CARD COLLECTION',
       title: 'BOLD<br>BUSINESS<br>CARDS',
       subtitle: 'Professional cards with modern layouts, premium stock and eye-catching print for stronger brand impact.'
     }
   ];
-  if (!heroSlides.length) return;
+  const count = Math.min(bgSlides.length, heroSlides.length);
+  if (!count) return;
 
   let current = 0;
   const applySlideContent = (index) => {
@@ -1002,6 +1017,7 @@ function initHeroAutoBackground() {
     if (heroTitle) heroTitle.innerHTML = slide.title;
     if (heroSub) heroSub.textContent = slide.subtitle;
     heroDots.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+    bgSlides.forEach((img, imgIndex) => img.classList.toggle('is-active', imgIndex === index));
     [heroBadge, heroTitle, heroSub, document.querySelector('.af-actions')].forEach((node) => {
       if (!node) return;
       node.classList.remove('hero-copy-fade');
@@ -1010,22 +1026,29 @@ function initHeroAutoBackground() {
     });
   };
 
-  applySlideContent(current);
-  heroPanel.style.setProperty('--hero-photo', `url('${heroSlides[current].image}')`);
-  heroPanel.style.setProperty('--hero-photo-next', `url('${heroSlides[(current + 1) % heroSlides.length].image}')`);
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  bgSlides.forEach(img => {
+    if (!img.src) return;
+    const pre = new Image();
+    pre.src = img.currentSrc || img.src;
+  });
 
-  setInterval(() => {
-    const next = (current + 1) % heroSlides.length;
-    heroPanel.style.setProperty('--hero-photo-next', `url('${heroSlides[next].image}')`);
-    heroPanel.classList.add('hero-fade');
-    setTimeout(() => {
-      current = next;
-      heroPanel.style.setProperty('--hero-photo', `url('${heroSlides[current].image}')`);
-      applySlideContent(current);
-      heroPanel.classList.remove('hero-fade');
-    }, 650);
-  }, 3900);
+  applySlideContent(0);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || count < 2) return;
+
+  const tick = () => {
+    current = (current + 1) % count;
+    applySlideContent(current);
+  };
+  let timer = setInterval(tick, 3900);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(timer);
+    } else {
+      clearInterval(timer);
+      timer = setInterval(tick, 3900);
+    }
+  });
 }
 
 // Also allow pressing Enter in the last field
@@ -1451,7 +1474,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
   .af-btn{background:linear-gradient(135deg,#2ab4ff,#0d8ee8);color:#fff;box-shadow:0 14px 32px rgba(42,180,255,0.38)}
 </style>
-<link rel="stylesheet" href="ek-premium-theme.css?v=11">
+<link rel="stylesheet" href="ek-premium-theme.css?v=16">
 
 <!-- PRODUCT DETAIL MODAL -->
 <div class="prod-modal-overlay" id="prodModal" onclick="if(event.target===this)closeProdModal()">

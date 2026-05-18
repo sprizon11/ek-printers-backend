@@ -269,20 +269,49 @@ body #navMain:not(.nav-scrolled){
   flex-direction:column !important;
   justify-content:flex-end !important;
   align-items:flex-start !important;
-  background-size:cover !important;
-  background-position:center center !important;
   position:relative !important;
+  overflow:hidden !important;
+  background:#04060c !important;
+}
+.hero-bg{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
+  -webkit-transform:translateZ(0);
+  transform:translateZ(0);
+}
+.hero-bg-slide{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  opacity:0 !important;
+  transition:opacity .65s ease !important;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
+.hero-bg-slide.is-active{
+  opacity:1 !important;
+  z-index:1 !important;
 }
 .h3-banner::before{
+  content:'' !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
   background:
     linear-gradient(105deg,rgba(4,6,12,0.92) 0%,rgba(4,6,12,0.55) 42%,rgba(4,6,12,0.25) 68%,rgba(4,6,12,0.5) 100%),
     linear-gradient(180deg,transparent 40%,rgba(4,6,12,0.85) 100%) !important;
 }
-.h3-banner::after{
-  background:
-    linear-gradient(105deg,rgba(4,6,12,0.92) 0%,rgba(4,6,12,0.55) 42%,rgba(4,6,12,0.25) 68%,rgba(4,6,12,0.5) 100%),
-    linear-gradient(180deg,transparent 40%,rgba(4,6,12,0.85) 100%),
-    var(--hero-photo-next) center/cover no-repeat !important;
+.h3-banner::after{display:none !important}
+.h3-banner > *:not(.hero-bg){
+  position:relative !important;
+  z-index:2 !important;
 }
 .h3-badge{
   display:inline-flex !important;
@@ -485,6 +514,8 @@ body #navMain:not(.nav-scrolled){
   opacity:0 !important;
   transition:opacity .85s ease !important;
   transform:none !important;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
 }
 .g3-rotator .g3-rotator-slide.is-active{
   opacity:1 !important;

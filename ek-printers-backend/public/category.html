@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Category · EK PRINTERS</title>
   <link rel="stylesheet" href="ek-premium-theme.css?v=2">
   <style>
@@ -384,6 +387,7 @@
         subtitle: 'Browse our hang tag samples and tap Get Quote for any style you like.',
         service: 'Hang tag',
         layout: 'gallery',
+        quoteType: 'Premium Tags',
         items: [
           { name: 'Premium hang tag — TG', img: 'ht-01.png' },
           { name: 'Ribbed hang tag — ZE', img: 'ht-02.png' },
@@ -433,9 +437,39 @@
     };
 
     const PREFILL_KEY = 'ekQuotePrefill';
+    const CATEGORY_ALIASES = {
+      'hang tags': 'hang-tags',
+      'hang_tags': 'hang-tags',
+      'hangtags': 'hang-tags',
+      'woven labels': 'woven-labels',
+      'woven_labels': 'woven-labels',
+      'wovenlabels': 'woven-labels',
+      'printed labels': 'printed-labels',
+      'printed_labels': 'printed-labels',
+      'printedlabels': 'printed-labels',
+      'business cards': 'business-cards',
+      'business_cards': 'business-cards',
+      'businesscards': 'business-cards'
+    };
+
+    function resolveCategoryKey(raw) {
+      const base = String(raw || 'hang-tags').trim().toLowerCase();
+      if (CATEGORY_ALIASES[base]) return CATEGORY_ALIASES[base];
+      if (CATEGORIES[base]) return base;
+      const hyphenated = base.replace(/\s+/g, '-').replace(/_+/g, '-');
+      if (CATEGORIES[hyphenated]) return hyphenated;
+      return 'hang-tags';
+    }
+
     const params = new URLSearchParams(window.location.search);
-    const key = params.get('category') || 'hang-tags';
+    const key = resolveCategoryKey(params.get('category'));
     const cat = CATEGORIES[key] || CATEGORIES['hang-tags'];
+
+    if (params.get('category') !== key) {
+      params.set('category', key);
+      const nextUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, '', nextUrl);
+    }
     let selectedItem = null;
 
     const modal = document.getElementById('itemModal');
@@ -479,9 +513,9 @@
 
     const grid = document.getElementById('varietyGrid');
     const pageWrap = document.getElementById('pageWrap');
-    const isHangGallery = cat.layout === 'gallery';
+    const isGallery = cat.layout === 'gallery';
 
-    if (isHangGallery) {
+    if (isGallery) {
       pageWrap.classList.add('hang-gallery-wrap');
       grid.classList.add('hang-gallery');
       grid.innerHTML = cat.items.map(item => (

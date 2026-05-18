@@ -868,14 +868,30 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 `;
 }
 
-app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'about.html')));
+app.get('/about', (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('/', (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/category.html', (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'public', 'category.html'));
+});
 
 app.use(express.static(path.join(__dirname, 'public'), {
   etag: true,
   lastModified: true,
-  maxAge: '1d'
+  maxAge: '1d',
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+  }
 }));
 
 app.listen(PORT, '0.0.0.0', () => {

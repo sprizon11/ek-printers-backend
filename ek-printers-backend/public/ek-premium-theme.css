@@ -252,13 +252,13 @@ body #navMain:not(.nav-scrolled){
 }
 .h3-banner{
   width:100% !important;
-  min-height:88svh !important;
+  min-height:100svh !important;
   max-height:none !important;
   border:none !important;
   border-radius:0 !important;
   box-shadow:none !important;
   margin:0 !important;
-  padding:5.25rem 1.25rem 2rem !important;
+  padding:5.25rem 1.25rem 2.5rem !important;
   display:flex !important;
   flex-direction:column !important;
   justify-content:flex-end !important;
@@ -333,9 +333,9 @@ body #navMain:not(.nav-scrolled){
   margin-right:auto !important;
 }
 .prods3{
-  margin-top:0.5rem !important;
+  margin-top:3.5rem !important;
   margin-bottom:1.25rem !important;
-  padding:1.5rem 0 1.75rem !important;
+  padding:2.5rem 0 2.25rem !important;
   background:transparent !important;
   border:none !important;
   box-shadow:none !important;
@@ -538,7 +538,8 @@ body #navMain:not(.nav-scrolled){
   .feat-bar{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
   .p3-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:1rem !important}
   #navMain,.top{padding:0.85rem 2rem !important}
-  .h3-banner{padding:6.25rem 2.5rem 2.5rem !important}
+  .h3-banner{padding:6.25rem 2.5rem 3rem !important;min-height:100svh !important}
+  .prods3{margin-top:3rem !important;padding-top:2.5rem !important}
   .cta3{grid-template-columns:1fr 1fr;align-items:start}
 }
 

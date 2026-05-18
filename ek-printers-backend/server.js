@@ -365,7 +365,7 @@ function loginPageHTML(error = '') {
 <body>
   <div class="card">
     <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
-    <div class="logo"><div class="mark">EK</div><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.95rem">EK PRINTERS Admin</span></div>
+    <div class="logo"><img src="/ek-printers-logo.png?v=8" alt="PRINTERS" style="height:36px;width:auto;object-fit:contain"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.95rem;margin-left:0.5rem">Admin</span></div>
     <h1>Welcome back</h1>
     <p class="sub">Sign in to manage quote requests</p>
     ` + err + `
@@ -630,7 +630,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
 <body>
   <div class="topbar">
     <div class="logo">
-      <div class="logo-word"><span class="logo-mark-text">EK</span><span class="logo-rest-text">PRINTERS</span></div>
+      <div class="logo-word"><img src="/ek-printers-logo.png?v=8" alt="PRINTERS" style="height:32px;width:auto;object-fit:contain"></div>
       <span class="badge">Admin Panel</span>
     </div>
     <div class="topbar-right">

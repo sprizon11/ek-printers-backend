@@ -440,7 +440,7 @@
   </div>
   <nav id="navMain">
     <a href="index.html" class="n3-logo">
-      <img class="n3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS">
+      <img class="n3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS">
     </a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
@@ -604,7 +604,7 @@
   </div>
 
   <div class="foot3">
-    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS"></div>
+    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS"></div>
     <div class="f3-links">
       <a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -1380,6 +1380,67 @@ document.addEventListener('DOMContentLoaded', () => {
   @media (min-width:900px){
     .h3-banner{min-height:88svh}
   }
+
+  /* FINAL DARK BORDERLESS STYLE */
+  :root{
+    --bg:#03050a;
+    --surface:#060912;
+    --ink:#f5f7ff;
+    --muted:rgba(226,232,245,0.72);
+    --card:transparent;
+    --teal:#1d9fff;
+    --teal2:#1479e6;
+    --light:#0b1422;
+    --font-body:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+    --font-heading:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+  }
+  body{background:radial-gradient(circle at 10% 0%,#10182a 0%,#04060b 52%,#03050a 100%);color:var(--ink)}
+  #navMain{
+    top:0;
+    left:0;
+    transform:none;
+    width:100%;
+    border-radius:0;
+    border:none;
+    box-shadow:none;
+    backdrop-filter:blur(10px);
+    background:rgba(6,10,18,0.9);
+  }
+  .n3-logo-img{height:44px;max-width:min(88vw,500px);object-fit:contain}
+  .n3-burger{background:transparent;color:#e8eeff;box-shadow:none}
+  .h3{
+    padding:4.9rem 0 0;
+    min-height:100svh;
+  }
+  .h3-banner{
+    min-height:100svh;
+    border:none;
+    border-radius:0;
+    box-shadow:none;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    padding:1.25rem 1.1rem;
+  }
+  .h3-badge,.h3-title,.h3-sub{margin-left:0;margin-right:0;text-align:left}
+  .h3-title{max-width:9ch}
+  .h3-sub{max-width:24ch}
+  .af-actions{justify-content:flex-start}
+  .prods3,.p3-card,.feat-item,.g3-card,.t3-review,.cta3-form,.cta3-left,.cta3-contact-card,.foot3{
+    border:none!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+  .p3-title,.g3-title,.testi3-left h2,.cta3-left h2,.cta3-form-title{color:#f5f7ff}
+  .p3-subtitle,.g3-sub,.t3-text,.cta3-left p,.cta3-form-sub,.t3-source,.f3-links a,.f3-copy{color:var(--muted)}
+  .p3-title em,.g3-title em,.cta3-left h2 em,.cta3-form-title em{color:#7ac2ff}
+  .p3-cname,.feat-text strong,.cta3-contact-text{color:#f5f7ff}
+  .p3-arrow{background:rgba(29,159,255,0.2);color:#9fd6ff}
+  .cta3-input,.prod-qty{background:rgba(255,255,255,0.06);color:#f5f7ff}
+  .cta3-input::placeholder,.prod-qty::placeholder{color:rgba(226,232,245,0.5)}
+  .btn3-submit,.prod-quote-btn,.af-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
 </style>
 
 <!-- PRODUCT DETAIL MODAL -->

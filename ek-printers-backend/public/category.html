@@ -261,12 +261,46 @@
       box-shadow:0 0 0 4px rgba(20,148,232,0.15);
       border-color:var(--teal);
     }
+
+    /* FINAL DARK BORDERLESS STYLE */
+    :root{
+      --bg:#03050a;
+      --card:transparent;
+      --ink:#f5f7ff;
+      --muted:rgba(226,232,245,0.72);
+      --teal:#1d9fff;
+      --teal2:#1479e6;
+      --border:transparent;
+      --font-body:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+      --font-heading:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+    }
+    body{background:radial-gradient(circle at 10% 0%,#10182a 0%,#04060b 52%,#03050a 100%);color:var(--ink)}
+    .top{
+      top:0;left:0;transform:none;width:100%;
+      border:none;border-radius:0;box-shadow:none;
+      background:rgba(6,10,18,0.9);
+    }
+    .brand img{height:44px;max-width:min(88vw,500px)}
+    .back{background:transparent;color:#e8eeff;box-shadow:none}
+    .kicker{color:#7ac2ff}
+    h1,.item h3,.modal-title{color:#f5f7ff}
+    .sub,.item p{color:var(--muted)}
+    .item,.modal,.modal-image-wrap{
+      background:transparent!important;
+      border:none!important;
+      border-radius:0!important;
+      box-shadow:none!important;
+    }
+    .btn-primary,.send-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
+    .btn-muted,.wa-btn{background:transparent;color:#e8eeff}
+    .qty{background:rgba(255,255,255,0.06);color:#f5f7ff}
+    .qty:focus{box-shadow:0 0 0 4px rgba(29,159,255,0.18)}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="brand"><img src="ek-printers-logo-main.png" alt="EK PRINTERS"></div>
+      <div class="brand"><img src="ek-printers-logo.png" alt="EK PRINTERS"></div>
       <a class="back" href="index.html#products">← Back to Products</a>
     </div>
 

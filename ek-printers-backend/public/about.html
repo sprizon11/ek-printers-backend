@@ -228,6 +228,39 @@
     .about-stat-num{color:var(--teal)}
     .about-feat-icon{background:rgba(20,148,232,0.12);color:var(--teal)}
     .f3-links a,.f3-copy{color:rgba(15,23,42,0.62)}
+
+    /* FINAL DARK BORDERLESS STYLE */
+    :root{
+      --bg:#03050a;
+      --surface:#060912;
+      --ink:#f5f7ff;
+      --footer:#03050a;
+      --teal:#1d9fff;
+      --teal2:#1479e6;
+      --light:#0b1422;
+      --card:transparent;
+      --muted:rgba(226,232,245,0.72);
+      --font-body:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+      --font-heading:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+    }
+    body{background:radial-gradient(circle at 10% 0%,#10182a 0%,#04060b 52%,#03050a 100%);color:var(--ink)}
+    #navMain{
+      top:0;left:0;transform:none;width:100%;
+      border:none;border-radius:0;box-shadow:none;
+      background:rgba(6,10,18,0.9);
+    }
+    .n3-logo-img{height:44px;max-width:min(88vw,500px)}
+    .n3-burger{background:transparent;color:#e8eeff;box-shadow:none}
+    #about{margin-top:4.9rem}
+    .about-title,.about-feat-title{color:#f5f7ff}
+    .about-title em,.about-stat-num{color:#7ac2ff}
+    .about-text,.about-stat-label,.about-feat-desc,.f3-links a,.f3-copy{color:var(--muted)}
+    .about-stat,.about-feat,.foot3{
+      background:transparent!important;
+      border:none!important;
+      border-radius:0!important;
+      box-shadow:none!important;
+    }
   </style>
 </head>
 <body>
@@ -243,7 +276,7 @@
     </div>
   </div>
   <nav id="navMain">
-    <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS"></a>
+    <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS"></a>
     <div class="n3-desktop-row">
       <div class="n3-links">
         <a href="index.html#products">Products</a>
@@ -299,7 +332,7 @@
   </main>
 
   <footer class="foot3">
-    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS"></div>
+    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS"></div>
     <div class="f3-links"><a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:ekprinterss@gmail.com">Email Us</a><a href="tel:+916374343375">Call</a></div>
     <div class="f3-copy">© 2025 EK PRINTERS · Tiruppur</div>
   </footer>

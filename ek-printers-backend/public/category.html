@@ -406,11 +406,17 @@
       },
       'woven-labels': {
         title: 'Woven Labels',
-        subtitle: 'Premium woven label collection.',
+        subtitle: 'Browse our woven label samples and tap Get Quote for any style you like.',
         service: 'Labels',
+        layout: 'gallery',
+        quoteType: 'Woven Labels',
         items: [
-          { name: 'Woven Labels', img: 'lb-woven.png' },
-          { name: 'Cotton Labels', img: 'lb-cotton.png' }
+          { name: 'Woven label — Nivaasa 3XL', img: 'wl-01.png' },
+          { name: 'Woven label — Only Men\'s Fashion', img: 'wl-02.png' },
+          { name: 'Woven label — 100% Cotton KJ', img: 'wl-03.png' },
+          { name: 'Woven label — VIBE22 Kids Wear', img: 'wl-04.png' },
+          { name: 'Woven label — JANVIKA XL', img: 'wl-05.png' },
+          { name: 'Woven label sample', img: 'wl-06.png' }
         ]
       },
       'business-cards': {
@@ -464,7 +470,7 @@
     function sendToQuote(item) {
       localStorage.setItem(PREFILL_KEY, JSON.stringify({
         service: cat.service,
-        type: item.name,
+        type: cat.quoteType || item.name,
         quantity: '',
         requirement: `${cat.title} — ${item.name}`
       }));

@@ -477,9 +477,9 @@
 
   <section class="h3">
     <div>
-      <div class="h3-badge fx-fade-up fx-d1">AUTUMN / WINTER 2026</div>
-      <h1 class="h3-title fx-fade-up fx-d2">THE NEW<br><em>PRINT</em><br>SILHOUETTE</h1>
-      <p class="h3-sub fx-fade-up fx-d3">Architecture precision meets fluid movement - premium cards, labels and hang tags crafted for modern brands.</p>
+      <div class="h3-badge fx-fade-up fx-d1">HANG TAG COLLECTION</div>
+      <h1 class="h3-title fx-fade-up fx-d2">PREMIUM<br>HANG TAG<br>DETAILS</h1>
+      <p class="h3-sub fx-fade-up fx-d3">Luxury die-cut hang tags with foil, emboss and premium finishes crafted for standout apparel branding.</p>
       <div class="af-actions fx-fade-up fx-d4">
         <a class="af-btn" href="#contact">Explore Collection →</a>
         <div class="af-dots" aria-hidden="true">
@@ -972,21 +972,57 @@ function initRevealAnimations() {
 function initHeroAutoBackground() {
   const heroPanel = document.querySelector('.h3 > div');
   if (!heroPanel) return;
-  const heroPhotos = ['hang-tag-card.png', 'lb-cotton.png'];
+  const heroBadge = document.querySelector('.h3-badge');
+  const heroTitle = document.querySelector('.h3-title');
+  const heroSub = document.querySelector('.h3-sub');
+  const heroDots = Array.from(document.querySelectorAll('.af-dot'));
+  const heroSlides = [
+    {
+      image: 'hang-tag-card.png',
+      badge: 'HANG TAG COLLECTION',
+      title: 'PREMIUM<br>HANG TAG<br>DETAILS',
+      subtitle: 'Luxury die-cut hang tags with foil, emboss and premium finishes crafted for standout apparel branding.'
+    },
+    {
+      image: 'lb-cotton.png',
+      badge: 'LABEL COLLECTION',
+      title: 'SHARP<br>LABEL<br>DETAILS',
+      subtitle: 'High clarity woven and cotton labels with clean print definition, soft texture and durable quality.'
+    },
+    {
+      image: 'hero-business-cards.png',
+      badge: 'BUSINESS CARD COLLECTION',
+      title: 'BOLD<br>BUSINESS<br>CARDS',
+      subtitle: 'Professional cards with modern layouts, premium stock and eye-catching print for stronger brand impact.'
+    }
+  ];
+  if (!heroSlides.length) return;
+
   let current = 0;
-  heroPanel.style.setProperty('--hero-photo', `url('${heroPhotos[current]}')`);
-  heroPanel.style.setProperty('--hero-photo-next', `url('${heroPhotos[(current + 1) % heroPhotos.length]}')`);
+  const applySlideContent = (index) => {
+    const slide = heroSlides[index];
+    if (heroBadge) heroBadge.textContent = slide.badge;
+    if (heroTitle) heroTitle.innerHTML = slide.title;
+    if (heroSub) heroSub.textContent = slide.subtitle;
+    heroDots.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+  };
+
+  applySlideContent(current);
+  heroPanel.style.setProperty('--hero-photo', `url('${heroSlides[current].image}')`);
+  heroPanel.style.setProperty('--hero-photo-next', `url('${heroSlides[(current + 1) % heroSlides.length].image}')`);
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   setInterval(() => {
-    const next = (current + 1) % heroPhotos.length;
-    heroPanel.style.setProperty('--hero-photo-next', `url('${heroPhotos[next]}')`);
+    const next = (current + 1) % heroSlides.length;
+    heroPanel.style.setProperty('--hero-photo-next', `url('${heroSlides[next].image}')`);
     heroPanel.classList.add('hero-fade');
     setTimeout(() => {
       current = next;
-      heroPanel.style.setProperty('--hero-photo', `url('${heroPhotos[current]}')`);
+      heroPanel.style.setProperty('--hero-photo', `url('${heroSlides[current].image}')`);
+      applySlideContent(current);
       heroPanel.classList.remove('hero-fade');
     }, 650);
-  }, 3800);
+  }, 3900);
 }
 
 // Also allow pressing Enter in the last field
@@ -1098,15 +1134,15 @@ document.addEventListener('DOMContentLoaded', () => {
     transform:translateX(-50%);
     width:min(94%,980px);
     border-radius:18px;
-    border:1px solid rgba(255,255,255,0.1);
-    background:rgba(8,10,13,0.72);
-    backdrop-filter:blur(10px);
-    box-shadow:0 18px 40px rgba(0,0,0,0.45);
+    border:none;
+    background:linear-gradient(120deg,rgba(8,10,13,0.88) 0%,rgba(11,16,24,0.82) 55%,rgba(8,10,13,0.9) 100%);
+    backdrop-filter:blur(14px);
+    box-shadow:0 18px 44px rgba(0,0,0,0.52),0 1px 0 rgba(255,255,255,0.08) inset;
   }
   .n3-logo-img{height:36px}
   .n3-links a{color:rgba(236,240,250,0.72)}
   .n3-links a:hover{color:#fff}
-  .n3-burger{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.16);color:#f5f7fb}
+  .n3-burger{background:rgba(255,255,255,0.08);border:none;color:#f5f7fb;box-shadow:0 8px 20px rgba(0,0,0,0.35)}
   .n3-premium-line{display:none}
   .h3{
     padding:5.5rem 0.95rem 1.8rem;
@@ -1125,9 +1161,15 @@ document.addEventListener('DOMContentLoaded', () => {
     border:1px solid rgba(255,255,255,0.11);
     box-shadow:0 26px 56px rgba(0,0,0,0.55);
     padding:1.15rem;
-    background:
-      linear-gradient(180deg,rgba(5,7,10,0.12) 0%,rgba(5,7,10,0.84) 56%,rgba(5,7,10,0.95) 100%),
-      var(--hero-photo) center/cover no-repeat;
+    background:var(--hero-photo) center/cover no-repeat;
+  }
+  .h3 > div::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:linear-gradient(180deg,rgba(3,5,8,0.48) 0%,rgba(3,5,8,0.8) 45%,rgba(3,5,8,0.94) 72%,rgba(3,5,8,0.98) 100%);
   }
   .h3 > div::after{
     content:'';
@@ -1138,7 +1180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     opacity:0;
     transition:opacity .65s ease;
     background:
-      linear-gradient(180deg,rgba(5,7,10,0.12) 0%,rgba(5,7,10,0.84) 56%,rgba(5,7,10,0.95) 100%),
+      linear-gradient(180deg,rgba(3,5,8,0.48) 0%,rgba(3,5,8,0.8) 45%,rgba(3,5,8,0.94) 72%,rgba(3,5,8,0.98) 100%),
       var(--hero-photo-next) center/cover no-repeat;
   }
   .h3 > div.hero-fade::after{opacity:1}
@@ -1165,6 +1207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     margin-bottom:0.7rem;
     text-transform:uppercase;
     letter-spacing:-0.02em;
+    text-shadow:0 10px 28px rgba(0,0,0,0.75);
   }
   .h3-title em{font-style:normal;color:#fff}
   .h3-sub{
@@ -1173,6 +1216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     max-width:30ch;
     margin-bottom:0.95rem;
     line-height:1.55;
+    text-shadow:0 6px 20px rgba(0,0,0,0.68);
   }
   .af-actions{display:flex;align-items:center;gap:0.65rem}
   .af-btn{
@@ -1199,7 +1243,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .p3-subtitle{font-size:0.74rem;color:rgba(236,240,250,0.64)}
   .p3-grid{gap:0.62rem}
   .p3-card{
-    border:1px solid rgba(255,255,255,0.09);
+    border:none;
     border-radius:16px;
     background:#0b0f14;
     box-shadow:0 16px 30px rgba(0,0,0,0.38);
@@ -1212,7 +1256,8 @@ document.addEventListener('DOMContentLoaded', () => {
   .p3-cname{color:#f7f9ff;font-size:0.75rem;letter-spacing:0.02em}
   .p3-arrow{
     color:#d4ff45;
-    border:1px solid rgba(212,255,69,0.45);
+    border:none;
+    background:rgba(212,255,69,0.14);
     width:22px;height:22px;border-radius:50%;
     display:inline-flex;align-items:center;justify-content:center;
     font-size:0.66rem;font-weight:700;
@@ -1225,27 +1270,29 @@ document.addEventListener('DOMContentLoaded', () => {
   .feat-bar{margin-top:0.7rem;padding:0;gap:0.5rem}
   .feat-item{
     background:rgba(12,16,22,0.88);
-    border:1px solid rgba(255,255,255,0.08);
+    border:none;
+    box-shadow:0 14px 30px rgba(0,0,0,0.34);
   }
   .feat-text strong{color:#f4f7ff}
   .feat-text span{color:rgba(228,233,247,0.62)}
   .g3-card,.t3-review,.cta3-form,.cta3-left,.cta3-contact-card{
     background:rgba(12,16,22,0.86)!important;
-    border:1px solid rgba(255,255,255,0.08)!important;
+    border:none!important;
+    box-shadow:0 16px 34px rgba(0,0,0,0.35);
   }
   .g3-title,.testi3-left h2,.cta3-form-title,.cta3-left h2{color:#f6f8ff}
   .g3-sub,.t3-text,.cta3-form-sub,.cta3-left p,.t3-source{color:rgba(228,233,247,0.68)}
   .cta3-input,.prod-qty{
     background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
+    border:none;
     color:#f6f8ff;
   }
   .cta3-input::placeholder,.prod-qty::placeholder{color:rgba(228,233,247,0.46)}
-  .prod-modal{background:#0d1118;border:1px solid rgba(255,255,255,0.12)}
+  .prod-modal{background:#0d1118;border:none;box-shadow:0 28px 70px rgba(0,0,0,0.58)}
   .prod-modal-name,.prod-section-title{color:#f6f8ff}
   .prod-modal-desc,.prod-turnaround{color:rgba(228,233,247,0.68)}
-  .prod-variety-card{background:#111722;border-color:rgba(255,255,255,0.12);color:#f7f9ff}
-  .prod-variety-card.highlight{background:#1a2435;border-color:#d4ff45;box-shadow:0 0 0 2px rgba(212,255,69,0.18)}
+  .prod-variety-card{background:#111722;border:none;color:#f7f9ff}
+  .prod-variety-card.highlight{background:#1a2435;border:none;box-shadow:0 0 0 2px rgba(212,255,69,0.18)}
   .prod-turnaround{background:rgba(255,255,255,0.05)}
   .prod-wa-btn{background:rgba(255,255,255,0.08);color:#f6f8ff}
   .f3-copy,.f3-links a{color:rgba(228,233,247,0.62)}
@@ -1258,6 +1305,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .af-btn{font-size:0.7rem}
     .p3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   }
+  .n3-drawer-panel,.n3-drawer-links a,.prod-wa-btn,.cta3-select-btn,.cta3-select-menu{border:none!important}
 </style>
 
 <!-- PRODUCT DETAIL MODAL -->

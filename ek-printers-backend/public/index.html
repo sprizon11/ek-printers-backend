@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>EK PRINTERS · Tiruppur</title>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=9">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=10">
 </head>
 <body>
 <style>
@@ -515,11 +515,15 @@
         <figcaption class="g3-caption"><span class="g3-caption-title">Offset Printing Machine</span></figcaption>
       </figure>
       <figure class="g3-card">
-        <img class="g3-img" src="gallery-label-production.png?v=1" alt="Label production machine" loading="lazy" decoding="async">
-        <figcaption class="g3-caption"><span class="g3-caption-title">Label Production Machine</span></figcaption>
+        <img class="g3-img" src="gallery-label-production.png?v=2" alt="Label production machine in operation" loading="lazy" decoding="async">
+        <figcaption class="g3-caption"><span class="g3-caption-title">Label production Machine</span></figcaption>
       </figure>
-      <figure class="g3-card">
-        <img class="g3-img" src="gallery-floor-2.png?v=1" alt="Print floor production setup" loading="lazy" decoding="async">
+      <figure class="g3-card g3-card--rotator" data-gallery-rotator>
+        <div class="g3-rotator">
+          <img class="g3-img g3-rotator-slide is-active" src="gallery-holes-folding-1.png?v=1" alt="Paper hole punching on finishing bench" loading="lazy" decoding="async">
+          <img class="g3-img g3-rotator-slide" src="gallery-holes-folding-2.png?v=1" alt="Folding machine feeding printed sheets" loading="lazy" decoding="async">
+        </div>
+        <figcaption class="g3-caption"><span class="g3-caption-title">Holes &amp; folding Machine</span></figcaption>
       </figure>
     </div>
   </section>
@@ -930,6 +934,22 @@ function closeMobileNav() {
   closeNavDrawer();
 }
 
+function initGalleryRotators() {
+  const cards = document.querySelectorAll('[data-gallery-rotator]');
+  if (!cards.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  cards.forEach(card => {
+    const slides = Array.from(card.querySelectorAll('.g3-rotator-slide'));
+    if (slides.length < 2) return;
+    let idx = 0;
+    setInterval(() => {
+      slides[idx].classList.remove('is-active');
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add('is-active');
+    }, 4000);
+  });
+}
+
 function initRevealAnimations() {
   const nodes = document.querySelectorAll('.reveal-on-scroll');
   if (!nodes.length) return;
@@ -1036,6 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuoteFormSelects();
   applyQuotePrefill();
   initRevealAnimations();
+  initGalleryRotators();
   initHeroAutoBackground();
   const navMain = document.getElementById('navMain');
   if (navMain) {

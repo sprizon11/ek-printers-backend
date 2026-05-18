@@ -225,12 +225,48 @@
       .wrap{padding-top:1rem}
       .head{margin-top:5.5rem}
     }
+
+    /* WHITE THEME REFRESH */
+    :root{
+      --bg:#f4f7fc;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:rgba(15,23,42,0.62);
+      --teal:#1494e8;
+      --teal2:#0e76d6;
+      --border:rgba(20,148,232,0.14);
+    }
+    body{background:linear-gradient(180deg,#f6f9ff 0%,#edf3fb 100%);color:var(--ink)}
+    .top{
+      background:rgba(255,255,255,0.9);
+      box-shadow:0 12px 30px rgba(15,23,42,0.12);
+    }
+    .back,.btn-muted,.wa-btn{
+      background:#eef5fd;
+      color:#0f172a;
+      box-shadow:none;
+    }
+    .kicker{color:var(--teal)}
+    h1{color:var(--ink)}
+    .sub,.item p{color:var(--muted)}
+    .item,.modal{
+      background:#fff;
+      box-shadow:0 10px 24px rgba(15,23,42,0.08);
+    }
+    .item h3,.modal-title{color:var(--ink)}
+    .item img,.modal-image-wrap{background:#eef4fb}
+    .btn-primary,.send-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
+    .qty{background:#f1f6fd;color:#0f172a}
+    .qty:focus{
+      box-shadow:0 0 0 4px rgba(20,148,232,0.15);
+      border-color:var(--teal);
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="brand"><img src="ek-printers-logo.png" alt="EK PRINTERS"></div>
+      <div class="brand"><img src="ek-printers-logo-main.png" alt="EK PRINTERS"></div>
       <a class="back" href="index.html#products">← Back to Products</a>
     </div>
 

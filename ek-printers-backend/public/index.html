@@ -440,7 +440,7 @@
   </div>
   <nav id="navMain">
     <a href="index.html" class="n3-logo">
-      <img class="n3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS">
+      <img class="n3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS">
     </a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="#portfolio">Portfolio</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
@@ -497,8 +497,8 @@
     </div>
     <div class="p3-grid">
       <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">></div></div></div>
-      <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png" alt="Printed labels"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">></div></div></div>
-      <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png" alt="Woven labels"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d2" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png" alt="Woven labels"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d3" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png" alt="Printed labels"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">></div></div></div>
       <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="bc-normal.png" alt="Business cards"></div><div class="p3-card-body"><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">></div></div></div>
     </div>
   </section>
@@ -604,7 +604,7 @@
   </div>
 
   <div class="foot3">
-    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo.png" alt="EK PRINTERS"></div>
+    <div class="f3-logo"><img class="f3-logo-img" src="ek-printers-logo-main.png" alt="EK PRINTERS"></div>
     <div class="f3-links">
       <a href="https://www.instagram.com/ek_printers.tiruppur?igsh=bm84enZsMzh1NjNm" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://wa.me/916374343375" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -1312,6 +1312,59 @@ document.addEventListener('DOMContentLoaded', () => {
     .p3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   }
   .n3-drawer-panel,.n3-drawer-links a,.prod-wa-btn,.cta3-select-btn,.cta3-select-menu{border:none!important}
+
+  /* WHITE THEME REFRESH */
+  :root{
+    --bg:#f4f7fc;
+    --surface:#eaf0f8;
+    --ink:#0f172a;
+    --muted:rgba(15,23,42,0.62);
+    --card:#ffffff;
+    --teal:#1494e8;
+    --teal2:#0e76d6;
+    --light:#eef6ff;
+    --font-body:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+    --font-heading:'Poppins','Inter','Segoe UI',Roboto,Arial,sans-serif;
+  }
+  body{background:linear-gradient(180deg,#f6f9ff 0%,#edf3fb 100%);color:var(--ink)}
+  #navMain{
+    background:rgba(255,255,255,0.88);
+    box-shadow:0 12px 30px rgba(15,23,42,0.12);
+  }
+  .n3-links a{color:rgba(15,23,42,0.66)}
+  .n3-links a:hover{color:var(--ink)}
+  .n3-burger{background:#f1f5fb;color:#0f172a}
+  .h3-banner{
+    min-height:calc(100svh - 6.2rem);
+    box-shadow:0 18px 40px rgba(15,23,42,0.14);
+  }
+  .h3-badge,.h3-sub,.h3-title{color:#fff}
+  .af-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;box-shadow:0 10px 22px rgba(20,148,232,0.32)}
+  .af-dot{background:rgba(255,255,255,0.42)}
+  .prods3{
+    background:#fff;
+    box-shadow:0 14px 30px rgba(15,23,42,0.1);
+  }
+  .p3-title,.g3-title,.testi3-left h2,.cta3-left h2,.cta3-form-title{color:var(--ink)}
+  .p3-title em,.g3-title em,.cta3-left h2 em,.cta3-form-title em{color:var(--teal)}
+  .p3-subtitle,.g3-sub,.t3-text,.cta3-left p,.cta3-form-sub,.t3-source{color:var(--muted)}
+  .p3-card,.g3-card,.t3-review,.cta3-form,.cta3-left,.cta3-contact-card,.feat-item{
+    background:#fff!important;
+    box-shadow:0 10px 24px rgba(15,23,42,0.08);
+  }
+  .p3-arrow{background:rgba(20,148,232,0.14);color:var(--teal)}
+  .cta3-input,.prod-qty{background:#f1f6fd;color:var(--ink)}
+  .cta3-input::placeholder,.prod-qty::placeholder{color:rgba(15,23,42,0.42)}
+  .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2))}
+  .foot3{
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 12px 28px rgba(15,23,42,0.08);
+  }
+  .f3-links a,.f3-copy{color:rgba(15,23,42,0.6)}
+  @media (min-width:900px){
+    .h3-banner{min-height:88svh}
+  }
 </style>
 
 <!-- PRODUCT DETAIL MODAL -->

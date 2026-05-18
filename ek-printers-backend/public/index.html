@@ -243,7 +243,6 @@
   /* PRODUCTS — mobile first */
   .prods3{padding:2rem 1.15rem;background:var(--bg)}
   /* When products are placed inside the hero */
-  .h3 .prods3{padding:0;margin-top:1.25rem;background:transparent}
   .p3-header{display:flex;flex-direction:column;align-items:flex-start;gap:0.75rem;margin-bottom:2rem}
   .p3-title{font-family:var(--font-heading);font-weight:800;font-size:clamp(1.85rem,4vw,2.8rem);letter-spacing:-0.03em;line-height:1.05}
   .p3-title em{font-family:var(--font-heading);font-style:italic;font-weight:600;color:var(--teal)}
@@ -476,7 +475,7 @@
   </div>
 
   <section class="h3">
-    <div>
+    <div class="h3-banner">
       <div class="h3-badge fx-fade-up fx-d1">HANG TAG COLLECTION</div>
       <h1 class="h3-title fx-fade-up fx-d2">PREMIUM<br>HANG TAG<br>DETAILS</h1>
       <p class="h3-sub fx-fade-up fx-d3">Luxury die-cut hang tags with foil, emboss and premium finishes crafted for standout apparel branding.</p>
@@ -488,19 +487,19 @@
           <span class="af-dot"></span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <section class="prods3" id="products">
-        <div class="p3-header">
-          <div class="p3-title fx-fade-up fx-d4">What We<br><em>Create</em></div>
-          <div class="p3-subtitle fx-fade-up fx-d5">Four premium product categories. Tap to open full collection.</div>
-        </div>
-        <div class="p3-grid">
-          <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">></div></div></div>
-          <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png" alt="Printed labels"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">></div></div></div>
-          <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png" alt="Woven labels"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">></div></div></div>
-          <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="bc-normal.png" alt="Business cards"></div><div class="p3-card-body"><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">></div></div></div>
-        </div>
-      </section>
+  <section class="prods3" id="products">
+    <div class="p3-header">
+      <div class="p3-title fx-fade-up fx-d4">What We<br><em>Create</em></div>
+      <div class="p3-subtitle fx-fade-up fx-d5">Four premium product categories. Tap to open full collection.</div>
+    </div>
+    <div class="p3-grid">
+      <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d2" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png" alt="Printed labels"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d3" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png" alt="Woven labels"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="bc-normal.png" alt="Business cards"></div><div class="p3-card-body"><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">></div></div></div>
     </div>
   </section>
 
@@ -970,7 +969,7 @@ function initRevealAnimations() {
 }
 
 function initHeroAutoBackground() {
-  const heroPanel = document.querySelector('.h3 > div');
+  const heroPanel = document.querySelector('.h3-banner');
   if (!heroPanel) return;
   const heroBadge = document.querySelector('.h3-badge');
   const heroTitle = document.querySelector('.h3-title');
@@ -1145,13 +1144,13 @@ document.addEventListener('DOMContentLoaded', () => {
   .n3-burger{background:rgba(255,255,255,0.08);border:none;color:#f5f7fb;box-shadow:0 8px 20px rgba(0,0,0,0.35)}
   .n3-premium-line{display:none}
   .h3{
-    padding:5.5rem 0.95rem 1.8rem;
-    min-height:100svh;
+    padding:5.5rem 0.95rem 0.9rem;
+    min-height:auto;
     display:flex;
     justify-content:center;
     align-items:flex-start;
   }
-  .h3 > div{
+  .h3-banner{
     --hero-photo:url('hang-tag-card.png');
     --hero-photo-next:url('lb-cotton.png');
     width:min(100%,430px);
@@ -1163,7 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     padding:1.15rem;
     background:var(--hero-photo) center/cover no-repeat;
   }
-  .h3 > div::before{
+  .h3-banner::before{
     content:'';
     position:absolute;
     inset:0;
@@ -1171,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pointer-events:none;
     background:linear-gradient(180deg,rgba(3,5,8,0.48) 0%,rgba(3,5,8,0.8) 45%,rgba(3,5,8,0.94) 72%,rgba(3,5,8,0.98) 100%);
   }
-  .h3 > div::after{
+  .h3-banner::after{
     content:'';
     position:absolute;
     inset:0;
@@ -1183,8 +1182,8 @@ document.addEventListener('DOMContentLoaded', () => {
       linear-gradient(180deg,rgba(3,5,8,0.48) 0%,rgba(3,5,8,0.8) 45%,rgba(3,5,8,0.94) 72%,rgba(3,5,8,0.98) 100%),
       var(--hero-photo-next) center/cover no-repeat;
   }
-  .h3 > div.hero-fade::after{opacity:1}
-  .h3 > div > *{
+  .h3-banner.hero-fade::after{opacity:1}
+  .h3-banner > *{
     position:relative;
     z-index:1;
   }
@@ -1238,7 +1237,14 @@ document.addEventListener('DOMContentLoaded', () => {
   .af-dots{display:flex;gap:0.36rem}
   .af-dot{width:20px;height:3px;border-radius:999px;background:rgba(255,255,255,0.28)}
   .af-dot.active{background:#fff}
-  .h3 .prods3{margin-top:6.6rem;padding:0}
+  .prods3{
+    width:min(94%,980px);
+    margin:0 auto 1rem;
+    padding:1.2rem 1rem 1.1rem;
+    border-radius:22px;
+    background:rgba(10,14,20,0.86);
+    box-shadow:0 16px 34px rgba(0,0,0,0.35);
+  }
   .p3-title{font-size:1.46rem}
   .p3-subtitle{font-size:0.74rem;color:rgba(236,240,250,0.64)}
   .p3-grid{gap:0.62rem}
@@ -1298,8 +1304,8 @@ document.addEventListener('DOMContentLoaded', () => {
   .f3-copy,.f3-links a{color:rgba(228,233,247,0.62)}
   .f3-links a:hover{color:#fff}
   @media (min-width:900px){
-    .h3 > div{width:min(100%,980px);padding:1.8rem;min-height:76svh;background-position:center 18%}
-    .h3 .prods3{margin-top:11.2rem}
+    .h3-banner{width:min(94%,980px);padding:1.8rem;min-height:74svh;background-position:center 18%}
+    .prods3{padding:1.45rem 1.4rem 1.35rem}
     .h3-title{font-size:clamp(2.8rem,6vw,4.3rem)}
     .h3-sub{font-size:0.92rem}
     .af-btn{font-size:0.7rem}

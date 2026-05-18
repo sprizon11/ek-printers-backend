@@ -590,6 +590,43 @@ body #navMain:not(.nav-scrolled){
 }
 .cta3-input::placeholder,.prod-qty::placeholder,.qty::placeholder{color:rgba(210,218,235,0.45) !important}
 
+/* Custom dropdowns (Choose Service / Choose type) */
+.cta3-select-btn{
+  color:var(--ink) !important;
+  -webkit-tap-highlight-color:transparent;
+}
+.cta3-select-btn-text{
+  color:var(--ink) !important;
+}
+.cta3-select-placeholder{
+  color:rgba(210,218,235,0.58) !important;
+}
+.cta3-select-btn::after{
+  border-top-color:rgba(236,239,241,0.62) !important;
+}
+.cta3-select-wrap.is-open .cta3-select-btn{
+  border-color:rgba(42,180,255,0.5) !important;
+  background:rgba(255,255,255,0.08) !important;
+}
+.cta3-select-menu{
+  background:var(--surface-strong) !important;
+  border:1px solid var(--line) !important;
+  border-radius:var(--radius-sm) !important;
+  box-shadow:var(--shadow) !important;
+}
+.cta3-select-option{
+  color:var(--ink) !important;
+}
+.cta3-select-option:hover,
+.cta3-select-option:focus{
+  background:rgba(42,180,255,0.16) !important;
+  color:#f8fbff !important;
+  outline:none !important;
+}
+.cta3-subfield-label{
+  color:var(--muted) !important;
+}
+
 /* —— Footer —— */
 .foot3{
   padding:1.5rem 0 2rem !important;

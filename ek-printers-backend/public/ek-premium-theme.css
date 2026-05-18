@@ -403,7 +403,9 @@ h1,h2,h3,.h3-title,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left 
   padding:1.25rem !important;
   box-shadow:var(--shadow-soft) !important;
 }
-.cta3-contact{margin-top:0 !important}
+.cta3-left,.cta3-contact{display:none !important}
+.cta3{grid-template-columns:1fr !important}
+.cta3-form{max-width:100% !important}
 .cta3-input,.prod-qty,.qty{
   background:rgba(255,255,255,0.05) !important;
   border:1px solid var(--line) !important;

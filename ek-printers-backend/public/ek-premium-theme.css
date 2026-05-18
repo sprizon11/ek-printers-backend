@@ -105,7 +105,7 @@ h1,h2,h3,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left h2,.testi3
   padding:5.5rem 1.25rem 2.5rem !important;
   display:flex !important;
   flex-direction:column !important;
-  justify-content:flex-end !important;
+  justify-content:center !important;
   align-items:flex-start !important;
   background-size:cover !important;
   background-position:center !important;
@@ -371,7 +371,7 @@ h1,h2,h3,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left h2,.testi3
   .feat-bar{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
   .p3-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:1rem !important}
   #navMain,.top{padding:0.85rem 2rem !important}
-  .h3-banner{padding:6rem 2.5rem 3rem !important}
+  .h3-banner{padding:5.5rem 2.5rem !important}
   .cta3{grid-template-columns:1fr 1fr;align-items:start}
 }
 

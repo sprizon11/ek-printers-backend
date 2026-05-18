@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>EK PRINTERS · Tiruppur</title>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=3">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=4">
 </head>
 <body>
 <style>
@@ -428,17 +428,26 @@
     </div>
   </div>
   <nav id="navMain">
-    <a href="index.html" class="n3-logo">
-      <img class="n3-logo-img" src="ek-printers-logo.png?v=6" alt="EK PRINTERS">
-    </a>
+    <a href="index.html" class="nav-brand-wordmark" aria-label="EK PRINTERS home">EK PRINTERS</a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
-        <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote →</button>
+        <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
       </div>
     </div>
-    <div class="n3-mobile-bar">
-      <button type="button" class="n3-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">☰</button>
+    <div class="nav-icon-bar">
+      <a href="#products" class="nav-icon-btn" aria-label="Browse products">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </a>
+      <a href="https://wa.me/916374343375" class="nav-icon-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.9 7.3L3 21l2.3-5A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      </a>
+      <a href="#contact" class="nav-icon-btn" aria-label="Get a quote">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1.2 9H7.2L6 7z"/><path d="M9 10v0M15 10v0"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
+      </a>
+      <button type="button" class="nav-icon-btn" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
   </nav>
 
@@ -1034,6 +1043,14 @@ document.addEventListener('DOMContentLoaded', () => {
   applyQuotePrefill();
   initRevealAnimations();
   initHeroAutoBackground();
+  const navMain = document.getElementById('navMain');
+  if (navMain) {
+    const onNavScroll = () => {
+      navMain.classList.toggle('nav-scrolled', window.scrollY > 48);
+    };
+    onNavScroll();
+    window.addEventListener('scroll', onNavScroll, { passive: true });
+  }
 });
 </script>
 
@@ -1379,10 +1396,10 @@ document.addEventListener('DOMContentLoaded', () => {
     border-radius:0;
     border:none;
     box-shadow:none;
-    backdrop-filter:blur(10px);
-    background:rgba(6,10,18,0.9);
+    background:transparent;
+    backdrop-filter:none;
   }
-  .n3-logo-img{height:30px;max-width:min(72vw,320px);object-fit:contain}
+  #navMain.nav-scrolled{background:rgba(6,10,18,0.88);backdrop-filter:blur(10px)}
   .n3-burger{background:transparent;color:#e8eeff;box-shadow:none}
   .h3{
     padding:4.9rem 0 0;
@@ -1418,7 +1435,8 @@ document.addEventListener('DOMContentLoaded', () => {
   .p3-arrow{background:rgba(29,159,255,0.2);color:#9fd6ff}
   .cta3-input,.prod-qty{background:rgba(255,255,255,0.06);color:#f5f7ff}
   .cta3-input::placeholder,.prod-qty::placeholder{color:rgba(226,232,245,0.5)}
-  .btn3-submit,.prod-quote-btn,.af-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
+  .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
+  .af-btn{background:#d4ff45;color:#0a0c08;box-shadow:0 14px 32px rgba(212,255,69,0.28)}
 </style>
 
 <!-- PRODUCT DETAIL MODAL -->

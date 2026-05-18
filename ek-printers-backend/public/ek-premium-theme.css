@@ -78,19 +78,22 @@ h1,h2,h3,.h3-title,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left 
   backdrop-filter:blur(14px) saturate(1.15) !important;
   -webkit-backdrop-filter:blur(14px) saturate(1.15) !important;
 }
-.nav-brand-wordmark{
-  font-family:var(--font-serif) !important;
-  font-size:clamp(1.28rem,4.8vw,1.75rem) !important;
-  font-weight:600 !important;
-  letter-spacing:0.04em !important;
-  text-transform:uppercase !important;
-  color:#fff !important;
+.nav-brand-wordmark{display:none !important}
+.n3-logo{
+  display:flex !important;
+  align-items:center !important;
   text-decoration:none !important;
-  line-height:1 !important;
   flex-shrink:0;
-  text-shadow:0 2px 18px rgba(0,0,0,0.45);
+  min-width:0;
 }
-.n3-logo-img{display:none !important}
+.n3-logo-img{
+  display:block !important;
+  height:34px !important;
+  width:auto !important;
+  max-width:min(72vw,260px) !important;
+  object-fit:contain !important;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,0.4));
+}
 .nav-icon-bar{
   display:flex !important;
   align-items:center !important;
@@ -235,17 +238,16 @@ h1,h2,h3,.h3-title,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left 
 }
 .h3-banner{
   width:100% !important;
-  min-height:100svh !important;
+  min-height:72svh !important;
+  max-height:820px !important;
   border:none !important;
   border-radius:0 !important;
   box-shadow:none !important;
-  padding:5.5rem 1.25rem 2.5rem !important;
+  padding:4.75rem 1.25rem 1.75rem !important;
   display:flex !important;
   flex-direction:column !important;
-  justify-content:flex-start !important;
+  justify-content:flex-end !important;
   align-items:flex-start !important;
-  padding-top:5.75rem !important;
-  padding-bottom:2rem !important;
   background-size:cover !important;
   background-position:center !important;
 }

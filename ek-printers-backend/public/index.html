@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>EK PRINTERS · Tiruppur</title>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=4">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=5">
 </head>
 <body>
 <style>
@@ -428,7 +428,9 @@
     </div>
   </div>
   <nav id="navMain">
-    <a href="index.html" class="nav-brand-wordmark" aria-label="EK PRINTERS home">EK PRINTERS</a>
+    <a href="index.html" class="n3-logo" aria-label="EK PRINTERS home">
+      <img class="n3-logo-img" src="ek-printers-logo.png?v=7" alt="EK PRINTERS">
+    </a>
     <div class="n3-desktop-row">
       <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
       <div class="n3-desktop-cta">
@@ -436,15 +438,6 @@
       </div>
     </div>
     <div class="nav-icon-bar">
-      <a href="#products" class="nav-icon-btn" aria-label="Browse products">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      </a>
-      <a href="https://wa.me/916374343375" class="nav-icon-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.9 7.3L3 21l2.3-5A8.5 8.5 0 1 1 21 11.5z"/></svg>
-      </a>
-      <a href="#contact" class="nav-icon-btn" aria-label="Get a quote">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1.2 9H7.2L6 7z"/><path d="M9 10v0M15 10v0"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
-      </a>
       <button type="button" class="nav-icon-btn" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -1311,7 +1304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .f3-copy,.f3-links a{color:rgba(228,233,247,0.62)}
   .f3-links a:hover{color:#fff}
   @media (min-width:900px){
-    .h3-banner{width:100%;padding:2rem;min-height:92svh;background-position:center 18%}
+    .h3-banner{width:100%;padding:2rem;min-height:72svh;max-height:820px;background-position:center 18%}
     .prods3{padding:1.45rem 1.4rem 1.35rem}
     .h3-title{font-size:clamp(2.8rem,6vw,4.3rem)}
     .h3-sub{font-size:0.92rem}
@@ -1371,7 +1364,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   .f3-links a,.f3-copy{color:rgba(15,23,42,0.6)}
   @media (min-width:900px){
-    .h3-banner{min-height:88svh}
+    .h3-banner{min-height:72svh;max-height:820px}
   }
 
   /* FINAL DARK BORDERLESS STYLE */
@@ -1402,11 +1395,12 @@ document.addEventListener('DOMContentLoaded', () => {
   #navMain.nav-scrolled{background:rgba(6,10,18,0.88);backdrop-filter:blur(10px)}
   .n3-burger{background:transparent;color:#e8eeff;box-shadow:none}
   .h3{
-    padding:4.9rem 0 0;
-    min-height:100svh;
+    padding:4.2rem 0 0;
+    min-height:auto;
   }
   .h3-banner{
-    min-height:100svh;
+    min-height:72svh;
+    max-height:820px;
     border:none;
     border-radius:0;
     box-shadow:none;
@@ -1414,7 +1408,7 @@ document.addEventListener('DOMContentLoaded', () => {
     flex-direction:column;
     justify-content:flex-start !important;
     align-items:flex-start;
-    padding:5.5rem 1.25rem 1.25rem;
+    padding:4.5rem 1.25rem 1.25rem;
   }
   .cta3-left h2,.cta3-left > p{display:none}
   .cta3-contact{margin-top:0}

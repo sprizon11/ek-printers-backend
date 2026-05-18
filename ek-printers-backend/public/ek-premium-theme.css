@@ -20,11 +20,13 @@
   --font-body:'Inter','Segoe UI',Roboto,Arial,sans-serif;
   --font-heading:'Inter','Segoe UI',Roboto,Arial,sans-serif;
   --font-serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
-  --cta-lime:#d4ff45;
-  --cta-lime-dim:#b8e63a;
 }
 
-html{scroll-behavior:smooth}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:5.25rem;
+}
+#products,#gallery,#contact{scroll-margin-top:5.25rem}
 body{
   background:
     radial-gradient(ellipse 80% 50% at 10% -10%, rgba(42,180,255,0.14), transparent 55%),
@@ -198,18 +200,22 @@ body #navMain:not(.nav-scrolled){
   filter:brightness(1.06);
 }
 .af-btn{
-  background:var(--cta-lime) !important;
-  color:#0a0c08 !important;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+  color:#fff !important;
   border:none !important;
-  box-shadow:0 14px 32px rgba(212,255,69,0.28) !important;
+  box-shadow:0 14px 36px rgba(13,142,232,0.42) !important;
   font-family:var(--font-body) !important;
   font-weight:700 !important;
   letter-spacing:0.14em !important;
   text-transform:uppercase !important;
+  text-decoration:none !important;
+  transition:transform .22s ease,box-shadow .22s ease,filter .22s ease !important;
 }
 .af-btn:hover{
-  background:var(--cta-lime-dim) !important;
-  transform:translateY(-1px);
+  background:linear-gradient(135deg,#3dc4ff,var(--accent-2)) !important;
+  color:#fff !important;
+  transform:translateY(-2px) !important;
+  box-shadow:0 18px 42px rgba(42,180,255,0.48) !important;
   filter:none !important;
 }
 .n3-premium-line{display:none !important}
@@ -279,7 +285,9 @@ body #navMain:not(.nav-scrolled){
     var(--hero-photo-next) center/cover no-repeat !important;
 }
 .h3-badge{
-  display:inline-block !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:0.45rem !important;
   padding:0 !important;
   margin:0 0 0.9rem !important;
   border-radius:0 !important;
@@ -292,6 +300,16 @@ body #navMain:not(.nav-scrolled){
   letter-spacing:0.28em !important;
   text-align:left !important;
   text-transform:uppercase;
+}
+.h3-badge::before{
+  content:'' !important;
+  display:inline-block !important;
+  width:6px !important;
+  height:6px !important;
+  border-radius:50% !important;
+  background:var(--accent) !important;
+  box-shadow:0 0 12px rgba(42,180,255,0.85) !important;
+  flex-shrink:0 !important;
 }
 .h3-title{
   font-family:var(--font-serif) !important;
@@ -333,15 +351,30 @@ body #navMain:not(.nav-scrolled){
   margin-right:auto !important;
 }
 .prods3{
+  position:relative !important;
   margin-top:3.5rem !important;
   margin-bottom:1.25rem !important;
-  padding:2.5rem 0 2.25rem !important;
+  padding:2.75rem 0 2.25rem !important;
   background:transparent !important;
   border:none !important;
   box-shadow:none !important;
   border-radius:0 !important;
 }
-.p3-header{margin-bottom:1.35rem !important}
+.prods3::before{
+  content:'' !important;
+  position:absolute !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  height:1px !important;
+  background:linear-gradient(90deg,transparent,rgba(42,180,255,0.55),transparent) !important;
+  pointer-events:none !important;
+}
+.p3-header{margin-bottom:1.5rem !important}
+.p3-subtitle{
+  letter-spacing:0.03em !important;
+  line-height:1.6 !important;
+}
 .p3-title,.g3-title,.testi3-left h2,.cta3-left h2,.cta3-form-title,.about-title{
   color:var(--ink) !important;
   font-size:clamp(1.5rem,4vw,2.2rem) !important;
@@ -395,7 +428,13 @@ body #navMain:not(.nav-scrolled){
   border:1px solid var(--line) !important;
   border-radius:var(--radius) !important;
   box-shadow:var(--shadow-soft) !important;
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(10px) saturate(1.15);
+  -webkit-backdrop-filter:blur(10px) saturate(1.15);
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease !important;
+}
+.feat-item:hover{
+  border-color:rgba(42,180,255,0.28) !important;
+  box-shadow:0 16px 36px rgba(0,0,0,0.38) !important;
 }
 .feat-text strong,.cta3-contact-text{color:var(--ink) !important}
 .feat-text span{color:var(--muted) !important}

@@ -520,7 +520,7 @@
       grid.classList.add('hang-gallery');
       grid.innerHTML = cat.items.map(item => (
         `<article class="hang-card" data-name="${item.name}" data-img="${item.img}">
-          <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
+          <img src="${item.img}?v=3" alt="${item.name}" loading="lazy" decoding="async">
           <button type="button" class="hang-quote-btn">Get Quote</button>
         </article>`
       )).join('');

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>EK PRINTERS · Tiruppur</title>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=5">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=6">
 </head>
 <body>
 <style>
@@ -1100,15 +1100,15 @@ document.addEventListener('DOMContentLoaded', () => {
   .n3-utility{display:none}
   #navMain{
     position:fixed;
-    top:0.8rem;
-    left:50%;
-    transform:translateX(-50%);
-    width:min(94%,980px);
-    border-radius:18px;
+    top:0;
+    left:0;
+    transform:none;
+    width:100%;
+    border-radius:0;
     border:none;
-    background:linear-gradient(120deg,rgba(8,10,13,0.88) 0%,rgba(11,16,24,0.82) 55%,rgba(8,10,13,0.9) 100%);
-    backdrop-filter:blur(14px);
-    box-shadow:0 18px 44px rgba(0,0,0,0.52),0 1px 0 rgba(255,255,255,0.08) inset;
+    background:transparent;
+    backdrop-filter:none;
+    box-shadow:none;
   }
   .n3-logo-img{height:30px}
   .n3-links a{color:rgba(236,240,250,0.72)}
@@ -1116,11 +1116,10 @@ document.addEventListener('DOMContentLoaded', () => {
   .n3-burger{background:rgba(255,255,255,0.08);border:none;color:#f5f7fb;box-shadow:0 8px 20px rgba(0,0,0,0.35)}
   .n3-premium-line{display:none}
   .h3{
-    padding:5.25rem 0 0.9rem;
+    padding:0;
+    margin:0;
     min-height:auto;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
+    display:block;
   }
   .h3-banner{
     --hero-photo:url('hang-tag-card.png');
@@ -1284,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .f3-copy,.f3-links a{color:rgba(228,233,247,0.62)}
   .f3-links a:hover{color:#fff}
   @media (min-width:900px){
-    .h3-banner{width:100%;padding:2rem;min-height:72svh;max-height:820px;background-position:center 18%}
+    .h3-banner{width:100%;padding:5.5rem 2rem 2rem;min-height:88svh;max-height:none;background-position:center center}
     .prods3{padding:1.45rem 1.4rem 1.35rem}
     .h3-title{font-size:clamp(2.8rem,6vw,4.3rem)}
     .h3-sub{font-size:0.92rem}
@@ -1344,7 +1343,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   .f3-links a,.f3-copy{color:rgba(15,23,42,0.6)}
   @media (min-width:900px){
-    .h3-banner{min-height:72svh;max-height:820px}
+    .h3-banner{min-height:88svh;max-height:none}
   }
 
   /* FINAL DARK BORDERLESS STYLE */
@@ -1369,26 +1368,24 @@ document.addEventListener('DOMContentLoaded', () => {
     border-radius:0;
     border:none;
     box-shadow:none;
-    background:transparent;
-    backdrop-filter:none;
+    background:transparent !important;
+    backdrop-filter:none !important;
   }
-  #navMain.nav-scrolled{background:rgba(6,10,18,0.88);backdrop-filter:blur(10px)}
+  #navMain.nav-scrolled{background:rgba(6,10,18,0.55);backdrop-filter:blur(10px)}
   .n3-burger{background:transparent;color:#e8eeff;box-shadow:none}
-  .h3{
-    padding:4.2rem 0 0;
-    min-height:auto;
-  }
+  .h3{padding:0 !important;margin:0 !important;min-height:auto !important}
   .h3-banner{
-    min-height:72svh;
-    max-height:820px;
+    min-height:88svh !important;
+    max-height:none !important;
     border:none;
     border-radius:0;
     box-shadow:none;
     display:flex;
     flex-direction:column;
-    justify-content:flex-start !important;
+    justify-content:flex-end !important;
     align-items:flex-start;
-    padding:4.5rem 1.25rem 1.25rem;
+    padding:5.25rem 1.25rem 2rem !important;
+    margin:0 !important;
   }
   .cta3-left h2,.cta3-left > p{display:none}
   .cta3-contact{margin-top:0}

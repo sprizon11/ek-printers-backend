@@ -73,10 +73,23 @@ h1,h2,h3,.h3-title,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left 
   transition:background .35s ease,border-color .35s ease,backdrop-filter .35s ease;
 }
 #navMain.nav-scrolled,.top.nav-scrolled{
-  background:rgba(4,6,12,0.72) !important;
+  background:rgba(4,6,12,0.55) !important;
   border-bottom-color:var(--line) !important;
-  backdrop-filter:blur(14px) saturate(1.15) !important;
-  -webkit-backdrop-filter:blur(14px) saturate(1.15) !important;
+  backdrop-filter:blur(12px) saturate(1.1) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.1) !important;
+}
+/* Force transparent nav over hero (beats inline overrides) */
+body #navMain:not(.nav-scrolled){
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  transform:none !important;
+  width:100% !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
 }
 .nav-brand-wordmark{display:none !important}
 .n3-logo{
@@ -230,26 +243,29 @@ h1,h2,h3,.h3-title,.p3-title,.g3-title,.about-title,.cta3-form-title,.cta3-left 
   padding:0.5rem 0.85rem !important;
 }
 
-/* —— Hero —— */
+/* —— Hero (full-bleed under transparent nav) —— */
 .h3{
-  padding:4.6rem 0 0 !important;
+  padding:0 !important;
+  margin:0 !important;
   min-height:auto !important;
   display:block !important;
 }
 .h3-banner{
   width:100% !important;
-  min-height:72svh !important;
-  max-height:820px !important;
+  min-height:88svh !important;
+  max-height:none !important;
   border:none !important;
   border-radius:0 !important;
   box-shadow:none !important;
-  padding:4.75rem 1.25rem 1.75rem !important;
+  margin:0 !important;
+  padding:5.25rem 1.25rem 2rem !important;
   display:flex !important;
   flex-direction:column !important;
   justify-content:flex-end !important;
   align-items:flex-start !important;
   background-size:cover !important;
-  background-position:center !important;
+  background-position:center center !important;
+  position:relative !important;
 }
 .h3-banner::before{
   background:

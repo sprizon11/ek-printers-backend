@@ -321,7 +321,7 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=13">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=14">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
@@ -387,12 +387,14 @@
       },
       'printed-labels': {
         title: 'Printed Labels',
-        subtitle: 'Premium printed label collection.',
+        subtitle: 'Browse our printed label samples and tap Get Quote for any style you like.',
         service: 'Labels',
+        layout: 'gallery',
+        quoteType: 'Printed Labels',
         items: [
-          { name: 'Printed Labels', img: 'lb-printed.png' },
           { name: 'Screen Printing Labels', img: 'lb-screen.png' },
-          { name: 'Cotton Labels', img: 'lb-cotton.png' }
+          { name: 'Cotton Labels', img: 'lb-cotton.png' },
+          { name: 'Printed label samples', img: 'lb-printed.png' }
         ]
       },
       'woven-labels': {
@@ -402,18 +404,19 @@
         layout: 'gallery',
         quoteType: 'Woven Labels',
         items: [
-          { name: 'Woven label — Nivaasa 3XL', img: 'wl-01.png' },
-          { name: 'Woven label — Only Men\'s Fashion', img: 'wl-02.png' },
-          { name: 'Woven label — 100% Cotton KJ', img: 'wl-03.png' },
-          { name: 'Woven label — VIBE22 Kids Wear', img: 'wl-04.png' },
-          { name: 'Woven label — JANVIKA XL', img: 'wl-05.png' },
-          { name: 'Woven label sample', img: 'wl-06.png' }
+          { name: 'Woven label — Nivaasa 3XL', img: 'wl-02.png' },
+          { name: 'Woven label — Only Men\'s Fashion', img: 'wl-03.png' },
+          { name: 'Woven label — 100% Cotton KJ', img: 'wl-04.png' },
+          { name: 'Woven label — VIBE22 Kids Wear', img: 'wl-05.png' },
+          { name: 'Woven label — JANVIKA XL', img: 'wl-06.png' }
         ]
       },
       'business-cards': {
         title: 'Business Cards',
-        subtitle: 'Premium business card collection.',
+        subtitle: 'Browse our business card samples and tap Get Quote for any finish you like.',
         service: 'Business cards',
+        layout: 'gallery',
+        quoteType: 'Business Cards',
         items: [
           { name: 'Normal', img: 'bc-normal.png' },
           { name: 'Matt Lamination', img: 'bc-matt.png' },
@@ -504,13 +507,16 @@
 
     if (isGallery) {
       pageWrap.classList.add('hang-gallery-wrap');
+      if (key === 'woven-labels' || key === 'printed-labels') {
+        pageWrap.classList.add('cat-gallery-labels');
+      }
       grid.classList.add('hang-gallery');
       grid.innerHTML = cat.items.map((item, i) => (
         `<article class="hang-card cat-reveal" style="--i:${i}" data-name="${item.name}" data-img="${item.img}">
           <div class="hang-card-media">
-            <img src="${item.img}?v=5" alt="${item.name}" loading="lazy" decoding="async">
+            <img src="${item.img}?v=6" alt="${item.name}" loading="lazy" decoding="async">
           </div>
-          <button type="button" class="hang-quote-btn"><span>Get Quote</span></button>
+          <button type="button" class="hang-quote-btn"><span class="hang-quote-label">Get Quote</span><span class="hang-quote-arrow" aria-hidden="true">→</span></button>
         </article>`
       )).join('');
 

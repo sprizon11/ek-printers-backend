@@ -184,7 +184,7 @@ body #navMain:not(.nav-scrolled){
   box-shadow:none !important;
   border-radius:var(--radius-sm) !important;
 }
-.n3-btn,.btn3-submit,.prod-quote-btn,.btn-primary,.send-btn,.hang-quote-btn{
+.n3-btn,.btn3-submit,.prod-quote-btn,.btn-primary,.send-btn{
   background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
   color:#fff !important;
   border:none !important;
@@ -774,6 +774,23 @@ body #navMain:not(.nav-scrolled){
   transform:scale(1.001) !important;
   transition:transform .55s cubic-bezier(.22,1,.36,1) !important;
 }
+/* Woven / printed labels — clean product shot on light field */
+.cat-gallery-labels .hang-card-media{
+  aspect-ratio:1/1 !important;
+  background:linear-gradient(165deg,#f8fafc 0%,#e9eef5 100%) !important;
+  border-color:rgba(255,255,255,0.12) !important;
+}
+.cat-gallery-labels .hang-card-media::after{
+  background:linear-gradient(180deg,transparent 72%,rgba(4,6,12,0.12) 100%) !important;
+  opacity:1 !important;
+}
+.cat-gallery-labels .hang-card img{
+  aspect-ratio:1/1 !important;
+  object-fit:contain !important;
+  padding:0.85rem !important;
+  background:transparent !important;
+}
+.cat-gallery-labels .hang-card:hover img{transform:scale(1.03) !important}
 .hang-card:hover .hang-card-media{
   border-color:rgba(42,180,255,0.42) !important;
   box-shadow:0 22px 48px rgba(0,0,0,0.48),0 0 0 1px rgba(42,180,255,0.12) !important;
@@ -784,31 +801,50 @@ body #navMain:not(.nav-scrolled){
   position:relative !important;
   overflow:hidden !important;
   width:100% !important;
-  border:0 !important;
-  border-radius:999px !important;
-  padding:0.78rem 0.9rem !important;
-  font-size:0.68rem !important;
-  font-weight:700 !important;
-  letter-spacing:0.14em !important;
-  text-transform:uppercase !important;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
-  color:#fff !important;
-  box-shadow:0 12px 28px rgba(13,142,232,0.35) !important;
-  transition:transform .22s ease,box-shadow .22s ease !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:0.4rem !important;
+  border:1px solid rgba(42,180,255,0.42) !important;
+  border-radius:12px !important;
+  padding:0.72rem 1rem !important;
+  font-family:var(--font-serif) !important;
+  font-size:clamp(0.74rem,2.5vw,0.84rem) !important;
+  font-weight:600 !important;
+  letter-spacing:0.05em !important;
+  text-transform:none !important;
+  background:rgba(42,180,255,0.1) !important;
+  color:#e8f6ff !important;
+  box-shadow:0 10px 26px rgba(0,0,0,0.28) !important;
+  cursor:pointer !important;
+  transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease,color .25s ease !important;
 }
-.hang-quote-btn span{position:relative;z-index:1}
+.hang-quote-label{position:relative;z-index:1}
+.hang-quote-arrow{
+  position:relative;
+  z-index:1;
+  font-family:var(--font-body) !important;
+  font-size:0.95em !important;
+  font-weight:500 !important;
+  opacity:0.88;
+  transition:transform .25s ease !important;
+}
 .hang-quote-btn::before{
   content:'' !important;
   position:absolute !important;
   inset:0 !important;
-  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.35) 50%,transparent 60%) !important;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,0.28) 50%,transparent 62%) !important;
   transform:translateX(-120%) skewX(-12deg) !important;
   transition:none !important;
 }
 .hang-quote-btn:hover{
   transform:translateY(-2px) !important;
-  box-shadow:0 16px 36px rgba(42,180,255,0.45) !important;
+  border-color:transparent !important;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+  color:#fff !important;
+  box-shadow:0 14px 34px rgba(42,180,255,0.4) !important;
 }
+.hang-quote-btn:hover .hang-quote-arrow{transform:translateX(3px) !important}
 .hang-quote-btn:hover::before{animation:catShimmer .75s ease}
 
 /* Standard product cards */

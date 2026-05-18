@@ -774,23 +774,28 @@ body #navMain:not(.nav-scrolled){
   transform:scale(1.001) !important;
   transition:transform .55s cubic-bezier(.22,1,.36,1) !important;
 }
-/* Woven / printed labels — clean product shot on light field */
+/* Woven / printed labels — full-bleed fill (no letterbox borders) */
 .cat-gallery-labels .hang-card-media{
-  aspect-ratio:1/1 !important;
-  background:linear-gradient(165deg,#f8fafc 0%,#e9eef5 100%) !important;
-  border-color:rgba(255,255,255,0.12) !important;
+  aspect-ratio:3/4 !important;
+  background:#0a0e14 !important;
+  border-color:var(--line) !important;
 }
 .cat-gallery-labels .hang-card-media::after{
-  background:linear-gradient(180deg,transparent 72%,rgba(4,6,12,0.12) 100%) !important;
-  opacity:1 !important;
+  background:linear-gradient(180deg,transparent 58%,rgba(4,6,12,0.5) 100%) !important;
+  opacity:0.9 !important;
 }
 .cat-gallery-labels .hang-card img{
-  aspect-ratio:1/1 !important;
-  object-fit:contain !important;
-  padding:0.85rem !important;
-  background:transparent !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  aspect-ratio:auto !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  padding:0 !important;
+  background:#0a0e14 !important;
 }
-.cat-gallery-labels .hang-card:hover img{transform:scale(1.03) !important}
+.cat-gallery-labels .hang-card:hover img{transform:scale(1.06) !important}
 .hang-card:hover .hang-card-media{
   border-color:rgba(42,180,255,0.42) !important;
   box-shadow:0 22px 48px rgba(0,0,0,0.48),0 0 0 1px rgba(42,180,255,0.12) !important;

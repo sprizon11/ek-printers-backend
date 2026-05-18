@@ -399,8 +399,72 @@ body #navMain:not(.nav-scrolled){
 }
 .feat-text strong,.cta3-contact-text{color:var(--ink) !important}
 .feat-text span{color:var(--muted) !important}
-.g3-card{overflow:hidden;padding:0 !important}
-.g3-img{border-radius:var(--radius) !important}
+.gallery3{padding:2rem 0 2.75rem !important}
+.g3-grid{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:1rem !important;
+}
+.g3-card{
+  position:relative !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  border:none !important;
+  border-radius:16px !important;
+  background:#080c14 !important;
+  box-shadow:0 18px 40px rgba(0,0,0,0.35) !important;
+}
+.g3-card::after{
+  content:'' !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+  background:linear-gradient(180deg,rgba(4,6,12,0.08) 0%,rgba(4,6,12,0.35) 50%,rgba(4,6,12,0.92) 100%) !important;
+}
+.g3-img{
+  width:100% !important;
+  aspect-ratio:4/3 !important;
+  object-fit:cover !important;
+  display:block !important;
+  border-radius:0 !important;
+  transition:transform .45s ease !important;
+}
+.g3-card:hover .g3-img{transform:scale(1.03) !important}
+.g3-caption{
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  z-index:2 !important;
+  margin:0 !important;
+  padding:1.1rem 1.05rem 0.9rem !important;
+  pointer-events:none !important;
+}
+.g3-caption-title{
+  display:block !important;
+  font-family:var(--font-body) !important;
+  font-size:clamp(0.68rem,2.8vw,0.78rem) !important;
+  font-weight:600 !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:#f8fbff !important;
+  line-height:1.35 !important;
+  text-shadow:0 2px 16px rgba(0,0,0,0.65) !important;
+}
+.g3-caption-title::before{
+  content:'' !important;
+  display:block !important;
+  width:2.25rem !important;
+  height:2px !important;
+  margin-bottom:0.5rem !important;
+  background:linear-gradient(90deg,var(--accent) 0%,rgba(42,180,255,0.15) 100%) !important;
+  border-radius:999px !important;
+}
+@media (min-width:640px){
+  .g3-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:1.1rem !important}
+}
 .t3-badge{
   color:var(--accent) !important;
   letter-spacing:0.14em;

@@ -723,10 +723,13 @@ body #navMain:not(.nav-scrolled){
 .kicker{color:var(--accent) !important;letter-spacing:0.16em;font-weight:700}
 
 .item.cat-reveal,.hang-card.cat-reveal{
-  opacity:0 !important;
-  animation:catFadeUp .7s cubic-bezier(.22,1,.36,1) forwards !important;
-  animation-delay:calc(.12s + var(--i,0) * 0.07s) !important;
-  transform:none !important;
+  opacity:0;
+  animation:catFadeUp .7s cubic-bezier(.22,1,.36,1) forwards;
+  animation-delay:calc(.12s + var(--i,0) * 0.07s);
+}
+.item.cat-reveal.is-visible,.hang-card.cat-reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
 }
 
 /* Gallery cards (hang tags, woven labels) */

@@ -70,13 +70,7 @@
       cursor:pointer;
       transition:transform .18s,border-color .18s,box-shadow .18s;
     }
-    .item{opacity:0;transform:translateY(10px);animation:itemIn .45s ease forwards}
-    .item:nth-child(2){animation-delay:.06s}
-    .item:nth-child(3){animation-delay:.12s}
-    .item:nth-child(4){animation-delay:.18s}
-    .item:nth-child(5){animation-delay:.24s}
-    .item:nth-child(6){animation-delay:.3s}
-    @keyframes itemIn{to{opacity:1;transform:translateY(0)}}
+    @keyframes itemIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .item:hover{transform:translateY(-2px);border-color:rgba(27,154,89,0.35);box-shadow:0 16px 30px rgba(15,23,42,0.12)}
     .item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#eef4ef}
     .item h3{font-size:0.9rem;line-height:1.2;letter-spacing:-0.01em}
@@ -304,14 +298,8 @@
     .hang-card{
       display:flex;flex-direction:column;gap:0.65rem;
       background:transparent;border:none;box-shadow:none;padding:0;
-      cursor:default;opacity:0;animation:itemIn .45s ease forwards;
+      cursor:default;
     }
-    .hang-card:nth-child(2){animation-delay:.05s}
-    .hang-card:nth-child(3){animation-delay:.1s}
-    .hang-card:nth-child(4){animation-delay:.15s}
-    .hang-card:nth-child(5){animation-delay:.2s}
-    .hang-card:nth-child(6){animation-delay:.25s}
-    .hang-card:nth-child(7){animation-delay:.3s}
     .hang-card:hover{transform:none;box-shadow:none}
     .hang-card img{
       width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;
@@ -333,7 +321,7 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=12">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=13">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
@@ -581,6 +569,14 @@
       if (e.key === 'Escape') closeItemModal();
     });
 
+    function revealCategoryCards() {
+      document.querySelectorAll('.cat-reveal').forEach(el => {
+        el.classList.add('is-visible');
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    }
+
     function initCategoryPage() {
       const top = document.querySelector('.category-top');
       if (top) {
@@ -588,13 +584,15 @@
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
       }
+      const cards = document.querySelectorAll('.cat-reveal');
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.cat-reveal, .cat-page-head > *').forEach(el => {
-          el.style.animation = 'none';
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-        });
+        revealCategoryCards();
+        return;
       }
+      cards.forEach(el => {
+        el.addEventListener('animationend', () => el.classList.add('is-visible'), { once: true });
+      });
+      setTimeout(revealCategoryCards, 1200);
     }
     initCategoryPage();
   </script>

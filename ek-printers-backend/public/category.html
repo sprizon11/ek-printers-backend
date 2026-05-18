@@ -333,7 +333,7 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=11">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=12">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
@@ -342,7 +342,7 @@
       <a class="back" href="index.html#products">← Back</a>
     </div>
 
-    <div class="head">
+    <div class="head cat-page-head">
       <div class="kicker">PREMIUM COLLECTION</div>
       <h1 id="catTitle">Hang Tags</h1>
       <div class="sub" id="catSub">Select any variety to view full-size image, enter quantity, and send directly to quote form.</div>
@@ -389,7 +389,6 @@
         layout: 'gallery',
         quoteType: 'Premium Tags',
         items: [
-          { name: 'Premium hang tag — TG', img: 'ht-01.png' },
           { name: 'Ribbed hang tag — ZE', img: 'ht-02.png' },
           { name: 'Foil hang tag — Don Carlos', img: 'ht-03.png' },
           { name: 'Kraft hang tag — Owl design', img: 'ht-04.png' },
@@ -518,10 +517,12 @@
     if (isGallery) {
       pageWrap.classList.add('hang-gallery-wrap');
       grid.classList.add('hang-gallery');
-      grid.innerHTML = cat.items.map(item => (
-        `<article class="hang-card" data-name="${item.name}" data-img="${item.img}">
-          <img src="${item.img}?v=3" alt="${item.name}" loading="lazy" decoding="async">
-          <button type="button" class="hang-quote-btn">Get Quote</button>
+      grid.innerHTML = cat.items.map((item, i) => (
+        `<article class="hang-card cat-reveal" style="--i:${i}" data-name="${item.name}" data-img="${item.img}">
+          <div class="hang-card-media">
+            <img src="${item.img}?v=5" alt="${item.name}" loading="lazy" decoding="async">
+          </div>
+          <button type="button" class="hang-quote-btn"><span>Get Quote</span></button>
         </article>`
       )).join('');
 
@@ -536,11 +537,17 @@
         });
       });
     } else {
-      grid.innerHTML = cat.items.map(item => (
-        `<article class="item" data-name="${item.name}" data-img="${item.img}">
-          <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
-          <h3>${item.name}</h3>
-          <p>Tap to view full image and send to quote.</p>
+      grid.innerHTML = cat.items.map((item, i) => (
+        `<article class="item cat-reveal" style="--i:${i}" data-name="${item.name}" data-img="${item.img}">
+          <div class="item-media">
+            <img src="${item.img}?v=2" alt="${item.name}" loading="lazy" decoding="async">
+            <span class="item-view">Preview</span>
+          </div>
+          <div class="item-body">
+            <h3>${item.name}</h3>
+            <p>Tap to view full size · send to quote</p>
+            <span class="item-arrow" aria-hidden="true">→</span>
+          </div>
         </article>`
       )).join('');
 
@@ -573,6 +580,23 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeItemModal();
     });
+
+    function initCategoryPage() {
+      const top = document.querySelector('.category-top');
+      if (top) {
+        const onScroll = () => top.classList.toggle('cat-nav-scrolled', window.scrollY > 20);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.cat-reveal, .cat-page-head > *').forEach(el => {
+          el.style.animation = 'none';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    }
+    initCategoryPage();
   </script>
 </body>
 </html>

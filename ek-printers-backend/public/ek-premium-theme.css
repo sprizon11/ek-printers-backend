@@ -1068,6 +1068,26 @@ body #navMain:not(.nav-scrolled){
 /* —— Trust strip —— */
 .h3-trust--bottom{padding:1rem 0 2rem !important}
 .h3-trust-text,.h3-trust-text strong{color:var(--muted) !important}
+.h3-trust{
+  display:flex !important;
+  align-items:center !important;
+  gap:0.95rem !important;
+  width:min(100%,560px) !important;
+  padding:0.9rem 1rem !important;
+  border:1px solid var(--line) !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,0.03) !important;
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+}
+.h3-trust-text{
+  font-size:0.78rem !important;
+  letter-spacing:0.01em !important;
+}
+.h3-trust-text strong{
+  color:#f2f7ff !important;
+  font-weight:600 !important;
+}
 
 @media (min-width:768px){
   .feat-bar{grid-template-columns:repeat(4,minmax(0,1fr)) !important}

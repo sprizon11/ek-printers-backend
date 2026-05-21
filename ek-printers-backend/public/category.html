@@ -321,13 +321,16 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=18">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=19">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
     <div class="top category-top">
       <a href="index.html" class="n3-logo"><img class="n3-logo-img" src="ek-printers-logo.png?v=8" alt="EK PRINTERS"></a>
-      <a class="back" href="index.html#products">← Back</a>
+      <div style="display:flex;align-items:center;gap:0.55rem;">
+        <button type="button" class="n3-theme-icon" id="themeToggle" aria-label="Switch to light mode" title="Light mode">☾</button>
+        <a class="back" href="index.html#products">← Back</a>
+      </div>
     </div>
 
     <div class="head cat-page-head">
@@ -369,6 +372,30 @@
   </div>
 
   <script>
+    const SITE_THEME_KEY = 'ek-site-theme';
+    function applySiteTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('theme-light', isLight);
+      const btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.textContent = isLight ? '☀' : '☾';
+        btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+        btn.setAttribute('title', isLight ? 'Dark mode' : 'Light mode');
+      }
+    }
+    function initSiteThemeToggle() {
+      let saved = '';
+      try { saved = localStorage.getItem(SITE_THEME_KEY) || ''; } catch(_) {}
+      applySiteTheme(saved === 'light' ? 'light' : 'dark');
+      const btn = document.getElementById('themeToggle');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const next = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+        applySiteTheme(next);
+        try { localStorage.setItem(SITE_THEME_KEY, next); } catch(_) {}
+      });
+    }
+
     const CATEGORIES = {
       'hang-tags': {
         title: 'Hang Tags',
@@ -609,6 +636,7 @@
       setTimeout(revealCategoryCards, 1200);
       window.addEventListener('pageshow', revealCategoryCards);
     }
+    initSiteThemeToggle();
     initCategoryPage();
   </script>
 </body>

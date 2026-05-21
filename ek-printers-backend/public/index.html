@@ -438,6 +438,7 @@
       </div>
     </div>
     <div class="nav-icon-bar">
+      <button type="button" class="n3-theme-icon" id="themeToggle" aria-label="Switch to light mode" title="Light mode">☾</button>
       <button type="button" class="nav-icon-btn" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawerPanel">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -468,7 +469,7 @@
     <div class="h3-banner">
       <div class="hero-bg" aria-hidden="true">
         <img class="hero-bg-slide is-active" src="hang-tag-card.png" alt="" width="1200" height="800" fetchpriority="high" decoding="async">
-        <img class="hero-bg-slide" src="lb-cotton.png" alt="" width="1200" height="800" decoding="async">
+        <img class="hero-bg-slide" src="hero-label-collection.png?v=1" alt="" width="1200" height="800" decoding="async">
         <img class="hero-bg-slide" src="hero-business-cards.png" alt="" width="1200" height="800" decoding="async">
       </div>
       <div class="h3-badge fx-fade-up fx-d1">HANG TAG COLLECTION</div>
@@ -898,6 +899,30 @@ function showMsg(text, bg, color) {
   msg.style.display = 'block';
 }
 
+const SITE_THEME_KEY = 'ek-site-theme';
+function applySiteTheme(theme) {
+  const isLight = theme === 'light';
+  document.body.classList.toggle('theme-light', isLight);
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.textContent = isLight ? '☀' : '☾';
+    btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    btn.setAttribute('title', isLight ? 'Dark mode' : 'Light mode');
+  }
+}
+function initSiteThemeToggle() {
+  let saved = '';
+  try { saved = localStorage.getItem(SITE_THEME_KEY) || ''; } catch (_) {}
+  applySiteTheme(saved === 'light' ? 'light' : 'dark');
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const next = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+    applySiteTheme(next);
+    try { localStorage.setItem(SITE_THEME_KEY, next); } catch (_) {}
+  });
+}
+
 function closeNavDrawer() {
   const drawer = document.getElementById('navDrawer');
   const btn = document.getElementById('navBurger');
@@ -1054,6 +1079,7 @@ function initHeroAutoBackground() {
 
 // Also allow pressing Enter in the last field
 document.addEventListener('DOMContentLoaded', () => {
+  initSiteThemeToggle();
   const burger = document.getElementById('navBurger');
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navDrawerBackdrop');
@@ -1475,7 +1501,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
   .af-btn{background:linear-gradient(135deg,#2ab4ff,#0d8ee8);color:#fff;box-shadow:0 14px 32px rgba(42,180,255,0.38)}
 </style>
-<link rel="stylesheet" href="ek-premium-theme.css?v=18">
+<link rel="stylesheet" href="ek-premium-theme.css?v=19">
 
 <!-- PRODUCT DETAIL MODAL -->
 <div class="prod-modal-overlay" id="prodModal" onclick="if(event.target===this)closeProdModal()">

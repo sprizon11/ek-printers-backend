@@ -676,6 +676,21 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
     body.dark-mode .topbar{background:rgba(18,20,22,0.82);box-shadow:0 10px 26px rgba(0,0,0,0.3)}
+    body.dark-mode .filter-btn{
+      background:var(--surface);
+      border-color:rgba(236,239,241,0.22);
+      color:var(--ink);
+    }
+    body.dark-mode .filter-btn:hover{
+      background:rgba(236,239,241,0.08);
+      border-color:rgba(236,239,241,0.34);
+    }
+    body.dark-mode .filter-btn.active{
+      background:linear-gradient(135deg,var(--teal),var(--teal2));
+      border-color:transparent;
+      color:#fff;
+      box-shadow:0 10px 22px rgba(27,154,89,0.3);
+    }
     body.dark-mode th{background:var(--surface)}
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .btn-sm,body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.24);color:var(--ink)}

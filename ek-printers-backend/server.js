@@ -232,8 +232,13 @@ app.get('/admin', requireAuth, (req, res) => {
 app.get('/admin/reports', requireAuth, (req, res) => {
   const db = loadDB();
   const quotes = db.quotes.map(normalizedQuoteView);
-  const report = buildQuoteReport(quotes);
-  res.send(adminReportsHTML(report, req.session.username));
+  res.send(adminReportsHTML(quotes, req.session.username));
+});
+
+app.get('/admin/reports/data', requireAuth, (req, res) => {
+  const db = loadDB();
+  const quotes = db.quotes.map(normalizedQuoteView);
+  res.json({ quotes });
 });
 
 app.post('/admin/quote/:id/status', requireAuth, (req, res) => {
@@ -410,8 +415,8 @@ function buildQuoteReport(quotes) {
   };
 }
 
-function adminReportsHTML(report, username) {
-  const json = escJs(JSON.stringify(report));
+function adminReportsHTML(quotes, username) {
+  const json = escJs(JSON.stringify(quotes || []));
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -432,7 +437,14 @@ function adminReportsHTML(report, username) {
     body.dark-mode .chip{border-color:rgba(231,240,236,0.24)}
     .theme-toggle{font-size:0.72rem;padding:0.35rem 0.7rem;border-radius:999px;border:1px solid rgba(15,23,42,0.14);background:transparent;color:var(--ink);cursor:pointer}
     body.dark-mode .theme-toggle{border-color:rgba(231,240,236,0.24)}
-    .container{padding:1.2rem;max-width:1300px;margin:0 auto}
+    .container{padding:1.2rem;max-width:1340px;margin:0 auto}
+    .toolbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0.6rem;margin-bottom:0.9rem}
+    .tb-input,.tb-btn{
+      width:100%;font-size:0.74rem;border:1px solid rgba(15,23,42,0.14);border-radius:10px;padding:0.52rem 0.7rem;background:var(--surface);color:var(--ink);font-family:'Inter',sans-serif
+    }
+    .tb-btn{cursor:pointer;font-weight:700}
+    .tb-btn.primary{background:linear-gradient(135deg,var(--teal),var(--teal2));border-color:transparent;color:#fff}
+    body.dark-mode .tb-input,body.dark-mode .tb-btn{border-color:rgba(231,240,236,0.24)}
     .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.8rem;margin-bottom:1rem}
     .card{background:var(--surface);border:1px solid rgba(15,23,42,0.08);border-radius:14px;padding:0.9rem;box-shadow:0 8px 22px rgba(15,23,42,0.08)}
     body.dark-mode .card{border-color:rgba(231,240,236,0.12);box-shadow:none}
@@ -443,7 +455,12 @@ function adminReportsHTML(report, username) {
     .panel{background:var(--surface);border:1px solid rgba(15,23,42,0.08);border-radius:14px;padding:0.9rem}
     body.dark-mode .panel{border-color:rgba(231,240,236,0.12)}
     .panel h3{font-size:0.92rem;font-weight:800;margin-bottom:0.55rem}
-    canvas{width:100%!important;height:280px!important}
+    canvas{width:100%!important;height:260px!important}
+    .top-table{width:100%;border-collapse:collapse}
+    .top-table th,.top-table td{font-size:0.75rem;padding:0.48rem 0.35rem;border-bottom:1px solid rgba(15,23,42,0.08);text-align:left}
+    .top-table th{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
+    body.dark-mode .top-table th,body.dark-mode .top-table td{border-bottom-color:rgba(231,240,236,0.12)}
+    @media (max-width:1200px){.toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}}
     @media (max-width:1024px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}
     @media (max-width:620px){.cards{grid-template-columns:1fr}}
   </style>
@@ -461,22 +478,90 @@ function adminReportsHTML(report, username) {
     </div>
   </div>
   <div class="container">
+    <div class="toolbar">
+      <select id="datePreset" class="tb-input">
+        <option value="last_7">Last 7 days</option>
+        <option value="today">Today</option>
+        <option value="last_30">Last 30 days</option>
+        <option value="all">All time</option>
+        <option value="custom">Custom range</option>
+      </select>
+      <input id="fromDate" class="tb-input" type="date">
+      <input id="toDate" class="tb-input" type="date">
+      <select id="serviceFilter" class="tb-input"><option value="">All services</option></select>
+      <button id="csvBtn" class="tb-btn">Export CSV</button>
+      <button id="pdfBtn" class="tb-btn primary">Print / PDF</button>
+    </div>
     <div class="cards">
       <div class="card"><div class="k">Total Quotes</div><div class="v" id="totalQuotes">0</div></div>
       <div class="card"><div class="k">Top Service</div><div class="v" id="topService">-</div><div class="small" id="topServiceCount"></div></div>
       <div class="card"><div class="k">Top Location</div><div class="v" id="topLocation">-</div><div class="small" id="topLocationCount"></div></div>
-      <div class="card"><div class="k">Conversion Snapshot</div><div class="v" id="conversionValue">0%</div><div class="small">Completed / Total</div></div>
+      <div class="card"><div class="k">Revenue Estimate</div><div class="v" id="estRevenue">INR 0</div><div class="small">Based on qty × service price</div></div>
     </div>
     <div class="grid">
       <div class="panel"><h3>Service-wise Requests</h3><canvas id="serviceChart"></canvas></div>
       <div class="panel"><h3>Status Distribution</h3><canvas id="statusChart"></canvas></div>
       <div class="panel"><h3>Top Locations</h3><canvas id="locationChart"></canvas></div>
       <div class="panel"><h3>Daily Trend</h3><canvas id="dailyChart"></canvas></div>
+      <div class="panel"><h3>Conversion Trend (%)</h3><canvas id="conversionChart"></canvas></div>
+      <div class="panel">
+        <h3>Top Clients</h3>
+        <table class="top-table" id="topClientsTable">
+          <thead><tr><th>Client</th><th>Quotes</th><th>Main Service</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel"><h3>Estimated Revenue by Service</h3><canvas id="revenueChart"></canvas></div>
+      <div class="panel">
+        <h3>Service Price Inputs (INR per piece)</h3>
+        <table class="top-table" id="priceTable">
+          <thead><tr><th>Service</th><th>Price</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
   <script>
     const THEME_KEY = 'ek-theme';
-    const report = JSON.parse(\`${json}\`);
+    let allQuotes = JSON.parse(\`${json}\`);
+    const charts = {};
+    const PRICE_KEY = 'ek-report-service-prices';
+
+    function parseNum(v){
+      const n = Number(String(v || '').replace(/[^0-9.]/g, ''));
+      return Number.isFinite(n) ? n : 0;
+    }
+    function toServiceLabel(q){
+      const svc = String(q.service || '-').trim() || '-';
+      const t = String(q.biz_type || '').trim();
+      return t ? svc + ' (' + t + ')' : svc;
+    }
+    function getDateOnly(q){
+      if (q.created_date && /^\\d{4}-\\d{2}-\\d{2}$/.test(q.created_date)) return q.created_date;
+      const raw = String(q.created_at || '');
+      const m = raw.match(/(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);
+      if (!m) return '';
+      const dd = m[1].padStart(2,'0');
+      const mm = m[2].padStart(2,'0');
+      return m[3] + '-' + mm + '-' + dd;
+    }
+    function dateRangeFromPreset(preset){
+      const now = new Date();
+      const to = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const fmt = (d) => d.toISOString().slice(0,10);
+      if (preset === 'today') return { from: fmt(to), to: fmt(to) };
+      if (preset === 'last_30') {
+        const from = new Date(to); from.setDate(from.getDate() - 29);
+        return { from: fmt(from), to: fmt(to) };
+      }
+      if (preset === 'last_7') {
+        const from = new Date(to); from.setDate(from.getDate() - 6);
+        return { from: fmt(from), to: fmt(to) };
+      }
+      if (preset === 'all') return { from: '', to: '' };
+      return { from: '', to: '' };
+    }
+
     function applyTheme(theme){
       const dark = theme === 'dark';
       document.body.classList.toggle('dark-mode', dark);
@@ -490,42 +575,180 @@ function adminReportsHTML(report, username) {
       applyTheme(next);
     });
 
-    const entriesSorted = (obj) => Object.entries(obj || {}).sort((a,b)=>b[1]-a[1]);
-    const serviceRows = entriesSorted(report.serviceCounts);
-    const locRows = entriesSorted(report.locationCounts).slice(0,8);
-    const dayRows = Object.entries(report.dailyCounts || {}).sort((a,b)=>a[0].localeCompare(b[0]));
-    const status = report.statusCounts || {};
-    const total = Number(report.total || 0);
-    const completed = Number(status.completed || 0);
-    const conversion = total ? Math.round((completed / total) * 100) : 0;
+    function getPrices(){
+      try { return JSON.parse(localStorage.getItem(PRICE_KEY) || '{}'); } catch(_) { return {}; }
+    }
+    function setPrices(pr){ try { localStorage.setItem(PRICE_KEY, JSON.stringify(pr)); } catch(_) {} }
+    function aggregateBy(arr, keyFn){
+      const m = {};
+      arr.forEach(x => { const k = keyFn(x); m[k] = (m[k] || 0) + 1; });
+      return m;
+    }
+    function sortedEntries(obj){ return Object.entries(obj || {}).sort((a,b)=>b[1]-a[1]); }
+    function refreshServiceFilterOptions(){
+      const select = document.getElementById('serviceFilter');
+      const current = select.value;
+      const labels = Array.from(new Set(allQuotes.map(toServiceLabel))).sort();
+      select.innerHTML = '<option value="">All services</option>' + labels.map(x => '<option value="' + x.replace(/"/g,'&quot;') + '">' + x + '</option>').join('');
+      select.value = labels.includes(current) ? current : '';
+    }
+    function applyFilters(){
+      const preset = document.getElementById('datePreset').value;
+      const servicePick = document.getElementById('serviceFilter').value;
+      let from = document.getElementById('fromDate').value;
+      let to = document.getElementById('toDate').value;
+      if (preset !== 'custom') {
+        const r = dateRangeFromPreset(preset);
+        from = r.from; to = r.to;
+        document.getElementById('fromDate').value = from;
+        document.getElementById('toDate').value = to;
+      }
+      return allQuotes.filter(q => {
+        const d = getDateOnly(q);
+        if (from && d && d < from) return false;
+        if (to && d && d > to) return false;
+        if (servicePick && toServiceLabel(q) !== servicePick) return false;
+        return true;
+      });
+    }
+    function renderPriceTable(filtered){
+      const prices = getPrices();
+      const services = Array.from(new Set(filtered.map(toServiceLabel))).sort();
+      const tbody = document.querySelector('#priceTable tbody');
+      tbody.innerHTML = services.map(s => {
+        const val = prices[s] != null ? String(prices[s]) : '';
+        return '<tr><td>' + s + '</td><td><input class="tb-input" data-svc="' + s.replace(/"/g,'&quot;') + '" value="' + val + '" placeholder="0"></td></tr>';
+      }).join('');
+      tbody.querySelectorAll('input[data-svc]').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const p = getPrices();
+          p[inp.getAttribute('data-svc')] = parseNum(inp.value);
+          setPrices(p);
+          renderAll();
+        });
+      });
+    }
+    function upsertChart(id, type, data, options){
+      if (charts[id]) {
+        charts[id].data = data;
+        charts[id].options = options;
+        charts[id].update();
+        return;
+      }
+      charts[id] = new Chart(document.getElementById(id), { type, data, options });
+    }
+    function renderTopClients(filtered){
+      const byClient = {};
+      filtered.forEach(q => {
+        const key = String(q.name || '-').trim() || '-';
+        if (!byClient[key]) byClient[key] = { count: 0, services: {} };
+        byClient[key].count += 1;
+        const svc = toServiceLabel(q);
+        byClient[key].services[svc] = (byClient[key].services[svc] || 0) + 1;
+      });
+      const rows = Object.entries(byClient)
+        .map(([name, val]) => {
+          const topSvc = sortedEntries(val.services)[0]?.[0] || '-';
+          return { name, count: val.count, topSvc };
+        })
+        .sort((a,b)=>b.count-a.count)
+        .slice(0,10);
+      const tbody = document.querySelector('#topClientsTable tbody');
+      tbody.innerHTML = rows.length ? rows.map(r => '<tr><td>' + r.name + '</td><td>' + r.count + '</td><td>' + r.topSvc + '</td></tr>').join('') : '<tr><td colspan="3">No data</td></tr>';
+    }
+    function renderAll(){
+      const filtered = applyFilters();
+      const serviceCounts = aggregateBy(filtered, toServiceLabel);
+      const statusCounts = aggregateBy(filtered, q => String(q.status || 'new'));
+      const locationCounts = aggregateBy(filtered, q => String(q.location || 'Unknown').trim() || 'Unknown');
+      const dayCounts = aggregateBy(filtered, q => getDateOnly(q) || 'Unknown');
+      const dayRows = Object.entries(dayCounts).filter(x => x[0] !== 'Unknown').sort((a,b)=>a[0].localeCompare(b[0]));
 
-    document.getElementById('totalQuotes').textContent = String(total);
-    document.getElementById('topService').textContent = report.topService?.name || '-';
-    document.getElementById('topServiceCount').textContent = String(report.topService?.count || 0) + ' requests';
-    document.getElementById('topLocation').textContent = report.topLocation?.name || '-';
-    document.getElementById('topLocationCount').textContent = String(report.topLocation?.count || 0) + ' requests';
-    document.getElementById('conversionValue').textContent = String(conversion) + '%';
+      const topSvc = sortedEntries(serviceCounts)[0] || ['-', 0];
+      const topLoc = sortedEntries(locationCounts)[0] || ['-', 0];
+      const total = filtered.length;
+      const completed = Number(statusCounts.completed || 0);
+      const conversion = total ? Math.round((completed / total) * 100) : 0;
+      const prices = getPrices();
+      const revenueByService = {};
+      filtered.forEach(q => {
+        const svc = toServiceLabel(q);
+        const qty = parseNum(q.quantity);
+        const price = parseNum(prices[svc]);
+        revenueByService[svc] = (revenueByService[svc] || 0) + (qty * price);
+      });
+      const estRevenue = Object.values(revenueByService).reduce((a,b)=>a+b,0);
 
-    new Chart(document.getElementById('serviceChart'), {
-      type:'bar',
-      data:{labels:serviceRows.map(x=>x[0]),datasets:[{label:'Requests',data:serviceRows.map(x=>x[1]),backgroundColor:'#1B9A59'}]},
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+      document.getElementById('totalQuotes').textContent = String(total);
+      document.getElementById('topService').textContent = topSvc[0];
+      document.getElementById('topServiceCount').textContent = String(topSvc[1]) + ' requests';
+      document.getElementById('topLocation').textContent = topLoc[0];
+      document.getElementById('topLocationCount').textContent = String(topLoc[1]) + ' requests';
+      document.getElementById('estRevenue').textContent = 'INR ' + Math.round(estRevenue).toLocaleString('en-IN');
+
+      const svcRows = sortedEntries(serviceCounts);
+      const locRows = sortedEntries(locationCounts).slice(0,8);
+      const revRows = sortedEntries(revenueByService);
+      const convByDay = {};
+      dayRows.forEach(([d]) => {
+        const rows = filtered.filter(q => (getDateOnly(q) || '') === d);
+        const c = rows.length;
+        const done = rows.filter(q => q.status === 'completed').length;
+        convByDay[d] = c ? Math.round((done / c) * 100) : 0;
+      });
+
+      const baseOpts = { responsive:true, animation:{duration:850}, plugins:{legend:{display:false}} };
+      upsertChart('serviceChart','bar',{labels:svcRows.map(x=>x[0]),datasets:[{label:'Requests',data:svcRows.map(x=>x[1]),backgroundColor:'#1B9A59',borderRadius:8}]},{...baseOpts,scales:{y:{beginAtZero:true,ticks:{precision:0}}}});
+      upsertChart('statusChart','bar',{labels:['New','In Progress','Completed','Cancelled'],datasets:[{data:[statusCounts.new||0,statusCounts.in_progress||0,statusCounts.completed||0,statusCounts.cancelled||0],backgroundColor:['#00A6FF','#FFC542','#22C55E','#F87171'],borderRadius:8}]},{...baseOpts,scales:{y:{beginAtZero:true,ticks:{precision:0}}}});
+      upsertChart('locationChart','bar',{labels:locRows.map(x=>x[0]),datasets:[{label:'Requests',data:locRows.map(x=>x[1]),backgroundColor:'#2563EB',borderRadius:8}]},{...baseOpts,indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{precision:0}}}});
+      upsertChart('dailyChart','bar',{labels:dayRows.map(x=>x[0]),datasets:[{label:'Requests',data:dayRows.map(x=>x[1]),backgroundColor:'#7C3AED',borderRadius:8}]},{...baseOpts,scales:{y:{beginAtZero:true,ticks:{precision:0}}}});
+      upsertChart('conversionChart','line',{labels:Object.keys(convByDay),datasets:[{label:'Conversion %',data:Object.values(convByDay),borderColor:'#F59E0B',backgroundColor:'rgba(245,158,11,.2)',fill:true,tension:.3}]},{...baseOpts,scales:{y:{beginAtZero:true,max:100}}});
+      upsertChart('revenueChart','bar',{labels:revRows.map(x=>x[0]),datasets:[{label:'INR',data:revRows.map(x=>Math.round(x[1])),backgroundColor:'#0EA5E9',borderRadius:8}]},{...baseOpts,scales:{y:{beginAtZero:true}}});
+
+      renderTopClients(filtered);
+      renderPriceTable(filtered);
+    }
+    async function refreshData(){
+      try{
+        const res = await fetch('/admin/reports/data', { credentials:'include' });
+        const data = await res.json();
+        if (Array.isArray(data.quotes)) allQuotes = data.quotes;
+        refreshServiceFilterOptions();
+        renderAll();
+      } catch(_){}
+    }
+    document.getElementById('datePreset').addEventListener('change', () => {
+      renderAll();
     });
-    new Chart(document.getElementById('statusChart'), {
-      type:'bar',
-      data:{labels:['New','In Progress','Completed','Cancelled'],datasets:[{data:[status.new||0,status.in_progress||0,status.completed||0,status.cancelled||0],backgroundColor:['#00A6FF','#FFC542','#22C55E','#F87171']}]},
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    document.getElementById('fromDate').addEventListener('change', () => {
+      document.getElementById('datePreset').value = 'custom';
+      renderAll();
     });
-    new Chart(document.getElementById('locationChart'), {
-      type:'bar',
-      data:{labels:locRows.map(x=>x[0]),datasets:[{label:'Requests',data:locRows.map(x=>x[1]),backgroundColor:'#2563EB'}]},
-      options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+    document.getElementById('toDate').addEventListener('change', () => {
+      document.getElementById('datePreset').value = 'custom';
+      renderAll();
     });
-    new Chart(document.getElementById('dailyChart'), {
-      type:'bar',
-      data:{labels:dayRows.map(x=>x[0]),datasets:[{label:'Requests',data:dayRows.map(x=>x[1]),backgroundColor:'#7C3AED'}]},
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    document.getElementById('serviceFilter').addEventListener('change', renderAll);
+    document.getElementById('csvBtn').addEventListener('click', () => {
+      const rows = applyFilters();
+      const header = ['S.No','Client','Email','Phone','Company','Location','Service','Quantity','Requirement','Status','Date'];
+      const body = rows.map((q,i) => [i+1,q.name||'',q.email||'',q.phone||'',q.company||'',q.location||'',toServiceLabel(q),q.quantity||'',q.requirement_text||'',q.status||'',getDateOnly(q)||'']);
+      const csv = [header].concat(body).map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\\n');
+      const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ek-reports.csv'; a.click();
+      URL.revokeObjectURL(url);
     });
+    document.getElementById('pdfBtn').addEventListener('click', () => window.print());
+
+    document.getElementById('datePreset').value = 'last_7';
+    const d = dateRangeFromPreset('last_7');
+    document.getElementById('fromDate').value = d.from;
+    document.getElementById('toDate').value = d.to;
+    refreshServiceFilterOptions();
+    renderAll();
+    setInterval(refreshData, 30000);
   </script>
 </body>
 </html>`;

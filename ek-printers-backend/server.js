@@ -229,6 +229,13 @@ app.get('/admin', requireAuth, (req, res) => {
   res.send(adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, req.session.username));
 });
 
+app.get('/admin/reports', requireAuth, (req, res) => {
+  const db = loadDB();
+  const quotes = db.quotes.map(normalizedQuoteView);
+  const report = buildQuoteReport(quotes);
+  res.send(adminReportsHTML(report, req.session.username));
+});
+
 app.post('/admin/quote/:id/status', requireAuth, (req, res) => {
   const { status } = req.body;
   const valid = ['new', 'in_progress', 'completed', 'cancelled'];
@@ -363,6 +370,167 @@ function normalizedQuoteView(q) {
   };
 }
 
+function serviceLabel(q) {
+  const service = String(q.service || '').trim() || '-';
+  const type = String(q.biz_type || '').trim();
+  return type ? `${service} (${type})` : service;
+}
+
+function buildQuoteReport(quotes) {
+  const serviceCounts = {};
+  const statusCounts = { new: 0, in_progress: 0, completed: 0, cancelled: 0 };
+  const locationCounts = {};
+  const dailyCounts = {};
+
+  quotes.forEach(q => {
+    const svc = serviceLabel(q);
+    serviceCounts[svc] = (serviceCounts[svc] || 0) + 1;
+
+    const st = String(q.status || 'new');
+    statusCounts[st] = (statusCounts[st] || 0) + 1;
+
+    const loc = String(q.location || 'Unknown').trim() || 'Unknown';
+    locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+
+    const d = getQuoteDate(q) || String(q.created_date || '');
+    if (d) dailyCounts[d] = (dailyCounts[d] || 0) + 1;
+  });
+
+  const topService = Object.entries(serviceCounts).sort((a, b) => b[1] - a[1])[0] || ['-', 0];
+  const topLocation = Object.entries(locationCounts).sort((a, b) => b[1] - a[1])[0] || ['-', 0];
+
+  return {
+    total: quotes.length,
+    topService: { name: topService[0], count: topService[1] },
+    topLocation: { name: topLocation[0], count: topLocation[1] },
+    serviceCounts,
+    statusCounts,
+    locationCounts,
+    dailyCounts
+  };
+}
+
+function adminReportsHTML(report, username) {
+  const json = escJs(JSON.stringify(report));
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reports · EK PRINTERS</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--teal:#1B9A59;--teal2:#39B86B;--bg:#f4f8f3;--surface:#ffffff;--ink:#0f172a;--muted:#475569}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink)}
+    body.dark-mode{--bg:#0f1513;--surface:#1a2320;--ink:#e7f0ec;--muted:#a9bbb3}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(15,23,42,0.08);padding:0.9rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:0.8rem}
+    body.dark-mode .topbar{background:rgba(14,20,18,0.86);border-bottom-color:rgba(231,240,236,0.12)}
+    .left{display:flex;align-items:center;gap:0.8rem}
+    .right{display:flex;align-items:center;gap:0.55rem}
+    .chip{font-size:0.72rem;padding:0.35rem 0.7rem;border-radius:999px;border:1px solid rgba(15,23,42,0.14);text-decoration:none;color:var(--ink)}
+    body.dark-mode .chip{border-color:rgba(231,240,236,0.24)}
+    .theme-toggle{font-size:0.72rem;padding:0.35rem 0.7rem;border-radius:999px;border:1px solid rgba(15,23,42,0.14);background:transparent;color:var(--ink);cursor:pointer}
+    body.dark-mode .theme-toggle{border-color:rgba(231,240,236,0.24)}
+    .container{padding:1.2rem;max-width:1300px;margin:0 auto}
+    .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.8rem;margin-bottom:1rem}
+    .card{background:var(--surface);border:1px solid rgba(15,23,42,0.08);border-radius:14px;padding:0.9rem;box-shadow:0 8px 22px rgba(15,23,42,0.08)}
+    body.dark-mode .card{border-color:rgba(231,240,236,0.12);box-shadow:none}
+    .k{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:700}
+    .v{font-size:1.5rem;font-weight:800;margin-top:0.25rem}
+    .small{font-size:0.76rem;color:var(--muted);margin-top:0.25rem}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.9rem}
+    .panel{background:var(--surface);border:1px solid rgba(15,23,42,0.08);border-radius:14px;padding:0.9rem}
+    body.dark-mode .panel{border-color:rgba(231,240,236,0.12)}
+    .panel h3{font-size:0.92rem;font-weight:800;margin-bottom:0.55rem}
+    canvas{width:100%!important;height:280px!important}
+    @media (max-width:1024px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}
+    @media (max-width:620px){.cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <img src="/ek-printers-logo.png?v=8" alt="EK PRINTERS" style="height:30px;width:auto">
+      <strong style="font-size:0.95rem">Reports Analytics</strong>
+    </div>
+    <div class="right">
+      <a class="chip" href="/admin">Back to Admin</a>
+      <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark</button>
+      <a class="chip" href="/admin/logout">Log out</a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="cards">
+      <div class="card"><div class="k">Total Quotes</div><div class="v" id="totalQuotes">0</div></div>
+      <div class="card"><div class="k">Top Service</div><div class="v" id="topService">-</div><div class="small" id="topServiceCount"></div></div>
+      <div class="card"><div class="k">Top Location</div><div class="v" id="topLocation">-</div><div class="small" id="topLocationCount"></div></div>
+      <div class="card"><div class="k">Conversion Snapshot</div><div class="v" id="conversionValue">0%</div><div class="small">Completed / Total</div></div>
+    </div>
+    <div class="grid">
+      <div class="panel"><h3>Service-wise Requests</h3><canvas id="serviceChart"></canvas></div>
+      <div class="panel"><h3>Status Distribution</h3><canvas id="statusChart"></canvas></div>
+      <div class="panel"><h3>Top Locations</h3><canvas id="locationChart"></canvas></div>
+      <div class="panel"><h3>Daily Trend</h3><canvas id="dailyChart"></canvas></div>
+    </div>
+  </div>
+  <script>
+    const THEME_KEY = 'ek-theme';
+    const report = JSON.parse(\`${json}\`);
+    function applyTheme(theme){
+      const dark = theme === 'dark';
+      document.body.classList.toggle('dark-mode', dark);
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.textContent = dark ? '☀ Light' : '🌙 Dark';
+    }
+    applyTheme(localStorage.getItem(THEME_KEY) || 'light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    });
+
+    const entriesSorted = (obj) => Object.entries(obj || {}).sort((a,b)=>b[1]-a[1]);
+    const serviceRows = entriesSorted(report.serviceCounts);
+    const locRows = entriesSorted(report.locationCounts).slice(0,8);
+    const dayRows = Object.entries(report.dailyCounts || {}).sort((a,b)=>a[0].localeCompare(b[0]));
+    const status = report.statusCounts || {};
+    const total = Number(report.total || 0);
+    const completed = Number(status.completed || 0);
+    const conversion = total ? Math.round((completed / total) * 100) : 0;
+
+    document.getElementById('totalQuotes').textContent = String(total);
+    document.getElementById('topService').textContent = report.topService?.name || '-';
+    document.getElementById('topServiceCount').textContent = String(report.topService?.count || 0) + ' requests';
+    document.getElementById('topLocation').textContent = report.topLocation?.name || '-';
+    document.getElementById('topLocationCount').textContent = String(report.topLocation?.count || 0) + ' requests';
+    document.getElementById('conversionValue').textContent = String(conversion) + '%';
+
+    new Chart(document.getElementById('serviceChart'), {
+      type:'bar',
+      data:{labels:serviceRows.map(x=>x[0]),datasets:[{label:'Requests',data:serviceRows.map(x=>x[1]),backgroundColor:'#1B9A59'}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    });
+    new Chart(document.getElementById('statusChart'), {
+      type:'bar',
+      data:{labels:['New','In Progress','Completed','Cancelled'],datasets:[{data:[status.new||0,status.in_progress||0,status.completed||0,status.cancelled||0],backgroundColor:['#00A6FF','#FFC542','#22C55E','#F87171']}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    });
+    new Chart(document.getElementById('locationChart'), {
+      type:'bar',
+      data:{labels:locRows.map(x=>x[0]),datasets:[{label:'Requests',data:locRows.map(x=>x[1]),backgroundColor:'#2563EB'}]},
+      options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+    });
+    new Chart(document.getElementById('dailyChart'), {
+      type:'bar',
+      data:{labels:dayRows.map(x=>x[0]),datasets:[{label:'Requests',data:dayRows.map(x=>x[1]),backgroundColor:'#7C3AED'}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    });
+  </script>
+</body>
+</html>`;
+}
+
 function statusBadge(status) {
   const map = {
     new: ['#E8F4F1','#006B5E','🔵 New'],
@@ -473,7 +641,7 @@ const SVG_MAIL = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="1
 const SVG_TRASH = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
 
 function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, username) {
-  const rows = quotes.map(raw => {
+  const rows = quotes.map((raw, idx) => {
     const q = normalizedQuoteView(raw);
     const serviceLabel = q.biz_type ? `${q.service || '-'} (${q.biz_type})` : (q.service || '-');
     const waNumber = normalizeWhatsAppNumber(q.phone);
@@ -482,8 +650,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     const emailHref = q.email ? `mailto:${encodeURIComponent(q.email)}?subject=${encodeURIComponent(`EK PRINTERS quote #${q.id}`)}` : '';
     const notesEnc = encodeURIComponent(q.notes || '');
     return `
-    <tr id="row-${q.id}" style="border-bottom:1px solid rgba(22,20,18,0.06)">
-      <td class="quote-id" style="padding:1rem 0.8rem">#${q.id}</td>
+    <tr id="row-${q.id}" class="data-row">
+      <td class="quote-id" style="padding:1rem 0.8rem">${idx + 1}</td>
       <td class="client-cell" style="padding:1rem 0.8rem">
         <div class="client-name">${esc(q.name)}</div>
         ${q.email ? `<div class="client-email">${esc(q.email)}</div>` : '<div class="client-email">-</div>'}
@@ -593,18 +761,21 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .search-box::placeholder{color:rgba(17,24,39,0.48)}
     .export-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:filter 0.2s;white-space:nowrap;flex-shrink:0;box-shadow:0 12px 24px rgba(27,154,89,0.28)}
     .export-btn:hover{filter:brightness(1.06)}
-    .table-wrap{background:#fff;border:1px solid rgba(27,154,89,0.14);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 14px 34px rgba(17,24,39,0.1)}
-    table{width:100%;min-width:100%;border-collapse:collapse;table-layout:auto}
-    th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:700;color:rgba(22,20,18,0.46);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
-    td{font-size:0.74rem;color:rgba(22,20,18,0.82);vertical-align:top}
-    .quote-id{font-size:0.7rem;color:rgba(22,20,18,0.42);font-weight:700}
+    .table-wrap{background:#fff;border:1px solid rgba(27,154,89,0.14);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 16px 38px rgba(17,24,39,0.12)}
+    table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;table-layout:auto}
+    thead th{position:sticky;top:0;z-index:2}
+    th{padding:0.88rem 0.8rem;text-align:left;font-size:0.68rem;font-weight:800;color:rgba(22,20,18,0.56);letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(180deg,#f3f8f2,#edf6eb);border-bottom:1px solid rgba(22,20,18,0.08)}
+    td{font-size:0.79rem;color:rgba(22,20,18,0.86);vertical-align:top}
+    .data-row td{border-bottom:1px solid rgba(22,20,18,0.06)}
+    .data-row:nth-child(even) td{background:rgba(245,249,244,0.42)}
+    .quote-id{font-size:0.72rem;color:rgba(22,20,18,0.5);font-weight:800;min-width:2.5rem}
     .client-cell,.phone-cell,.company-cell,.location-cell,.service-cell,.req-cell{line-height:1.45}
-    .client-name{font-weight:700;font-size:0.8rem;color:rgba(22,20,18,0.9)}
-    .client-email{font-size:0.67rem;color:rgba(22,20,18,0.5);margin-top:0.2rem}
-    .phone-cell{font-weight:600}
+    .client-name{font-weight:700;font-size:0.84rem;color:rgba(22,20,18,0.94)}
+    .client-email{font-size:0.71rem;color:rgba(22,20,18,0.56);margin-top:0.2rem}
+    .phone-cell{font-weight:700}
     .service-main{font-weight:700;color:#0f5132}
-    .service-qty{font-size:0.67rem;color:rgba(22,20,18,0.5);margin-top:0.18rem}
-    .req-cell{min-width:12rem;max-width:28rem;font-size:0.73rem;color:rgba(22,20,18,0.7)}
+    .service-qty{font-size:0.7rem;color:rgba(22,20,18,0.56);margin-top:0.18rem}
+    .req-cell{min-width:12rem;max-width:28rem;font-size:0.76rem;color:rgba(22,20,18,0.74)}
     .note-snippet{max-width:100%}
     .note-snippet{font-size:0.68rem;color:rgba(22,20,18,0.6);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;line-height:1.4}
     .action-row{display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem 0.6rem}
@@ -691,7 +862,9 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       color:#fff;
       box-shadow:0 10px 22px rgba(27,154,89,0.3);
     }
-    body.dark-mode th{background:var(--surface)}
+    body.dark-mode th{background:linear-gradient(180deg,#1b2622,#17221f);color:rgba(236,239,241,0.72);border-bottom-color:rgba(236,239,241,0.12)}
+    body.dark-mode .data-row td{border-bottom-color:rgba(236,239,241,0.08)}
+    body.dark-mode .data-row:nth-child(even) td{background:rgba(236,239,241,0.03)}
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .btn-sm,body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.24);color:var(--ink)}
     body.dark-mode td,body.dark-mode th,body.dark-mode label,body.dark-mode input,body.dark-mode select,body.dark-mode textarea{color:var(--ink)}
@@ -706,7 +879,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode .modal .field input{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .pass-msg.err{background:rgba(239,83,80,0.12)!important;color:#ffcdd2!important;border-color:rgba(239,83,80,0.25)!important}
     body.dark-mode .pass-msg.ok{background:rgba(0,107,94,0.2)!important;color:#7fe8d6!important;border-color:rgba(0,107,94,0.35)!important}
-    body.dark-mode .quote-id{color:rgba(236,239,241,0.56)}
+    body.dark-mode .quote-id{color:rgba(236,239,241,0.66)}
     body.dark-mode .client-name{color:#f7fbff}
     body.dark-mode .client-email,body.dark-mode .service-qty{color:rgba(236,239,241,0.62)}
     body.dark-mode .phone-cell,body.dark-mode .company-cell,body.dark-mode .location-cell{color:rgba(236,239,241,0.86)}
@@ -727,6 +900,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       <span class="badge">Admin Panel</span>
     </div>
     <div class="topbar-right">
+      <a href="/admin/reports" class="btn-sm">Reports</a>
       <button id="themeToggle" class="theme-toggle" type="button">🌙 Dark</button>
       <div class="profile-wrap" id="profileWrap">
         <button type="button" class="profile-btn" id="profileBtn" aria-expanded="false" aria-haspopup="true" aria-label="Account menu, signed in as ${esc(username)}">
@@ -764,7 +938,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>Client</th><th>Phone</th><th>Company</th><th>Location</th><th>Service</th><th>Requirement</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <thead><tr><th>S.No</th><th>Client</th><th>Phone</th><th>Company</th><th>Location</th><th>Service</th><th>Requirement</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
         <tbody>${rows || '<tr><td colspan="10" class="empty">No quote requests yet.</td></tr>'}</tbody>
       </table>
     </div>
@@ -937,7 +1111,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     async function deleteQuote(id) {
       if (!confirm('Delete this quote? Cannot be undone.')) return;
       await fetch('/admin/quote/'+id,{method:'DELETE'});
-      document.getElementById('row-'+id).remove();
+      location.reload();
     }
     let t;
     function debounceSearch(el) { clearTimeout(t); t = setTimeout(() => applyFilters(), 500); }

@@ -1411,3 +1411,11 @@ body.theme-light .foot3{
   box-shadow:none !important;
   border-radius:0 !important;
 }
+
+/* Light mode: dark PRINTERS wordmark (white logo invisible on white nav) */
+body.theme-light .ek-logo-dark{display:none !important}
+body:not(.theme-light) .ek-logo-light{display:none !important}
+body.theme-light .n3-logo-img,
+body.theme-light .f3-logo-img{
+  filter:none !important;
+}

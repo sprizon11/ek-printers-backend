@@ -603,6 +603,29 @@
     </div>
     <div class="f3-copy">© 2025 EK PRINTERS · Tiruppur</div>
   </div>
+
+  <div class="tc-modal-backdrop" id="tcModal" aria-hidden="true">
+    <div class="tc-modal" role="dialog" aria-modal="true" aria-labelledby="tcTitle">
+      <div class="tc-modal-head">
+        <h3 id="tcTitle">Terms & Conditions</h3>
+        <button type="button" class="tc-close" id="tcClose" aria-label="Close terms">✕</button>
+      </div>
+      <div class="tc-body">
+        <div class="tc-kicker">Woven Label</div>
+        <ol class="tc-list">
+          <li>Minimum Order Quantity (MOQ): 2000 pcs (brand logo only).</li>
+          <li>For mixed sizes like S, M, L: minimum 800 pcs per size.</li>
+          <li>Shipping time: 7 working days.</li>
+          <li>Digital sample is available before production.</li>
+          <li>60% payment after production starts.</li>
+        </ol>
+      </div>
+      <div class="tc-actions">
+        <button type="button" class="tc-btn tc-btn-ghost" id="tcCancel">Cancel</button>
+        <button type="button" class="tc-btn tc-btn-primary" id="tcAccept">I Agree & Continue</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -858,6 +881,12 @@ async function submitQuote() {
     return;
   }
 
+  const acceptedTerms = await openTermsModal();
+  if (!acceptedTerms) {
+    showMsg('Please accept Terms & Conditions to continue.', '#FFF8E1', '#B8860B');
+    return;
+  }
+
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
@@ -897,6 +926,49 @@ function showMsg(text, bg, color) {
   msg.style.color = color;
   msg.style.border = '1px solid ' + color + '33';
   msg.style.display = 'block';
+}
+
+function openTermsModal() {
+  return new Promise(resolve => {
+    const modal = document.getElementById('tcModal');
+    const closeBtn = document.getElementById('tcClose');
+    const cancelBtn = document.getElementById('tcCancel');
+    const acceptBtn = document.getElementById('tcAccept');
+    if (!modal || !closeBtn || !cancelBtn || !acceptBtn) {
+      resolve(true);
+      return;
+    }
+
+    let settled = false;
+    const finish = (ok) => {
+      if (settled) return;
+      settled = true;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      if (!document.body.classList.contains('nav-drawer-open')) document.body.style.overflow = '';
+      closeBtn.removeEventListener('click', onCancel);
+      cancelBtn.removeEventListener('click', onCancel);
+      acceptBtn.removeEventListener('click', onAccept);
+      modal.removeEventListener('click', onBackdrop);
+      document.removeEventListener('keydown', onEsc);
+      resolve(ok);
+    };
+
+    const onCancel = () => finish(false);
+    const onAccept = () => finish(true);
+    const onBackdrop = (e) => { if (e.target === modal) finish(false); };
+    const onEsc = (e) => { if (e.key === 'Escape') finish(false); };
+
+    closeBtn.addEventListener('click', onCancel);
+    cancelBtn.addEventListener('click', onCancel);
+    acceptBtn.addEventListener('click', onAccept);
+    modal.addEventListener('click', onBackdrop);
+    document.addEventListener('keydown', onEsc);
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  });
 }
 
 const SITE_THEME_KEY = 'ek-site-theme';
@@ -1501,7 +1573,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
   .af-btn{background:linear-gradient(135deg,#2ab4ff,#0d8ee8);color:#fff;box-shadow:0 14px 32px rgba(42,180,255,0.38)}
 </style>
-<link rel="stylesheet" href="ek-premium-theme.css?v=21">
+<link rel="stylesheet" href="ek-premium-theme.css?v=22">
 
 <!-- PRODUCT DETAIL MODAL -->
 <div class="prod-modal-overlay" id="prodModal" onclick="if(event.target===this)closeProdModal()">

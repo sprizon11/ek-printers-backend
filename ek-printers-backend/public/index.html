@@ -432,7 +432,7 @@
       <img class="n3-logo-img" src="ek-printers-logo.png?v=8" alt="EK PRINTERS">
     </a>
     <div class="n3-desktop-row">
-      <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="about.html">About</a><a href="#contact">Contact</a><a href="/admin/login" data-instant-nav>Admin</a></div>
+      <div class="n3-links"><a href="#products">Products</a><a href="#gallery">Gallery</a><a href="about.html">About</a><a href="#contact">Contact</a></div>
       <div class="n3-desktop-cta">
         <button type="button" class="n3-btn n3-quote-navdesk" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
       </div>
@@ -459,7 +459,6 @@
         <a href="#gallery">Gallery</a>
         <a href="about.html">About</a>
         <a href="#contact">Contact</a>
-        <a href="/admin/login" data-instant-nav>Admin</a>
       </div>
       <button type="button" class="n3-btn n3-drawer-quote" id="navDrawerQuote">Get a Quote →</button>
     </div>
@@ -613,8 +612,6 @@
       <div class="tc-body">
         <div class="tc-kicker">Woven Label</div>
         <ol class="tc-list">
-          <li>Minimum Order Quantity (MOQ): 2000 pcs (brand logo only).</li>
-          <li>For mixed sizes like S, M, L: minimum 800 pcs per size.</li>
           <li>Shipping time: 7 working days.</li>
           <li>Digital sample is available before production.</li>
           <li>60% payment after production starts.</li>
@@ -891,13 +888,24 @@ async function submitQuote() {
   btn.disabled = true;
 
   const serviceLine = needsSubtype && bizType ? `${service} (${bizType})` : service;
-  const requirementBlock = `Company: ${company}\nCustomer location: ${location}\nService: ${serviceLine}\nQuantity: ${quantity}\nRequirement: ${requirement}`;
+  const requirementBlock = `Quantity: ${quantity}\nRequirement: ${requirement}`;
 
   try {
     const res = await fetch('/api/quote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, requirement: requirementBlock })
+      body: JSON.stringify({
+        name,
+        phone,
+        email,
+        company,
+        location,
+        service,
+        bizType,
+        quantity,
+        requirement: requirementBlock,
+        requirementText: requirement
+      })
     });
     const data = await res.json();
 

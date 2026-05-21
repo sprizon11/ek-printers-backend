@@ -46,7 +46,7 @@ function canSendEmail() {
   return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS && process.env.NOTIFY_TO);
 }
 
-async function sendQuoteEmail({ id, createdAt, name, phone, email, requirement }) {
+async function sendQuoteEmail({ id, createdAt, name, phone, email, company, location, service, bizType, quantity, requirement }) {
   if (!canSendEmail()) return;
 
   const transporter = nodemailer.createTransport({
@@ -67,6 +67,10 @@ Time: ${createdAt}
 Name: ${name}
 Phone: ${phone}
 Email: ${email || '-'}
+Company: ${company || '-'}
+Location: ${location || '-'}
+Service: ${service || '-'}${bizType ? ` (${bizType})` : ''}
+Quantity: ${quantity || '-'}
 
 Requirement:
 ${requirement}
@@ -83,16 +87,27 @@ function requireAuth(req, res, next) {
 
 // ─── PUBLIC API ────────────────────────────────────────────────────────────────
 app.post('/api/quote', (req, res) => {
-  const { name, phone, email, requirement } = req.body;
-  if (!name || !phone || !requirement) {
-    return res.status(400).json({ success: false, message: 'Name, phone and requirement are required.' });
+  const { name, phone, email, company, location, service, bizType, quantity, requirement, requirementText } = req.body;
+  if (!name || !phone || !company || !location || !service || !quantity || !requirement) {
+    return res.status(400).json({ success: false, message: 'Please fill all required quote fields.' });
   }
   const db = loadDB();
   const id = db.nextId++;
   const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const cleanService = String(service || '').trim();
+  const cleanBizType = String(bizType || '').trim();
+  const cleanQuantity = String(quantity || '').trim();
+  const cleanRequirementText = String(requirementText || '').trim();
   const quote = {
     id, name: name.trim(), phone: phone.trim(),
-    email: (email || '').trim(), requirement: requirement.trim(),
+    email: (email || '').trim(),
+    company: String(company || '').trim(),
+    location: String(location || '').trim(),
+    service: cleanService,
+    biz_type: cleanBizType,
+    quantity: cleanQuantity,
+    requirement_text: cleanRequirementText,
+    requirement: requirement.trim(),
     status: 'new', notes: '', created_at: now,
     created_date: new Date().toISOString().slice(0, 10)
   };
@@ -100,10 +115,13 @@ app.post('/api/quote', (req, res) => {
   saveDB(db);
 
   const waNumber = String(process.env.WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
+  const serviceLabel = quote.biz_type ? `${quote.service} (${quote.biz_type})` : quote.service;
   const waText = encodeURIComponent(
     `Hi EK PRINTERS! New quote request (#${id}).\n` +
-    `Name: ${quote.name}\nPhone: ${quote.phone}\nEmail: ${quote.email || '-'}\n` +
-    `Requirement: ${quote.requirement}`
+    `Client: ${quote.name}\nPhone: ${quote.phone}\nEmail: ${quote.email || '-'}\n` +
+    `Company: ${quote.company || '-'}\nLocation: ${quote.location || '-'}\n` +
+    `Service: ${serviceLabel || '-'}\nQuantity: ${quote.quantity || '-'}\n` +
+    `Requirement: ${quote.requirement_text || quote.requirement || '-'}`
   );
   const whatsappUrl = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '';
 
@@ -113,6 +131,11 @@ app.post('/api/quote', (req, res) => {
     name: quote.name,
     phone: quote.phone,
     email: quote.email,
+    company: quote.company,
+    location: quote.location,
+    service: quote.service,
+    bizType: quote.biz_type,
+    quantity: quote.quantity,
     requirement: quote.requirement
   }).catch(err => console.error('Email notify failed:', err.message));
 
@@ -187,9 +210,14 @@ app.get('/admin', requireAuth, (req, res) => {
     });
   }
   if (search) quotes = quotes.filter(q =>
-    q.name.toLowerCase().includes(search) ||
-    q.phone.includes(search) ||
-    q.requirement.toLowerCase().includes(search)
+    String(q.name || '').toLowerCase().includes(search) ||
+    String(q.phone || '').includes(search) ||
+    String(q.email || '').toLowerCase().includes(search) ||
+    String(q.company || '').toLowerCase().includes(search) ||
+    String(q.location || '').toLowerCase().includes(search) ||
+    String(q.service || '').toLowerCase().includes(search) ||
+    String(q.biz_type || '').toLowerCase().includes(search) ||
+    String(q.requirement_text || q.requirement || '').toLowerCase().includes(search)
   );
   const all = db.quotes;
   const stats = {
@@ -243,17 +271,26 @@ app.get('/admin/export', requireAuth, (req, res) => {
     });
   }
   if (search) quotes = quotes.filter(q =>
-    q.name.toLowerCase().includes(search) ||
-    q.phone.includes(search) ||
-    q.requirement.toLowerCase().includes(search)
+    String(q.name || '').toLowerCase().includes(search) ||
+    String(q.phone || '').includes(search) ||
+    String(q.email || '').toLowerCase().includes(search) ||
+    String(q.company || '').toLowerCase().includes(search) ||
+    String(q.location || '').toLowerCase().includes(search) ||
+    String(q.service || '').toLowerCase().includes(search) ||
+    String(q.biz_type || '').toLowerCase().includes(search) ||
+    String(q.requirement_text || q.requirement || '').toLowerCase().includes(search)
   );
 
   const excelRows = quotes.map(q => ({
     ID: q.id,
-    Name: q.name,
-    Phone: q.phone,
+    Client: q.name,
     Email: q.email || '',
-    Requirement: q.requirement || '',
+    Phone: q.phone,
+    Company: q.company || '',
+    Location: q.location || '',
+    Service: q.biz_type ? `${q.service || ''} (${q.biz_type})` : (q.service || ''),
+    Quantity: q.quantity || '',
+    Requirement: q.requirement_text || q.requirement || '',
     Status: q.status,
     Notes: q.notes || '',
     Date: getQuoteDate(q) || '',
@@ -297,11 +334,33 @@ function normalizeWhatsAppNumber(phone) {
   return digits.length === 10 ? `91${digits}` : digits;
 }
 function customerWhatsAppText(q) {
+  const serviceLabel = q.biz_type ? `${q.service || '-'} (${q.biz_type})` : (q.service || '-');
+  const reqText = q.requirement_text || q.requirement || '-';
   return encodeURIComponent(
     `Hi ${q.name}, this is EK PRINTERS about your quote #${q.id}.\n` +
-    `Requirement: ${q.requirement || '-'}\n` +
+    `Service: ${serviceLabel}\n` +
+    `Quantity: ${q.quantity || '-'}\n` +
+    `Requirement: ${reqText}\n` +
     `Please confirm quantity and timeline.`
   );
+}
+
+function extractLegacyField(requirement, label) {
+  const re = new RegExp(`${label}:\\s*([^\\n]+)`, 'i');
+  const m = String(requirement || '').match(re);
+  return m ? m[1].trim() : '';
+}
+
+function normalizedQuoteView(q) {
+  const requirement = String(q.requirement || '');
+  return {
+    ...q,
+    company: q.company || extractLegacyField(requirement, 'Company'),
+    location: q.location || extractLegacyField(requirement, 'Customer location'),
+    service: q.service || extractLegacyField(requirement, 'Service'),
+    quantity: q.quantity || extractLegacyField(requirement, 'Quantity'),
+    requirement_text: q.requirement_text || extractLegacyField(requirement, 'Requirement') || requirement
+  };
 }
 
 function statusBadge(status) {
@@ -414,7 +473,9 @@ const SVG_MAIL = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="1
 const SVG_TRASH = '<svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
 
 function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, username) {
-  const rows = quotes.map(q => {
+  const rows = quotes.map(raw => {
+    const q = normalizedQuoteView(raw);
+    const serviceLabel = q.biz_type ? `${q.service || '-'} (${q.biz_type})` : (q.service || '-');
     const waNumber = normalizeWhatsAppNumber(q.phone);
     const waText = customerWhatsAppText(q);
     const waHref = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '#';
@@ -422,13 +483,19 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     const notesEnc = encodeURIComponent(q.notes || '');
     return `
     <tr id="row-${q.id}" style="border-bottom:1px solid rgba(22,20,18,0.06)">
-      <td style="padding:1rem 0.8rem;font-size:0.7rem;color:rgba(22,20,18,0.35);font-weight:600">#${q.id}</td>
-      <td style="padding:1rem 0.8rem">
-        <div style="font-weight:600;font-size:0.82rem;font-family:'Inter',sans-serif">${esc(q.name)}</div>
-        <div style="font-size:0.7rem;color:rgba(22,20,18,0.45);margin-top:0.2rem">${esc(q.phone)}</div>
-        ${q.email ? `<div style="font-size:0.68rem;color:rgba(22,20,18,0.35)">${esc(q.email)}</div>` : ''}
+      <td class="quote-id" style="padding:1rem 0.8rem">#${q.id}</td>
+      <td class="client-cell" style="padding:1rem 0.8rem">
+        <div class="client-name">${esc(q.name)}</div>
+        ${q.email ? `<div class="client-email">${esc(q.email)}</div>` : '<div class="client-email">-</div>'}
       </td>
-      <td class="req-cell" style="padding:1rem 0.8rem;font-size:0.78rem;color:rgba(22,20,18,0.65);line-height:1.5">${esc(q.requirement)}</td>
+      <td class="phone-cell" style="padding:1rem 0.8rem">${esc(q.phone || '-')}</td>
+      <td class="company-cell" style="padding:1rem 0.8rem">${esc(q.company || '-')}</td>
+      <td class="location-cell" style="padding:1rem 0.8rem">${esc(q.location || '-')}</td>
+      <td class="service-cell" style="padding:1rem 0.8rem">
+        <div class="service-main">${esc(serviceLabel)}</div>
+        <div class="service-qty">Qty: ${esc(q.quantity || '-')}</div>
+      </td>
+      <td class="req-cell" style="padding:1rem 0.8rem">${esc(q.requirement_text || '-')}</td>
       <td style="padding:1rem 0.8rem">${statusBadge(q.status)}</td>
       <td style="padding:1rem 0.8rem;font-size:0.68rem;color:rgba(22,20,18,0.4)">${q.created_at}</td>
       <td style="padding:1rem 0.8rem">
@@ -446,7 +513,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
           </div>
           <button type="button" class="notes-link" data-nid="${q.id}" data-notes="${notesEnc}">Notes</button>
         </div>
-        ${q.notes ? `<div class="note-snippet" style="margin-top:0.5rem;font-size:0.68rem;color:rgba(22,20,18,0.5);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;line-height:1.4">${esc(q.notes)}</div>` : ''}
+        ${q.notes ? `<div class="note-snippet" style="margin-top:0.5rem">${esc(q.notes)}</div>` : ''}
       </td>
     </tr>`;
   }).join('');
@@ -521,15 +588,25 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .controls-toolbar .export-btn{grid-column:1/-1;justify-self:stretch;width:100%;text-align:center}
     .filter-btn{display:flex;justify-content:center;align-items:center;width:100%;font-size:0.68rem;padding:0.5rem 0.65rem;border-radius:100px;border:1.5px solid rgba(27,154,89,0.22);background:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
-    .search-box{background:#fff;border:1.5px solid rgba(27,154,89,0.16);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6)}
+    .search-box{background:#fff;border:1.5px solid rgba(27,154,89,0.16);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);color:var(--ink)}
     .search-box:focus{border-color:var(--teal)}
+    .search-box::placeholder{color:rgba(17,24,39,0.48)}
     .export-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:filter 0.2s;white-space:nowrap;flex-shrink:0;box-shadow:0 12px 24px rgba(27,154,89,0.28)}
     .export-btn:hover{filter:brightness(1.06)}
     .table-wrap{background:#fff;border:1px solid rgba(27,154,89,0.14);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 14px 34px rgba(17,24,39,0.1)}
     table{width:100%;min-width:100%;border-collapse:collapse;table-layout:auto}
-    th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:600;color:rgba(22,20,18,0.4);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
-    th:nth-child(3),td.req-cell{min-width:10rem;max-width:36rem}
+    th{padding:0.8rem;text-align:left;font-size:0.67rem;font-weight:700;color:rgba(22,20,18,0.46);letter-spacing:0.07em;text-transform:uppercase;background:var(--surface)}
+    td{font-size:0.74rem;color:rgba(22,20,18,0.82);vertical-align:top}
+    .quote-id{font-size:0.7rem;color:rgba(22,20,18,0.42);font-weight:700}
+    .client-cell,.phone-cell,.company-cell,.location-cell,.service-cell,.req-cell{line-height:1.45}
+    .client-name{font-weight:700;font-size:0.8rem;color:rgba(22,20,18,0.9)}
+    .client-email{font-size:0.67rem;color:rgba(22,20,18,0.5);margin-top:0.2rem}
+    .phone-cell{font-weight:600}
+    .service-main{font-weight:700;color:#0f5132}
+    .service-qty{font-size:0.67rem;color:rgba(22,20,18,0.5);margin-top:0.18rem}
+    .req-cell{min-width:12rem;max-width:28rem;font-size:0.73rem;color:rgba(22,20,18,0.7)}
     .note-snippet{max-width:100%}
+    .note-snippet{font-size:0.68rem;color:rgba(22,20,18,0.6);background:#F2F0EB;padding:0.4rem 0.6rem;border-radius:6px;line-height:1.4}
     .action-row{display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem 0.6rem}
     .action-status{font-size:0.7rem;padding:0.3rem 0.45rem;border:1px solid rgba(22,20,18,0.12);border-radius:6px;background:#fff;cursor:pointer;outline:none;font-family:'Inter',sans-serif;flex-shrink:0}
     .action-icons{display:inline-flex;align-items:center;gap:0.35rem;flex-shrink:0}
@@ -603,6 +680,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode .search-box{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .btn-sm,body.dark-mode .theme-toggle{border-color:rgba(236,239,241,0.24);color:var(--ink)}
     body.dark-mode td,body.dark-mode th,body.dark-mode label,body.dark-mode input,body.dark-mode select,body.dark-mode textarea{color:var(--ink)}
+    body.dark-mode .search-box::placeholder{color:rgba(236,239,241,0.52)}
     body.dark-mode .stat-label,body.dark-mode .badge,body.dark-mode .empty{color:rgba(236,239,241,0.68)}
     body.dark-mode .profile-menu{background:#1E2226;border-color:rgba(236,239,241,0.14);box-shadow:0 14px 44px rgba(0,0,0,0.45)}
     body.dark-mode .profile-item:hover{background:rgba(236,239,241,0.06)}
@@ -613,13 +691,13 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode .modal .field input{background:var(--surface);border-color:rgba(236,239,241,0.2);color:var(--ink)}
     body.dark-mode .pass-msg.err{background:rgba(239,83,80,0.12)!important;color:#ffcdd2!important;border-color:rgba(239,83,80,0.25)!important}
     body.dark-mode .pass-msg.ok{background:rgba(0,107,94,0.2)!important;color:#7fe8d6!important;border-color:rgba(0,107,94,0.35)!important}
-    body.dark-mode [style*="rgba(22,20,18,0.35)"]{color:rgba(236,239,241,0.66)!important}
-    body.dark-mode [style*="rgba(22,20,18,0.4)"]{color:rgba(236,239,241,0.66)!important}
-    body.dark-mode [style*="rgba(22,20,18,0.45)"]{color:rgba(236,239,241,0.7)!important}
-    body.dark-mode [style*="rgba(22,20,18,0.5)"]{color:rgba(236,239,241,0.72)!important}
-    body.dark-mode [style*="rgba(22,20,18,0.65)"]{color:rgba(236,239,241,0.84)!important}
-    body.dark-mode [style*="background:#F2F0EB"]{background:#243037!important}
-    body.dark-mode [style*="background:#fff"]{background:#1E2226!important}
+    body.dark-mode .quote-id{color:rgba(236,239,241,0.56)}
+    body.dark-mode .client-name{color:#f7fbff}
+    body.dark-mode .client-email,body.dark-mode .service-qty{color:rgba(236,239,241,0.62)}
+    body.dark-mode .phone-cell,body.dark-mode .company-cell,body.dark-mode .location-cell{color:rgba(236,239,241,0.86)}
+    body.dark-mode .req-cell{color:rgba(236,239,241,0.86)}
+    body.dark-mode .service-main{color:#96f4c9}
+    body.dark-mode .note-snippet{background:#243037!important;color:rgba(236,239,241,0.78)!important}
     body.dark-mode .action-status{background:var(--surface)!important;border-color:rgba(236,239,241,0.22)!important;color:var(--ink)!important}
     body.dark-mode .icon-wa{background:#143d28!important;border-color:rgba(37,211,102,0.35)!important;color:#7fe8a8!important}
     body.dark-mode .icon-mail{background:#1a2f4a!important;border-color:rgba(100,181,246,0.35)!important;color:#90caf9!important}
@@ -665,14 +743,14 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       <div class="controls-toolbar">
         <input id="fromDate" class="search-box date-field" type="date" value="${esc(fromDate)}" onchange="applyFilters()">
         <input id="toDate" class="search-box date-field" type="date" value="${esc(toDate)}" onchange="applyFilters()">
-        <input id="searchInput" class="search-box search-main" type="text" placeholder="Search name, phone..." value="${esc(search)}" oninput="debounceSearch(this)">
+        <input id="searchInput" class="search-box search-main" type="text" placeholder="Search client, phone, company, service..." value="${esc(search)}" oninput="debounceSearch(this)">
         <a id="exportBtn" href="${'/admin/export?' + withQuery({ status: filter, search, fromDate, toDate })}" class="export-btn">⬇ Export Excel</a>
       </div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>Client</th><th>Requirement</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-        <tbody>${rows || '<tr><td colspan="6" class="empty">No quote requests yet.</td></tr>'}</tbody>
+        <thead><tr><th>#</th><th>Client</th><th>Phone</th><th>Company</th><th>Location</th><th>Service</th><th>Requirement</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="10" class="empty">No quote requests yet.</td></tr>'}</tbody>
       </table>
     </div>
   </div>

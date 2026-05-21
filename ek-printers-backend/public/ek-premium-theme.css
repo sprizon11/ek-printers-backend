@@ -63,7 +63,6 @@ body.theme-light .top{
 }
 body.theme-light .n3-links a{color:rgba(15,23,42,0.72) !important}
 body.theme-light .n3-links a:hover{color:#0f172a !important}
-body.theme-light .prods3,
 body.theme-light .feat-item,
 body.theme-light .g3-card,
 body.theme-light .cta3-form,
@@ -534,21 +533,22 @@ body.theme-light .nav-icon-btn:hover{
   color:var(--muted) !important;
 }
 
-/* —— Product grid —— */
+/* —— Product grid (What We Create — no card chrome) —— */
 .p3-grid{gap:0.75rem !important}
 .p3-card{
-  background:var(--surface-strong) !important;
-  border:1px solid var(--line) !important;
-  border-radius:var(--radius) !important;
-  box-shadow:var(--shadow-soft) !important;
+  background:transparent !important;
+  border:none !important;
+  border-radius:14px !important;
+  box-shadow:none !important;
   overflow:hidden !important;
-  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease !important;
+  transition:transform .25s ease !important;
 }
 .p3-card:hover{
   transform:translateY(-5px) !important;
-  border-color:rgba(42,180,255,0.35) !important;
-  box-shadow:var(--shadow) !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
 }
+.p3-card-img-wrap{border-radius:14px !important;overflow:hidden !important}
 .p3-card-img{transition:transform .4s ease}
 .p3-card:hover .p3-card-img{transform:scale(1.04)}
 .p3-card-body{
@@ -996,19 +996,19 @@ body.theme-light .nav-icon-btn:hover{
   align-items:center !important;
   justify-content:center !important;
   gap:0.4rem !important;
-  border:1px solid rgba(42,180,255,0.42) !important;
-  border-radius:12px !important;
+  border:none !important;
+  border-radius:999px !important;
   padding:0.72rem 1rem !important;
   font-family:var(--font-serif) !important;
   font-size:clamp(0.74rem,2.5vw,0.84rem) !important;
   font-weight:600 !important;
   letter-spacing:0.05em !important;
   text-transform:none !important;
-  background:rgba(42,180,255,0.1) !important;
-  color:#e8f6ff !important;
-  box-shadow:0 10px 26px rgba(0,0,0,0.28) !important;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+  color:#fff !important;
+  box-shadow:0 10px 26px rgba(42,180,255,0.32) !important;
   cursor:pointer !important;
-  transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease,color .25s ease !important;
+  transition:transform .25s ease,box-shadow .25s ease,filter .25s ease !important;
 }
 .hang-quote-label{position:relative;z-index:1}
 .hang-quote-arrow{
@@ -1220,4 +1220,73 @@ body.theme-light .nav-icon-btn:hover{
   #navMain,.top{padding:1.1rem 2rem !important}
   .n3-desktop-row{display:flex !important}
   .nav-icon-bar{gap:0.65rem !important}
+}
+
+/* —— Light mode: fonts + What We Create + quote buttons —— */
+body.theme-light .prods3{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+body.theme-light .prods3 .p3-card{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+body.theme-light .p3-title,
+body.theme-light .g3-title,
+body.theme-light .cta3-form-title,
+body.theme-light .testi3-left h2,
+body.theme-light .cta3-left h2,
+body.theme-light .about-title,
+body.theme-light .cat-page-head h1,
+body.theme-light .item h3,
+body.theme-light .modal-title{
+  color:#0f172a !important;
+}
+body.theme-light .p3-title em,
+body.theme-light .g3-title em,
+body.theme-light .cta3-form-title em,
+body.theme-light .about-title em,
+body.theme-light .cat-page-head .kicker{
+  color:var(--accent) !important;
+}
+body.theme-light .p3-subtitle,
+body.theme-light .g3-sub,
+body.theme-light .cta3-form-sub,
+body.theme-light .about-text,
+body.theme-light .cat-page-head .sub,
+body.theme-light .item p,
+body.theme-light .feat-text span,
+body.theme-light .h3-trust-text,
+body.theme-light .t3-text,
+body.theme-light .t3-source,
+body.theme-light .cta3-left p,
+body.theme-light .f3-copy,
+body.theme-light .f3-links a{
+  color:rgba(15,23,42,0.64) !important;
+}
+body.theme-light .feat-text strong,
+body.theme-light .h3-trust-text strong,
+body.theme-light .cta3-contact-text{
+  color:#0f172a !important;
+}
+body.theme-light .hang-quote-btn,
+body.theme-light .hang-quote-btn:hover{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+  color:#fff !important;
+  border:none !important;
+  box-shadow:0 10px 24px rgba(42,180,255,0.28) !important;
+}
+body.theme-light .hang-quote-label,
+body.theme-light .hang-quote-arrow{
+  color:#fff !important;
+}
+body.theme-light .hang-card{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+body.theme-light .cat-page-head .kicker{
+  color:var(--accent) !important;
 }

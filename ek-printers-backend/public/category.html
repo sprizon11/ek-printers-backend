@@ -321,7 +321,7 @@
       .grid.hang-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.15rem}
     }
   </style>
-  <link rel="stylesheet" href="ek-premium-theme.css?v=20">
+  <link rel="stylesheet" href="ek-premium-theme.css?v=21">
 </head>
 <body>
   <div class="wrap" id="pageWrap">
@@ -451,10 +451,7 @@
         layout: 'gallery',
         quoteType: 'Business Cards',
         items: [
-          { name: 'Normal', img: 'bc-normal.png' },
-          { name: 'Matt Lamination', img: 'bc-matt.png' },
-          { name: 'Gloss Lamination', img: 'bc-gloss.png' },
-          { name: 'Foil Cards', img: 'bc-foil.png' }
+          { name: 'Normal', img: 'bc-normal.png' }
         ]
       }
     };
@@ -628,7 +625,10 @@
         revealCategoryCards();
         return;
       }
-      const onAnimEnd = el => el.classList.add('is-visible');
+      const onAnimEnd = e => {
+        const el = e.currentTarget;
+        if (el) el.classList.add('is-visible');
+      };
       cards.forEach(el => {
         el.addEventListener('animationend', onAnimEnd, { once: true });
         el.addEventListener('webkitAnimationEnd', onAnimEnd, { once: true });

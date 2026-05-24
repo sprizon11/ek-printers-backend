@@ -305,9 +305,11 @@
   .cta3-select-wrap.is-open{z-index:25}
   .cta3-select-btn{display:flex;align-items:center;width:100%;max-width:100%;box-sizing:border-box;text-align:left;cursor:pointer}
   .cta3-select-btn-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .cta3-select-placeholder{color:rgba(210,218,235,0.58)}
+  .cta3-select-placeholder{color:rgba(17,24,39,0.45)}
+  body.theme-light .cta3-select-placeholder{color:rgba(15,23,42,0.5)}
   body.dark-mode .cta3-select-placeholder{color:rgba(236,239,241,0.58)}
-  .cta3-select-btn::after{content:'';display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid rgba(236,239,241,0.62);margin-left:0.5rem;flex-shrink:0;transition:transform 0.2s ease;vertical-align:middle}
+  .cta3-select-btn::after{content:'';display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid rgba(17,24,39,0.45);margin-left:0.5rem;flex-shrink:0;transition:transform 0.2s ease;vertical-align:middle}
+  body.theme-light .cta3-select-btn::after{border-top-color:rgba(15,23,42,0.5)}
   body.dark-mode .cta3-select-btn::after{border-top-color:rgba(236,239,241,0.62)}
   .cta3-select-wrap.is-open .cta3-select-btn::after{transform:rotate(180deg)}
   .cta3-select-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);margin:0;padding:0.35rem 0;list-style:none;background:#fff;border:1px solid rgba(27,154,89,0.18);border-radius:12px;box-shadow:0 12px 32px rgba(17,24,39,0.14);max-height:min(45vh,260px);overflow-y:auto;display:none;z-index:30}
@@ -1603,7 +1605,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .btn3-submit,.prod-quote-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
   .af-btn{background:linear-gradient(135deg,#2ab4ff,#0d8ee8);color:#fff;box-shadow:0 14px 32px rgba(42,180,255,0.38)}
 </style>
-<link rel="stylesheet" href="ek-premium-theme.css?v=24">
+<link rel="stylesheet" href="ek-premium-theme.css?v=25">
 
 <!-- PRODUCT DETAIL MODAL -->
 <div class="prod-modal-overlay" id="prodModal" onclick="if(event.target===this)closeProdModal()">

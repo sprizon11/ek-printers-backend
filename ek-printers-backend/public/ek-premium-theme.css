@@ -108,6 +108,17 @@ body.theme-light .qty::placeholder,
 body.theme-light .prod-qty::placeholder{
   color:rgba(15,23,42,0.46) !important;
 }
+body.theme-light .cta3-select-placeholder{
+  color:rgba(15,23,42,0.5) !important;
+}
+body.theme-light .cta3-select-btn::after{
+  border-top-color:rgba(15,23,42,0.5) !important;
+}
+body.theme-light .cta3-select-option:hover,
+body.theme-light .cta3-select-option:focus{
+  color:#0f172a !important;
+  background:rgba(20,148,232,0.1) !important;
+}
 body.theme-light .back{
   color:#0f172a !important;
   border:1px solid rgba(15,23,42,0.14) !important;
@@ -715,11 +726,17 @@ body.theme-light .nav-icon-btn:hover{
 .cta3-select-btn-text{
   color:var(--ink) !important;
 }
-.cta3-select-placeholder{
+body:not(.theme-light) .cta3-select-placeholder{
   color:rgba(210,218,235,0.58) !important;
 }
-.cta3-select-btn::after{
+body:not(.theme-light) .cta3-select-btn::after{
   border-top-color:rgba(236,239,241,0.62) !important;
+}
+body.theme-light .cta3-select-placeholder{
+  color:rgba(15,23,42,0.5) !important;
+}
+body.theme-light .cta3-select-btn::after{
+  border-top-color:rgba(15,23,42,0.5) !important;
 }
 .cta3-select-wrap.is-open .cta3-select-btn{
   border-color:rgba(42,180,255,0.5) !important;

@@ -1028,12 +1028,31 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .export-btn:hover{filter:brightness(1.06)}
     .btn-add-customer{background:linear-gradient(135deg,#1565c0,#1e88e5);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.1rem;font-size:0.72rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 12px 24px rgba(21,101,192,0.28)}
     .btn-add-customer:hover{filter:brightness(1.06)}
-    .modal.add-modal{width:min(100%,520px);max-height:90vh;overflow-y:auto}
-    .modal .field select,.modal .field textarea{width:100%;box-sizing:border-box;background:var(--surface);border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.85rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none}
-    .modal .field select:focus,.modal .field textarea:focus{border-color:var(--teal);background:#fff}
-    .modal .field textarea{resize:vertical;min-height:72px}
-    .add-form-grid{display:grid;grid-template-columns:1fr;gap:0}
+    #addCustomerModal.modal-overlay{background:rgba(6,12,10,0.58);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:1rem}
+    .modal.add-modal{width:min(100%,580px);max-height:min(92vh,900px);padding:0;border-radius:22px;border:1px solid rgba(27,154,89,0.2);box-shadow:0 32px 90px rgba(6,18,12,0.35),inset 0 1px 0 rgba(255,255,255,0.65);overflow:hidden;display:flex;flex-direction:column}
+    .add-modal-head{position:relative;padding:1.45rem 3.25rem 1.25rem 1.55rem;background:linear-gradient(135deg,#0b2e20 0%,#157a47 38%,#1b9a59 62%,#3ecf84 100%);color:#fff}
+    .add-modal-head::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 88% 12%,rgba(255,255,255,0.22),transparent 42%);pointer-events:none}
+    .add-modal-kicker{display:inline-block;font-size:0.6rem;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;opacity:0.88;margin-bottom:0.4rem}
+    .modal.add-modal .add-modal-head h3{position:relative;font-family:'Inter',sans-serif;font-size:1.42rem;font-weight:800;letter-spacing:-0.03em;margin:0 0 0.4rem;line-height:1.15}
+    .add-modal-desc{position:relative;font-size:0.8rem;line-height:1.55;opacity:0.92;max-width:26rem;margin:0}
+    .add-modal-close{position:absolute;top:1.05rem;right:1.05rem;z-index:2;width:2.15rem;height:2.15rem;border-radius:50%;border:1px solid rgba(255,255,255,0.28);background:rgba(255,255,255,0.14);color:#fff;font-size:1.15rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,transform .15s}
+    .add-modal-close:hover{background:rgba(255,255,255,0.24);transform:scale(1.04)}
+    .add-modal-body{padding:1.35rem 1.55rem 0.65rem;overflow-y:auto;flex:1 1 auto}
+    .add-modal-body .field{margin-bottom:0.95rem}
+    .add-modal-body .field label{display:block;font-size:0.6rem;font-weight:800;color:rgba(17,24,39,0.52);margin-bottom:0.42rem;text-transform:uppercase;letter-spacing:0.14em}
+    .add-modal-body .field input,.add-modal-body .field select,.add-modal-body .field textarea{width:100%;box-sizing:border-box;background:linear-gradient(180deg,#fcfffd,#f4faf6);border:1px solid rgba(27,154,89,0.16);border-radius:12px;padding:0.74rem 0.95rem;font-size:0.86rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s,background .2s;box-shadow:inset 0 1px 2px rgba(17,24,39,0.04)}
+    .add-modal-body .field input::placeholder,.add-modal-body .field textarea::placeholder{color:rgba(17,24,39,0.38)}
+    .add-modal-body .field input:focus,.add-modal-body .field select:focus,.add-modal-body .field textarea:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(27,154,89,0.14),inset 0 1px 2px rgba(17,24,39,0.03)}
+    .add-modal-body .field textarea{resize:vertical;min-height:88px}
+    .add-form-grid{display:grid;grid-template-columns:1fr;gap:0 1rem}
     @media (min-width:520px){.add-form-grid{grid-template-columns:1fr 1fr}.add-form-grid .field.span-2{grid-column:1/-1}}
+    .add-modal-foot{display:flex;gap:0.7rem;justify-content:flex-end;align-items:center;padding:1rem 1.55rem 1.4rem;border-top:1px solid rgba(27,154,89,0.12);background:linear-gradient(180deg,#fafdfb 0%,#f0f7f2 100%)}
+    .add-modal-foot .modal-cancel{border-radius:12px;padding:0.72rem 1.25rem;font-size:0.8rem;font-weight:600;color:rgba(17,24,39,0.62);border:1px solid rgba(17,24,39,0.12);background:#fff;transition:all .2s}
+    .add-modal-foot .modal-cancel:hover{border-color:rgba(17,24,39,0.22);color:var(--ink);background:#fff}
+    .add-modal-foot .modal-save{border-radius:12px;padding:0.74rem 1.55rem;font-size:0.8rem;font-weight:800;letter-spacing:0.03em;box-shadow:0 14px 32px rgba(27,154,89,0.34);transition:transform .15s,filter .2s,box-shadow .2s}
+    .add-modal-foot .modal-save:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 18px 38px rgba(27,154,89,0.4)}
+    .add-modal-foot .modal-save:disabled{opacity:0.65;transform:none;cursor:not-allowed}
+    #addCustomerMsg{margin:0 0 1rem}
     .table-wrap{background:#fff;border:1px solid rgba(27,154,89,0.14);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 16px 38px rgba(17,24,39,0.12)}
     table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;table-layout:auto}
     thead th{position:sticky;top:0;z-index:2}
@@ -1165,6 +1184,16 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     body.dark-mode .icon-mail{background:#1a2f4a!important;border-color:rgba(100,181,246,0.35)!important;color:#90caf9!important}
     body.dark-mode .icon-del{background:#3d2426!important;border-color:rgba(239,83,80,0.35)!important;color:#ef9a9a!important}
     body.dark-mode .notes-link{color:#6ee7d6}
+    body.dark-mode #addCustomerModal.modal-overlay{background:rgba(0,0,0,0.72)}
+    body.dark-mode .modal.add-modal{border-color:rgba(94,196,176,0.22);box-shadow:0 32px 90px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.04)}
+    body.dark-mode .add-modal-head{background:linear-gradient(135deg,#071a14 0%,#0f3d2a 40%,#157a47 100%)}
+    body.dark-mode .add-modal-body .field label{color:rgba(236,239,241,0.55)}
+    body.dark-mode .add-modal-body .field input,body.dark-mode .add-modal-body .field select,body.dark-mode .add-modal-body .field textarea{background:linear-gradient(180deg,#1a2420,#151d1a);border-color:rgba(94,196,176,0.2);color:var(--ink);box-shadow:inset 0 1px 2px rgba(0,0,0,0.2)}
+    body.dark-mode .add-modal-body .field input::placeholder,body.dark-mode .add-modal-body .field textarea::placeholder{color:rgba(236,239,241,0.38)}
+    body.dark-mode .add-modal-body .field input:focus,body.dark-mode .add-modal-body .field select:focus,body.dark-mode .add-modal-body .field textarea:focus{border-color:#5ec4b0;box-shadow:0 0 0 3px rgba(94,196,176,0.18)}
+    body.dark-mode .add-modal-foot{background:linear-gradient(180deg,#1a201e,#141a18);border-top-color:rgba(94,196,176,0.12)}
+    body.dark-mode .add-modal-foot .modal-cancel{background:#243038;border-color:rgba(236,239,241,0.18);color:rgba(236,239,241,0.78)}
+    body.dark-mode .add-modal-foot .modal-cancel:hover{color:#fff;border-color:rgba(236,239,241,0.32)}
   </style>
 </head>
 <body>
@@ -1229,32 +1258,38 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     </div>
   </div>
   <div class="modal-overlay" id="addCustomerModal">
-    <div class="modal add-modal">
-      <h3>Add customer manually</h3>
-      <p style="font-size:0.78rem;color:rgba(22,20,18,0.55);margin-bottom:1rem;line-height:1.45">Add walk-in or phone enquiries. Name and phone are required.</p>
-      <div id="addCustomerMsg" class="pass-msg" role="alert"></div>
-      <div class="add-form-grid">
-        <div class="field"><label for="addName">Client name *</label><input type="text" id="addName" autocomplete="name"></div>
-        <div class="field"><label for="addPhone">Phone / WhatsApp *</label><input type="tel" id="addPhone" autocomplete="tel"></div>
-        <div class="field"><label for="addEmail">Email</label><input type="email" id="addEmail" autocomplete="email"></div>
-        <div class="field"><label for="addCompany">Company</label><input type="text" id="addCompany"></div>
-        <div class="field"><label for="addLocation">Location</label><input type="text" id="addLocation" placeholder="City / area"></div>
-        <div class="field"><label for="addService">Service</label><input type="text" id="addService" placeholder="e.g. Folding cards, Hang tag"></div>
-        <div class="field"><label for="addBizType">Type / finish</label><input type="text" id="addBizType" placeholder="e.g. Gold foil"></div>
-        <div class="field"><label for="addQty">Quantity</label><input type="text" id="addQty"></div>
-        <div class="field span-2"><label for="addReq">Requirement notes</label><textarea id="addReq" placeholder="What they need..."></textarea></div>
-        <div class="field"><label for="addStatus">Status</label>
-          <select id="addStatus">
-            <option value="new">New</option>
-            <option value="in_progress">In Progress</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+    <div class="modal add-modal" role="dialog" aria-modal="true" aria-labelledby="addCustomerTitle">
+      <div class="add-modal-head">
+        <span class="add-modal-kicker">New enquiry</span>
+        <h3 id="addCustomerTitle">Add customer</h3>
+        <p class="add-modal-desc">Capture walk-in or phone leads. Name and phone are required — everything else is optional.</p>
+        <button type="button" class="add-modal-close" id="addCustomerClose" aria-label="Close">✕</button>
+      </div>
+      <div class="add-modal-body">
+        <div id="addCustomerMsg" class="pass-msg" role="alert"></div>
+        <div class="add-form-grid">
+          <div class="field"><label for="addName">Client name *</label><input type="text" id="addName" autocomplete="name" placeholder="Full name"></div>
+          <div class="field"><label for="addPhone">Phone / WhatsApp *</label><input type="tel" id="addPhone" autocomplete="tel" placeholder="+91 …"></div>
+          <div class="field"><label for="addEmail">Email</label><input type="email" id="addEmail" autocomplete="email" placeholder="name@company.com"></div>
+          <div class="field"><label for="addCompany">Company</label><input type="text" id="addCompany" placeholder="Brand / business name"></div>
+          <div class="field"><label for="addLocation">Location</label><input type="text" id="addLocation" placeholder="City / area"></div>
+          <div class="field"><label for="addService">Service</label><input type="text" id="addService" placeholder="Folding cards, Hang tag…"></div>
+          <div class="field"><label for="addBizType">Type / finish</label><input type="text" id="addBizType" placeholder="Gold foil, Matt lamination…"></div>
+          <div class="field"><label for="addQty">Quantity</label><input type="text" id="addQty" placeholder="e.g. 500 pcs"></div>
+          <div class="field span-2"><label for="addReq">Requirement notes</label><textarea id="addReq" placeholder="Sizes, artwork, delivery timeline…"></textarea></div>
+          <div class="field"><label for="addStatus">Status</label>
+            <select id="addStatus">
+              <option value="new">New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="modal-actions">
+      <div class="add-modal-foot">
         <button type="button" class="modal-cancel" id="addCustomerCancel">Cancel</button>
-        <button type="button" class="modal-save" id="addCustomerSave">Save customer</button>
+        <button type="button" class="modal-save" id="addCustomerSave">Save customer →</button>
       </div>
     </div>
   </div>
@@ -1394,6 +1429,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       const msg = document.getElementById('addCustomerMsg');
       const openBtn = document.getElementById('openAddCustomer');
       const cancel = document.getElementById('addCustomerCancel');
+      const closeBtn = document.getElementById('addCustomerClose');
       const save = document.getElementById('addCustomerSave');
       if (!overlay || !openBtn) return;
       function showMsg(text, ok) {
@@ -1417,7 +1453,11 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       }
       openBtn.addEventListener('click', openAdd);
       if (cancel) cancel.addEventListener('click', closeAdd);
+      if (closeBtn) closeBtn.addEventListener('click', closeAdd);
       overlay.addEventListener('click', function(e) { if (e.target === overlay) closeAdd(); });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) closeAdd();
+      });
       if (save) save.addEventListener('click', async function() {
         showMsg('', false);
         const name = (document.getElementById('addName') || {}).value || '';
@@ -1455,7 +1495,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
           showMsg('Network error. Try again.', false);
         } finally {
           save.disabled = false;
-          save.textContent = 'Save customer';
+          save.textContent = 'Save customer →';
         }
       });
     })();

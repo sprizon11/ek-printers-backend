@@ -1419,3 +1419,12 @@ body.theme-light .n3-logo-img,
 body.theme-light .f3-logo-img{
   filter:none !important;
 }
+body.theme-light .f3-admin-link{
+  color:rgba(15,23,42,0.5) !important;
+  border-color:rgba(15,23,42,0.14) !important;
+}
+body.theme-light .f3-admin-link:hover{
+  color:#0f172a !important;
+  border-color:rgba(15,23,42,0.28) !important;
+  background:rgba(15,23,42,0.05) !important;
+}

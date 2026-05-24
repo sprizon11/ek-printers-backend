@@ -29,6 +29,39 @@ function saveDB(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+function insertQuoteRecord(db, fields) {
+  const id = db.nextId++;
+  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const cleanService = String(fields.service || '').trim();
+  const cleanBizType = String(fields.bizType || '').trim();
+  const cleanQuantity = String(fields.quantity || '').trim();
+  const cleanRequirementText = String(fields.requirementText || '').trim();
+  const requirement = String(fields.requirement || '').trim() || [
+    cleanQuantity ? `Quantity: ${cleanQuantity}` : '',
+    cleanRequirementText ? `Requirement: ${cleanRequirementText}` : ''
+  ].filter(Boolean).join('\n') || 'Manual entry';
+  const quote = {
+    id,
+    name: String(fields.name || '').trim(),
+    phone: String(fields.phone || '').trim(),
+    email: String(fields.email || '').trim(),
+    company: String(fields.company || '').trim(),
+    location: String(fields.location || '').trim(),
+    service: cleanService,
+    biz_type: cleanBizType,
+    quantity: cleanQuantity,
+    requirement_text: cleanRequirementText,
+    requirement,
+    status: fields.status || 'new',
+    notes: String(fields.notes || '').trim(),
+    created_at: now,
+    created_date: new Date().toISOString().slice(0, 10)
+  };
+  db.quotes.unshift(quote);
+  saveDB(db);
+  return quote;
+}
+
 // ─── MIDDLEWARE ────────────────────────────────────────────────────────────────
 app.use(compression());
 app.use(express.json());
@@ -92,32 +125,15 @@ app.post('/api/quote', (req, res) => {
     return res.status(400).json({ success: false, message: 'Please fill all required quote fields.' });
   }
   const db = loadDB();
-  const id = db.nextId++;
-  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-  const cleanService = String(service || '').trim();
-  const cleanBizType = String(bizType || '').trim();
-  const cleanQuantity = String(quantity || '').trim();
-  const cleanRequirementText = String(requirementText || '').trim();
-  const quote = {
-    id, name: name.trim(), phone: phone.trim(),
-    email: (email || '').trim(),
-    company: String(company || '').trim(),
-    location: String(location || '').trim(),
-    service: cleanService,
-    biz_type: cleanBizType,
-    quantity: cleanQuantity,
-    requirement_text: cleanRequirementText,
-    requirement: requirement.trim(),
-    status: 'new', notes: '', created_at: now,
-    created_date: new Date().toISOString().slice(0, 10)
-  };
-  db.quotes.unshift(quote);
-  saveDB(db);
+  const quote = insertQuoteRecord(db, {
+    name, phone, email, company, location, service, bizType, quantity,
+    requirementText, requirement: requirement.trim(), status: 'new', notes: ''
+  });
 
   const waNumber = String(process.env.WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
   const serviceLabel = quote.biz_type ? `${quote.service} (${quote.biz_type})` : quote.service;
   const waText = encodeURIComponent(
-    `Hi EK PRINTERS! New quote request (#${id}).\n` +
+    `Hi EK PRINTERS! New quote request (#${quote.id}).\n` +
     `Client: ${quote.name}\nPhone: ${quote.phone}\nEmail: ${quote.email || '-'}\n` +
     `Company: ${quote.company || '-'}\nLocation: ${quote.location || '-'}\n` +
     `Service: ${serviceLabel || '-'}\nQuantity: ${quote.quantity || '-'}\n` +
@@ -126,7 +142,7 @@ app.post('/api/quote', (req, res) => {
   const whatsappUrl = waNumber ? `https://wa.me/${waNumber}?text=${waText}` : '';
 
   sendQuoteEmail({
-    id,
+    id: quote.id,
     createdAt: quote.created_at,
     name: quote.name,
     phone: quote.phone,
@@ -141,7 +157,7 @@ app.post('/api/quote', (req, res) => {
 
   return res.json({
     success: true,
-    id,
+    id: quote.id,
     message: 'Quote request submitted! We will contact you within 24 hours.',
     whatsappUrl
   });
@@ -263,6 +279,31 @@ app.delete('/admin/quote/:id', requireAuth, (req, res) => {
   db.quotes = db.quotes.filter(q => q.id != req.params.id);
   saveDB(db);
   res.json({ success: true });
+});
+
+app.post('/admin/quote/add', requireAuth, (req, res) => {
+  const { name, phone, email, company, location, service, bizType, quantity, requirementText, requirement, status, notes } = req.body || {};
+  if (!String(name || '').trim() || !String(phone || '').trim()) {
+    return res.status(400).json({ success: false, message: 'Name and phone are required.' });
+  }
+  const allowed = ['new', 'in_progress', 'completed', 'cancelled'];
+  const cleanStatus = allowed.includes(status) ? status : 'new';
+  const db = loadDB();
+  const quote = insertQuoteRecord(db, {
+    name,
+    phone,
+    email,
+    company,
+    location,
+    service: service || 'Manual',
+    bizType,
+    quantity,
+    requirementText,
+    requirement,
+    status: cleanStatus,
+    notes
+  });
+  res.json({ success: true, id: quote.id, message: 'Customer added successfully.' });
 });
 
 app.get('/admin/export', requireAuth, (req, res) => {
@@ -976,7 +1017,8 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .controls-toolbar .date-field:nth-of-type(1){grid-column:1}
     .controls-toolbar .date-field:nth-of-type(2){grid-column:2}
     .controls-toolbar .search-main{grid-column:1/-1;width:100%;min-width:0;max-width:none}
-    .controls-toolbar .export-btn{grid-column:1/-1;justify-self:stretch;width:100%;text-align:center}
+      .controls-toolbar .btn-add-customer{grid-column:1/-1;justify-self:stretch;width:100%}
+      .controls-toolbar .export-btn{grid-column:1/-1;justify-self:stretch;width:100%;text-align:center}
     .filter-btn{display:flex;justify-content:center;align-items:center;width:100%;font-size:0.68rem;padding:0.5rem 0.65rem;border-radius:100px;border:1.5px solid rgba(27,154,89,0.22);background:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;text-decoration:none;color:var(--ink);transition:all 0.2s;white-space:nowrap}
     .filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
     .search-box{background:#fff;border:1.5px solid rgba(27,154,89,0.16);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.2s;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);color:var(--ink)}
@@ -984,6 +1026,14 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .search-box::placeholder{color:rgba(17,24,39,0.48)}
     .export-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;padding:0.5rem 1.2rem;font-size:0.72rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none;transition:filter 0.2s;white-space:nowrap;flex-shrink:0;box-shadow:0 12px 24px rgba(27,154,89,0.28)}
     .export-btn:hover{filter:brightness(1.06)}
+    .btn-add-customer{background:linear-gradient(135deg,#1565c0,#1e88e5);color:#fff;border:none;border-radius:10px;padding:0.5rem 1.1rem;font-size:0.72rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 12px 24px rgba(21,101,192,0.28)}
+    .btn-add-customer:hover{filter:brightness(1.06)}
+    .modal.add-modal{width:min(100%,520px);max-height:90vh;overflow-y:auto}
+    .modal .field select,.modal .field textarea{width:100%;box-sizing:border-box;background:var(--surface);border:1.5px solid rgba(22,20,18,0.1);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.85rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none}
+    .modal .field select:focus,.modal .field textarea:focus{border-color:var(--teal);background:#fff}
+    .modal .field textarea{resize:vertical;min-height:72px}
+    .add-form-grid{display:grid;grid-template-columns:1fr;gap:0}
+    @media (min-width:520px){.add-form-grid{grid-template-columns:1fr 1fr}.add-form-grid .field.span-2{grid-column:1/-1}}
     .table-wrap{background:#fff;border:1px solid rgba(27,154,89,0.14);border-radius:16px;overflow-x:auto;width:100%;min-width:0;-webkit-overflow-scrolling:touch;box-shadow:0 16px 38px rgba(17,24,39,0.12)}
     table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;table-layout:auto}
     thead th{position:sticky;top:0;z-index:2}
@@ -1066,6 +1116,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       .controls-toolbar{display:flex;flex-direction:row;flex-wrap:nowrap;flex:1;min-width:0;justify-content:flex-end;align-items:center;gap:0.65rem}
       .controls-toolbar .date-field:nth-of-type(1),.controls-toolbar .date-field:nth-of-type(2){grid-column:auto;width:auto;min-width:10.5rem}
       .controls-toolbar .search-main{grid-column:auto;flex:1 1 14rem;width:auto;min-width:8rem;max-width:24rem}
+      .controls-toolbar .btn-add-customer{grid-column:auto;justify-self:auto;width:auto}
       .controls-toolbar .export-btn{grid-column:auto;justify-self:auto;margin-left:0;width:auto;text-align:left}
     }
     body.dark-mode .topbar,body.dark-mode .stat-card,body.dark-mode .table-wrap,body.dark-mode .modal{background:#1E2226;border-color:rgba(236,239,241,0.12)}
@@ -1156,6 +1207,7 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
         <input id="fromDate" class="search-box date-field" type="date" value="${esc(fromDate)}" onchange="applyFilters()">
         <input id="toDate" class="search-box date-field" type="date" value="${esc(toDate)}" onchange="applyFilters()">
         <input id="searchInput" class="search-box search-main" type="text" placeholder="Search client, phone, company, service..." value="${esc(search)}" oninput="debounceSearch(this)">
+        <button type="button" class="btn-add-customer" id="openAddCustomer">+ Add Customer</button>
         <a id="exportBtn" href="${'/admin/export?' + withQuery({ status: filter, search, fromDate, toDate })}" class="export-btn">⬇ Export Excel</a>
       </div>
     </div>
@@ -1173,6 +1225,36 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
       <div class="modal-actions">
         <button class="modal-cancel" onclick="closeNotes()">Cancel</button>
         <button class="modal-save" onclick="saveNotes()">Save Notes</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="addCustomerModal">
+    <div class="modal add-modal">
+      <h3>Add customer manually</h3>
+      <p style="font-size:0.78rem;color:rgba(22,20,18,0.55);margin-bottom:1rem;line-height:1.45">Add walk-in or phone enquiries. Name and phone are required.</p>
+      <div id="addCustomerMsg" class="pass-msg" role="alert"></div>
+      <div class="add-form-grid">
+        <div class="field"><label for="addName">Client name *</label><input type="text" id="addName" autocomplete="name"></div>
+        <div class="field"><label for="addPhone">Phone / WhatsApp *</label><input type="tel" id="addPhone" autocomplete="tel"></div>
+        <div class="field"><label for="addEmail">Email</label><input type="email" id="addEmail" autocomplete="email"></div>
+        <div class="field"><label for="addCompany">Company</label><input type="text" id="addCompany"></div>
+        <div class="field"><label for="addLocation">Location</label><input type="text" id="addLocation" placeholder="City / area"></div>
+        <div class="field"><label for="addService">Service</label><input type="text" id="addService" placeholder="e.g. Folding cards, Hang tag"></div>
+        <div class="field"><label for="addBizType">Type / finish</label><input type="text" id="addBizType" placeholder="e.g. Gold foil"></div>
+        <div class="field"><label for="addQty">Quantity</label><input type="text" id="addQty"></div>
+        <div class="field span-2"><label for="addReq">Requirement notes</label><textarea id="addReq" placeholder="What they need..."></textarea></div>
+        <div class="field"><label for="addStatus">Status</label>
+          <select id="addStatus">
+            <option value="new">New</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-cancel" id="addCustomerCancel">Cancel</button>
+        <button type="button" class="modal-save" id="addCustomerSave">Save customer</button>
       </div>
     </div>
   </div>
@@ -1304,6 +1386,76 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
           showMsg('Network error. Try again.', false);
         } finally {
           save.disabled = false;
+        }
+      });
+    })();
+    (function addCustomerModal(){
+      const overlay = document.getElementById('addCustomerModal');
+      const msg = document.getElementById('addCustomerMsg');
+      const openBtn = document.getElementById('openAddCustomer');
+      const cancel = document.getElementById('addCustomerCancel');
+      const save = document.getElementById('addCustomerSave');
+      if (!overlay || !openBtn) return;
+      function showMsg(text, ok) {
+        msg.textContent = text || '';
+        msg.className = 'pass-msg' + (text ? (ok ? ' ok' : ' err') : '');
+      }
+      function openAdd() {
+        showMsg('', false);
+        ['addName','addPhone','addEmail','addCompany','addLocation','addService','addBizType','addQty','addReq'].forEach(function(id) {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        const st = document.getElementById('addStatus');
+        if (st) st.value = 'new';
+        overlay.classList.add('open');
+        setTimeout(function() { const n = document.getElementById('addName'); if (n) n.focus(); }, 50);
+      }
+      function closeAdd() {
+        overlay.classList.remove('open');
+        showMsg('', false);
+      }
+      openBtn.addEventListener('click', openAdd);
+      if (cancel) cancel.addEventListener('click', closeAdd);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) closeAdd(); });
+      if (save) save.addEventListener('click', async function() {
+        showMsg('', false);
+        const name = (document.getElementById('addName') || {}).value || '';
+        const phone = (document.getElementById('addPhone') || {}).value || '';
+        if (!name.trim() || !phone.trim()) {
+          showMsg('Name and phone are required.', false);
+          return;
+        }
+        save.disabled = true;
+        save.textContent = 'Saving...';
+        try {
+          const res = await fetch('/admin/quote/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: name.trim(),
+              phone: phone.trim(),
+              email: ((document.getElementById('addEmail') || {}).value || '').trim(),
+              company: ((document.getElementById('addCompany') || {}).value || '').trim(),
+              location: ((document.getElementById('addLocation') || {}).value || '').trim(),
+              service: ((document.getElementById('addService') || {}).value || '').trim(),
+              bizType: ((document.getElementById('addBizType') || {}).value || '').trim(),
+              quantity: ((document.getElementById('addQty') || {}).value || '').trim(),
+              requirementText: ((document.getElementById('addReq') || {}).value || '').trim(),
+              status: ((document.getElementById('addStatus') || {}).value || 'new')
+            })
+          });
+          const data = await res.json().catch(function() { return {}; });
+          if (res.ok && data.success) {
+            location.reload();
+          } else {
+            showMsg(data.message || 'Could not save customer.', false);
+          }
+        } catch (err) {
+          showMsg('Network error. Try again.', false);
+        } finally {
+          save.disabled = false;
+          save.textContent = 'Save customer';
         }
       });
     })();

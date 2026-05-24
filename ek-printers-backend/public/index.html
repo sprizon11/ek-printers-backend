@@ -336,6 +336,9 @@
   .f3-links a{color:rgba(255,255,255,0.42);font-size:0.8rem;font-weight:600;text-decoration:none;transition:color 0.2s}
   .f3-links a:hover{color:#fff}
   .f3-copy{font-size:0.65rem;color:rgba(255,255,255,0.2)}
+  .f3-copy-row{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap}
+  .f3-admin-link{display:inline-flex;align-items:center;justify-content:center;width:1.4rem;height:1.4rem;border-radius:50%;color:rgba(255,255,255,0.38);border:1px solid rgba(255,255,255,0.14);text-decoration:none;transition:color .2s,border-color .2s,background .2s}
+  .f3-admin-link:hover{color:#fff;border-color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06)}
 
   @keyframes cardASequence{
     0%,18%{z-index:3;transform:translate(0,0) scale(1) rotateX(10deg) rotateZ(-2deg) rotateY(0deg)}
@@ -470,7 +473,7 @@
       <div class="hero-bg" aria-hidden="true">
         <img class="hero-bg-slide is-active" src="hang-tag-card.png" alt="" width="1200" height="800" fetchpriority="high" decoding="async">
         <img class="hero-bg-slide" src="hero-label-collection.png?v=2" alt="" width="1200" height="800" decoding="async">
-        <img class="hero-bg-slide" src="hero-business-cards.png" alt="" width="1200" height="800" decoding="async">
+        <img class="hero-bg-slide" src="folding-cards.png?v=1" alt="" width="1200" height="800" decoding="async">
       </div>
       <div class="h3-badge fx-fade-up fx-d1">HANG TAG COLLECTION</div>
       <h1 class="h3-title fx-fade-up fx-d2">PREMIUM<br>HANG TAG<br>DETAILS</h1>
@@ -495,7 +498,7 @@
       <div class="p3-card fx-fade-up fx-d1" data-product="Hang Tags" data-category="hang-tags"><div class="p3-card-img-wrap"><img class="p3-card-img" src="hang-tag-card.png" alt="Hang tags"></div><div class="p3-card-body"><div class="p3-cname">Hang Tags</div><div class="p3-cdesc">Custom die-cut tags for apparel and retail brands with metallic foil and specialty finishes.</div><div class="p3-arrow">></div></div></div>
       <div class="p3-card fx-fade-up fx-d2" data-product="Woven Labels" data-category="woven-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-woven.png?v=2" alt="Woven label rolls with custom MC branding"></div><div class="p3-card-body"><div class="p3-cname">Woven Labels</div><div class="p3-cdesc">Durable woven labels that give garments and apparel products a premium look.</div><div class="p3-arrow">></div></div></div>
       <div class="p3-card fx-fade-up fx-d3" data-product="Printed Labels" data-category="printed-labels"><div class="p3-card-img-wrap"><img class="p3-card-img" src="lb-printed.png?v=2" alt="Custom printed clothing labels — brand samples"></div><div class="p3-card-body"><div class="p3-cname">Printed Labels</div><div class="p3-cdesc">High quality printed labels for packaging, branding, and product identification.</div><div class="p3-arrow">></div></div></div>
-      <div class="p3-card fx-fade-up fx-d4" data-product="Business Cards" data-category="business-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="bc-normal.png?v=2" alt="Premium business card samples — YT Pet Shop and Broke Boy Tees"></div><div class="p3-card-body"><div class="p3-cname">Business Cards</div><div class="p3-cdesc">Normal, Matt Lamination, Gloss Lamination, and Foil Cards — premium 400 gsm stock.</div><div class="p3-arrow">></div></div></div>
+      <div class="p3-card fx-fade-up fx-d4" data-product="Folding Cards" data-category="folding-cards"><div class="p3-card-img-wrap"><img class="p3-card-img" src="folding-cards.png?v=1" alt="Premium folding cards with gold foil and QR details"></div><div class="p3-card-body"><div class="p3-cname">Folding Cards</div><div class="p3-cdesc">Folded garment tags and cards with foil, QR codes, and care instructions — premium finishes.</div><div class="p3-arrow">></div></div></div>
     </div>
   </section>
 
@@ -568,7 +571,7 @@
           <ul class="cta3-select-menu" id="q-biz-menu" role="listbox" aria-label="Options"></ul>
         </div>
       </div>
-      <input class="cta3-input" id="q-req" type="text" placeholder="What do you need? (e.g. 500 business cards)" required>
+      <input class="cta3-input" id="q-req" type="text" placeholder="What do you need? (e.g. 500 folding cards)" required>
       <div id="q-msg" style="display:none;padding:0.8rem 1rem;border-radius:10px;font-size:0.78rem;font-weight:500"></div>
       <button class="btn3-submit" id="q-btn" onclick="submitQuote()">Send My Requirements →</button>
     </div>
@@ -604,7 +607,12 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2.2"/></svg>
       </a>
     </div>
-    <div class="f3-copy">© 2025 EK PRINTERS · Tiruppur</div>
+    <div class="f3-copy-row">
+      <div class="f3-copy">© 2025 EK PRINTERS · Tiruppur</div>
+      <a href="/admin/login" class="f3-admin-link" aria-label="Admin login" title="Admin">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      </a>
+    </div>
   </div>
 
   <div class="tc-modal-backdrop" id="tcModal" aria-hidden="true">
@@ -640,10 +648,10 @@ function closeAllQuoteSelects() {
   });
 }
 
-const QUOTE_SERVICES = ['Business cards', 'Labels', 'Hang tag'];
+const QUOTE_SERVICES = ['Folding cards', 'Labels', 'Hang tag'];
 /** Matches product modal finishes; keys must match QUOTE_SERVICES values. */
 const QUOTE_SUBTYPES_BY_SERVICE = {
-  'Business cards': ['Normal', 'Matt Lamination', 'Gloss Lamination', 'Foil Cards'],
+  'Folding cards': ['Standard Fold', 'Gold Foil', 'Matt Lamination', 'Gloss Lamination'],
   'Labels': ['Printed Labels', 'Cotton Labels', 'Woven Labels', 'Screen Printing Labels'],
   'Hang tag': ['350 GSM Normal Tags', '600 GSM Tags', 'Premium Tags', 'Foil Tags'],
 };
@@ -676,7 +684,7 @@ function initQuoteFormSelects() {
   }
 
   function subtypeHeading(service) {
-    if (service === 'Business cards') return 'Business card type';
+    if (service === 'Folding cards') return 'Folding card type';
     if (service === 'Labels') return 'Label type';
     if (service === 'Hang tag') return 'Hang tag type';
     return 'Type';
@@ -816,7 +824,7 @@ function applyQuotePrefill() {
       typeLabel.classList.remove('cta3-select-placeholder');
     }
     if (typeHeading) {
-      if (service === 'Business cards') typeHeading.textContent = 'Business card type';
+      if (service === 'Folding cards') typeHeading.textContent = 'Folding card type';
       else if (service === 'Labels') typeHeading.textContent = 'Label type';
       else if (service === 'Hang tag') typeHeading.textContent = 'Hang tag type';
       else typeHeading.textContent = 'Type';
@@ -1112,9 +1120,9 @@ function initHeroAutoBackground() {
       subtitle: 'High clarity woven and cotton labels with clean print definition, soft texture and durable quality.'
     },
     {
-      badge: 'BUSINESS CARD COLLECTION',
-      title: 'BOLD<br>BUSINESS<br>CARDS',
-      subtitle: 'Professional cards with modern layouts, premium stock and eye-catching print for stronger brand impact.'
+      badge: 'FOLDING CARD COLLECTION',
+      title: 'PREMIUM<br>FOLDING<br>CARDS',
+      subtitle: 'Folded garment tags and cards with foil accents, QR details and care instructions for premium branding.'
     }
   ];
   const count = Math.min(bgSlides.length, heroSlides.length);
@@ -1622,18 +1630,18 @@ function previewAssetUrl(filename) {
 }
 
 const PRODUCTS = {
-  'Business Cards': {
-    icon:'💳', color:'var(--light)',
-    desc:'Make a powerful first impression with our premium business cards. Choose the finish that fits your brand — classic normal stock, matt lamination, gloss lamination, or standout foil cards. Printed on thick 400 gsm stock.',
-    materials:['Normal','Matt Lamination','Gloss Lamination','Foil Cards'],
-    highlights:['Normal','Matt Lamination','Gloss Lamination','Foil Cards'],
+  'Folding Cards': {
+    icon:'📇', color:'var(--light)',
+    desc:'Premium folded cards and garment tags with striking layouts — gold foil accents, QR codes, washing instructions, and durable stock for apparel and retail brands.',
+    materials:['Standard Fold','Gold Foil','Matt Lamination','Gloss Lamination'],
+    highlights:['Standard Fold','Gold Foil','Matt Lamination','Gloss Lamination'],
     previewByMaterial:{
-      'Normal':'bc-normal.png',
-      'Matt Lamination':'bc-matt.png',
-      'Gloss Lamination':'bc-gloss.png',
-      'Foil Cards':'bc-foil.png'
+      'Standard Fold':'folding-cards.png',
+      'Gold Foil':'folding-cards.png',
+      'Matt Lamination':'folding-cards.png',
+      'Gloss Lamination':'folding-cards.png'
     },
-    turnaround:'⚡ Standard: 3–4 working days · Express 48-hr delivery available'
+    turnaround:'⚡ Standard: 3–5 working days · Express 48-hr delivery available'
   },
   'Printed Labels': {
     icon:'📋', color:'rgba(232,93,58,0.1)',

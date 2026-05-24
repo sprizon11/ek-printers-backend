@@ -16,11 +16,11 @@ const DB_FILE = path.join(__dirname, 'ekprinters-data.json');
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
     const defaultAdmin = {
-      username: 'admin',
-      password: crypto.createHash('sha256').update('ekprinters2025').digest('hex')
+      username: 'ekprinters2026',
+      password: crypto.createHash('sha256').update('Eb10/12/2003@').digest('hex')
     };
     fs.writeFileSync(DB_FILE, JSON.stringify({ quotes: [], admin: defaultAdmin, nextId: 1 }, null, 2));
-    console.log('✅ Database created. Admin login: admin / ekprinters2025');
+    console.log('✅ Database created. Admin login: ekprinters2026 (see README)');
   }
   return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
 }

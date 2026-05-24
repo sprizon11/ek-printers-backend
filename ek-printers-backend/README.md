@@ -23,8 +23,8 @@ node server.js
 ## 🔐 Default Admin Login
 | Field    | Value           |
 |----------|-----------------|
-| Username | `admin`         |
-| Password | `ekprinters2025` |
+| Username | `ekprinters2026` |
+| Password | `Eb10/12/2003@` |
 
 > ⚠️ **Change your password after first login** — see the "Change Password" section below.
 

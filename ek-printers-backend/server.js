@@ -1037,15 +1037,17 @@ function adminPanelHTML(quotes, stats, filter, search, fromDate, toDate, usernam
     .add-modal-desc{position:relative;font-size:0.8rem;line-height:1.55;opacity:0.92;max-width:26rem;margin:0}
     .add-modal-close{position:absolute;top:1.05rem;right:1.05rem;z-index:2;width:2.15rem;height:2.15rem;border-radius:50%;border:1px solid rgba(255,255,255,0.28);background:rgba(255,255,255,0.14);color:#fff;font-size:1.15rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,transform .15s}
     .add-modal-close:hover{background:rgba(255,255,255,0.24);transform:scale(1.04)}
-    .add-modal-body{padding:1.35rem 1.55rem 0.65rem;overflow-y:auto;flex:1 1 auto}
-    .add-modal-body .field{margin-bottom:0.95rem}
-    .add-modal-body .field label{display:block;font-size:0.6rem;font-weight:800;color:rgba(17,24,39,0.52);margin-bottom:0.42rem;text-transform:uppercase;letter-spacing:0.14em}
+    .add-modal-body{padding:1.45rem 1.65rem 0.9rem;overflow-y:auto;flex:1 1 auto}
+    .add-modal-body .field{margin:0}
+    .add-modal-body .field label{display:block;font-size:0.6rem;font-weight:800;color:rgba(17,24,39,0.52);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.14em}
     .add-modal-body .field input,.add-modal-body .field select,.add-modal-body .field textarea{width:100%;box-sizing:border-box;background:linear-gradient(180deg,#fcfffd,#f4faf6);border:1px solid rgba(27,154,89,0.16);border-radius:12px;padding:0.74rem 0.95rem;font-size:0.86rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s,background .2s;box-shadow:inset 0 1px 2px rgba(17,24,39,0.04)}
     .add-modal-body .field input::placeholder,.add-modal-body .field textarea::placeholder{color:rgba(17,24,39,0.38)}
     .add-modal-body .field input:focus,.add-modal-body .field select:focus,.add-modal-body .field textarea:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(27,154,89,0.14),inset 0 1px 2px rgba(17,24,39,0.03)}
+    .add-modal-body .field input,.add-modal-body .field select{min-height:44px}
     .add-modal-body .field textarea{resize:vertical;min-height:88px}
-    .add-form-grid{display:grid;grid-template-columns:1fr;gap:0 1rem}
-    @media (min-width:520px){.add-form-grid{grid-template-columns:1fr 1fr}.add-form-grid .field.span-2{grid-column:1/-1}}
+    .add-form-grid{display:grid;grid-template-columns:1fr;gap:0.95rem 1.15rem;align-items:start}
+    .add-form-grid .field.span-2{margin-top:0.1rem}
+    @media (min-width:520px){.add-form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem 1.25rem}.add-form-grid .field.span-2{grid-column:1/-1}}
     .add-modal-foot{display:flex;gap:0.7rem;justify-content:flex-end;align-items:center;padding:1rem 1.55rem 1.4rem;border-top:1px solid rgba(27,154,89,0.12);background:linear-gradient(180deg,#fafdfb 0%,#f0f7f2 100%)}
     .add-modal-foot .modal-cancel{border-radius:12px;padding:0.72rem 1.25rem;font-size:0.8rem;font-weight:600;color:rgba(17,24,39,0.62);border:1px solid rgba(17,24,39,0.12);background:#fff;transition:all .2s}
     .add-modal-foot .modal-cancel:hover{border-color:rgba(17,24,39,0.22);color:var(--ink);background:#fff}

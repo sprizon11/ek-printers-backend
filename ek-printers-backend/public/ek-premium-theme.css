@@ -81,7 +81,6 @@ body.theme-light .g3-title,
 body.theme-light .cta3-form-title,
 body.theme-light .about-title,
 body.theme-light .cat-page-head h1,
-body.theme-light .p3-cname,
 body.theme-light .feat-text strong,
 body.theme-light .f3-copy,
 body.theme-light .h3-trust-text strong{
@@ -1346,6 +1345,16 @@ body.theme-light .prods3 .p3-card{
   background:transparent !important;
   border:none !important;
   box-shadow:none !important;
+}
+body.theme-light .prods3 .p3-card-body{
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.78) 100%) !important;
+}
+body.theme-light .prods3 .p3-cname{
+  color:#fff !important;
+}
+body.theme-light .prods3 .p3-arrow{
+  color:#fff !important;
+  background:rgba(255,255,255,0.22) !important;
 }
 body.theme-light .p3-title,
 body.theme-light .g3-title,

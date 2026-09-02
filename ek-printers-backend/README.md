@@ -75,17 +75,9 @@ const waLink = `https://wa.me/919XXXXXXXXX?text=${waText}`;
 
 ## 🔑 Change Admin Password
 
-Run this in the project folder:
-```bash
-node -e "
-const db = require('better-sqlite3')('ekprinters.db');
-const crypto = require('crypto');
-const pw = 'YOUR_NEW_PASSWORD'; // ← change this
-const hash = crypto.createHash('sha256').update(pw).digest('hex');
-db.prepare('UPDATE admin_users SET password = ? WHERE username = ?').run(hash, 'admin');
-console.log('Password updated!');
-"
-```
+Sign in to the admin panel and use **Change Password** there. The new password
+is written to whichever store is in use (Postgres in production), so it now
+survives restarts — it did not when the data lived only in a file on Render.
 
 ---
 
@@ -103,9 +95,52 @@ console.log('Password updated!');
 
 ## 🗄️ Database
 
-Uses **SQLite** (file-based, zero config). The database file `ekprinters.db` is created automatically on first run.
+**Production uses Postgres.** Set `DATABASE_URL` on the host and the app stores
+every enquiry there. Without it, the app falls back to the local
+`ekprinters-data.json` file — fine for development, but **never for production**:
+Render's filesystem is reset on every restart, deploy and wake-from-sleep, so a
+file-backed deployment silently loses every enquiry it received since it last
+started.
 
-To view the database manually, install [DB Browser for SQLite](https://sqlitebrowser.org/) — it's free.
+### Setting it up on Render
+
+1. Create a free Postgres database (Neon at [neon.tech](https://neon.tech) or
+   Supabase at [supabase.com](https://supabase.com)) and copy its connection
+   string. It looks like
+   `postgresql://user:password@host.neon.tech/dbname?sslmode=require`.
+2. In the Render dashboard → your service → **Environment**, add:
+   | Key | Value |
+   |-----|-------|
+   | `DATABASE_URL` | the connection string from step 1 |
+   | `RETENTION_DAYS` | `10` (optional — this is the default) |
+3. Deploy. On first boot the app creates its `app_state` table and copies over
+   whatever is in `ekprinters-data.json` — including the current admin password —
+   so nothing is lost in the switch. After that the file is never read again.
+
+The startup log says which store is in use:
+`💾 Storage: Postgres · keeping 10 days of enquiries`.
+
+### 🧹 Automatic 10-day cleanup
+
+Each enquiry is kept for **10 days from the day it arrived**, then dropped
+automatically. It is a rolling window per quote, not a scheduled wipe of
+everything — an enquiry that came in yesterday always gets its full 10 days.
+
+The sweep runs at startup, every 6 hours, and at most once every 15 minutes on
+ordinary traffic (so a service that sleeps and wakes still honours the window).
+Change the window with the `RETENTION_DAYS` environment variable; set it to `0`
+to keep enquiries forever.
+
+> Anything older than 10 days is gone for good. If you need a longer record,
+> either raise `RETENTION_DAYS`, use **Export Excel** in the admin panel before
+> the window closes, or configure the email notifications below so a copy of
+> every enquiry also lands in your inbox.
+
+### 📧 Email backup (recommended)
+
+Set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` and
+`NOTIFY_TO` and every incoming quote is emailed to you as it arrives. This is
+the safety net: even if the database is unreachable, you still get the lead.
 
 ---
 

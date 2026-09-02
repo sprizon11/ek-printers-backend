@@ -10,23 +10,147 @@ const XLSX = require('xlsx');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// ─── SIMPLE FILE-BASED DATABASE (pure JS, no compilation needed!) ─────────────
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+// Quotes live in Postgres when DATABASE_URL is set (production), and in a local
+// JSON file otherwise (local development). Render's filesystem is wiped on every
+// restart, so the file alone silently loses every enquiry received since the
+// last deploy — Postgres is what makes the data actually survive.
 const DB_FILE = path.join(__dirname, 'ekprinters-data.json');
+const DATABASE_URL = process.env.DATABASE_URL || '';
+const USE_POSTGRES = Boolean(DATABASE_URL);
 
-function loadDB() {
-  if (!fs.existsSync(DB_FILE)) {
-    const defaultAdmin = {
+// How long an enquiry is kept before it is cleared automatically. Rolling, per
+// quote: each one gets its full 10 days from the day it arrived.
+const RETENTION_DAYS = Number(process.env.RETENTION_DAYS || 10);
+
+let pool = null;
+if (USE_POSTGRES) {
+  const { Pool } = require('pg');
+  pool = new Pool({
+    connectionString: DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    max: 3
+  });
+}
+
+function defaultState() {
+  return {
+    quotes: [],
+    admin: {
       username: 'ekprinters2026',
       password: crypto.createHash('sha256').update('Eb10/12/2003@').digest('hex')
-    };
-    fs.writeFileSync(DB_FILE, JSON.stringify({ quotes: [], admin: defaultAdmin, nextId: 1 }, null, 2));
-    console.log('✅ Database created. Admin login: ekprinters2026 (see README)');
+    },
+    nextId: 1
+  };
+}
+
+// The whole store is held in memory and written back on every change. The data
+// set is tiny by design (10 days of enquiries), so this keeps all the existing
+// synchronous loadDB()/saveDB() call sites working untouched.
+let state = defaultState();
+let writeChain = Promise.resolve();
+
+function readStateFromFile() {
+  if (!fs.existsSync(DB_FILE)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+  } catch (err) {
+    console.error('⚠️  Could not parse ekprinters-data.json:', err.message);
+    return null;
   }
-  return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+}
+
+async function initStorage() {
+  if (!USE_POSTGRES) {
+    state = readStateFromFile() || defaultState();
+    if (!fs.existsSync(DB_FILE)) {
+      fs.writeFileSync(DB_FILE, JSON.stringify(state, null, 2));
+      console.log('✅ Local database created. Admin login: ekprinters2026 (see README)');
+    }
+    console.log('💾 Storage: local file (set DATABASE_URL to use Postgres)');
+    return;
+  }
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS app_state (
+      id         SMALLINT PRIMARY KEY,
+      data       JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `);
+
+  const { rows } = await pool.query('SELECT data FROM app_state WHERE id = 1');
+  if (rows.length) {
+    state = rows[0].data;
+  } else {
+    // First boot against an empty database: carry over whatever the file holds
+    // so an existing deployment does not lose its admin password or quotes.
+    state = readStateFromFile() || defaultState();
+    await pool.query('INSERT INTO app_state (id, data) VALUES (1, $1)', [JSON.stringify(state)]);
+    console.log('✅ Postgres store created and seeded.');
+  }
+  if (!Array.isArray(state.quotes)) state.quotes = [];
+  if (!state.admin) state.admin = defaultState().admin;
+  if (!state.nextId) state.nextId = state.quotes.reduce((m, q) => Math.max(m, Number(q.id) || 0), 0) + 1;
+  console.log(`💾 Storage: Postgres · keeping ${RETENTION_DAYS} days of enquiries`);
+}
+
+function persist() {
+  const snapshot = JSON.stringify(state);
+  // Writes are chained so two quick requests can never land out of order.
+  writeChain = writeChain.then(async () => {
+    if (USE_POSTGRES) {
+      await pool.query(
+        'INSERT INTO app_state (id, data, updated_at) VALUES (1, $1, now()) ' +
+        'ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = now()',
+        [snapshot]
+      );
+    } else {
+      fs.writeFileSync(DB_FILE, snapshot);
+    }
+  }).catch(err => {
+    console.error('❌ Failed to save data:', err.message);
+  });
+  return writeChain;
+}
+
+function loadDB() {
+  return state;
 }
 
 function saveDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  state = data;
+  persist();
+}
+
+// ─── 10-DAY ROLLING CLEANUP ───────────────────────────────────────────────────
+// A quote is dropped once it is more than RETENTION_DAYS old. Anything without a
+// readable date is kept rather than guessed at and deleted.
+function purgeExpiredQuotes() {
+  if (!Number.isFinite(RETENTION_DAYS) || RETENTION_DAYS <= 0) return 0;
+  const cutoff = new Date(Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000)
+    .toISOString().slice(0, 10);
+  const before = state.quotes.length;
+  state.quotes = state.quotes.filter(q => {
+    const date = getQuoteDate(q);
+    if (!date) return true;
+    return date >= cutoff;
+  });
+  const removed = before - state.quotes.length;
+  if (removed > 0) {
+    console.log(`🧹 Cleared ${removed} enquir${removed === 1 ? 'y' : 'ies'} older than ${RETENTION_DAYS} days.`);
+    persist();
+  }
+  return removed;
+}
+
+// Runs on boot and every 6 hours. The boot run matters most: Render free
+// instances sleep, so a long-lived timer cannot be relied on by itself.
+let lastPurgeAt = 0;
+function purgeIfDue(minIntervalMs = 15 * 60 * 1000) {
+  if (Date.now() - lastPurgeAt < minIntervalMs) return;
+  lastPurgeAt = Date.now();
+  purgeExpiredQuotes();
 }
 
 function insertQuoteRecord(db, fields) {
@@ -72,6 +196,10 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 8 * 60 * 60 * 1000 }
 }));
+
+// Sweep expired enquiries on ordinary traffic too, so a service that sleeps and
+// wakes still honours the 10-day window without depending on a timer.
+app.use((req, res, next) => { purgeIfDue(); next(); });
 // Note: express.static is registered after all dynamic routes so paths like
 // /admin are never shadowed by public/admin/index.html or similar on deploy.
 
@@ -1578,6 +1706,18 @@ app.use(express.static(path.join(__dirname, 'public'), {
   }
 }));
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`EK PRINTERS running at http://localhost:${PORT}`);
-});
+
+// ─── BOOTSTRAP ────────────────────────────────────────────────────────────────
+initStorage()
+  .then(() => {
+    purgeExpiredQuotes();
+    setInterval(purgeExpiredQuotes, 6 * 60 * 60 * 1000).unref();
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`EK PRINTERS running at http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    // Better to fail loudly than to come up with an empty quote list.
+    console.error('❌ Could not start: storage init failed —', err.message);
+    process.exit(1);
+  });
